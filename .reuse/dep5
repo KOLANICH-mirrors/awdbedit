@@ -1,0 +1,12 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: awdbedit
+Upstream-Contact: Michael Tedder <mike@tedder.cc>
+Source: https://sourceforge.net/projects/awdbedit/
+
+Files: awdbedit/* awdbe_builtins/* awdbe_wavedit/* docs/* awdbedit.dsw ReadMe.md
+Copyright: 2002-2004, Michael Tedder
+License: GPL-2.0-or-later or GPL-3.0-or-later
+
+Files: .gitignore
+Copyright: 2006 Keith Packard <keithp@keithp.com>
+License: GPL-2.0-or-later
