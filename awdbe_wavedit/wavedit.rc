@@ -141,8 +141,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_PLAY                ICON    DISCARDABLE     "play.ico"
-IDI_STOP                ICON    DISCARDABLE     "stop.ico"
+IDI_PLAY                ICON    DISCARDABLE     "gfx/play.ico"
+IDI_STOP                ICON    DISCARDABLE     "gfx/stop.ico"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

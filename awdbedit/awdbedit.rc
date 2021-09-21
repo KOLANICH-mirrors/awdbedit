@@ -28,25 +28,25 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_APPICON             ICON    DISCARDABLE     "chip.ico"
-IDI_ACTION_HEXEDIT      ICON    DISCARDABLE     "action_hexedit.ico"
-IDI_HELP_ABOUT          ICON    DISCARDABLE     "help_about.ico"
-IDI_OPTION_CONFIG       ICON    DISCARDABLE     "option_config.ico"
-IDI_FILE_EXIT           ICON    DISCARDABLE     "file_exit.ico"
-IDI_BLOCK_RED           ICON    DISCARDABLE     "block_red.ico"
-IDI_BLOCK_GREEN         ICON    DISCARDABLE     "block_green.ico"
-IDI_BLOCK_BLUE          ICON    DISCARDABLE     "block_blue.ico"
-IDI_BLOCK_GREY          ICON    DISCARDABLE     "block_grey.ico"
-IDI_BLOCK_YELLOW        ICON    DISCARDABLE     "block_yellow.ico"
-IDI_BLOCK_CYAN          ICON    DISCARDABLE     "block_cyan.ico"
-IDI_BLOCK_MAGENTA       ICON    DISCARDABLE     "block_magenta.ico"
-IDI_BLOCK_DKRED         ICON    DISCARDABLE     "block_dkred.ico"
-IDI_BLOCK_DKGREEN       ICON    DISCARDABLE     "block_dkgreen.ico"
-IDI_BLOCK_DKBLUE        ICON    DISCARDABLE     "block_dkblue.ico"
-IDI_BLOCK_DKGREY        ICON    DISCARDABLE     "block_dkgrey.ico"
-IDI_BLOCK_DKYELLOW      ICON    DISCARDABLE     "block_dkyellow.ico"
-IDI_BLOCK_DKCYAN        ICON    DISCARDABLE     "block_dkcyan.ico"
-IDI_BLOCK_DKMAGENTA     ICON    DISCARDABLE     "block_dkmagenta.ico"
+IDI_APPICON             ICON    DISCARDABLE     "gfx/buttons/chip.ico"
+IDI_ACTION_HEXEDIT      ICON    DISCARDABLE     "gfx/buttons/action_hexedit.ico"
+IDI_HELP_ABOUT          ICON    DISCARDABLE     "gfx/buttons/help_about.ico"
+IDI_OPTION_CONFIG       ICON    DISCARDABLE     "gfx/buttons/option_config.ico"
+IDI_FILE_EXIT           ICON    DISCARDABLE     "gfx/buttons/file_exit.ico"
+IDI_BLOCK_RED           ICON    DISCARDABLE     "gfx/block_colors/red.ico"
+IDI_BLOCK_GREEN         ICON    DISCARDABLE     "gfx/block_colors/green.ico"
+IDI_BLOCK_BLUE          ICON    DISCARDABLE     "gfx/block_colors/blue.ico"
+IDI_BLOCK_GREY          ICON    DISCARDABLE     "gfx/block_colors/grey.ico"
+IDI_BLOCK_YELLOW        ICON    DISCARDABLE     "gfx/block_colors/yellow.ico"
+IDI_BLOCK_CYAN          ICON    DISCARDABLE     "gfx/block_colors/cyan.ico"
+IDI_BLOCK_MAGENTA       ICON    DISCARDABLE     "gfx/block_colors/magenta.ico"
+IDI_BLOCK_DKRED         ICON    DISCARDABLE     "gfx/block_colors/dkred.ico"
+IDI_BLOCK_DKGREEN       ICON    DISCARDABLE     "gfx/block_colors/dkgreen.ico"
+IDI_BLOCK_DKBLUE        ICON    DISCARDABLE     "gfx/block_colors/dkblue.ico"
+IDI_BLOCK_DKGREY        ICON    DISCARDABLE     "gfx/block_colors/dkgrey.ico"
+IDI_BLOCK_DKYELLOW      ICON    DISCARDABLE     "gfx/block_colors/dkyellow.ico"
+IDI_BLOCK_DKCYAN        ICON    DISCARDABLE     "gfx/block_colors/dkcyan.ico"
+IDI_BLOCK_DKMAGENTA     ICON    DISCARDABLE     "gfx/block_colors/dkmagenta.ico"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ END
 // Bitmap
 //
 
-IDB_BACKGROUND          BITMAP  DISCARDABLE     "background.bmp"
+IDB_BACKGROUND          BITMAP  DISCARDABLE     "gfx/background.bmp"
 #endif    // Japanese resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -100,7 +100,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ACTION_REPLACE      ICON    DISCARDABLE     "action_replace.ico"
+IDI_ACTION_REPLACE      ICON    DISCARDABLE     "gfx/buttons/action_replace.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -509,13 +509,13 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_FILE_OPEN           ICON    DISCARDABLE     "file_open.ico"
-IDI_FILE_SAVE           ICON    DISCARDABLE     "file_save.ico"
-IDI_FILE_PROPERTIES     ICON    DISCARDABLE     "file_properties.ico"
-IDI_ACTION_INSERT       ICON    DISCARDABLE     "action_insert.ico"
-IDI_ACTION_EXTRACT      ICON    DISCARDABLE     "action_extract.ico"
-IDI_ACTION_EXTRACT_ALL  ICON    DISCARDABLE     "action_extract_all.ico"
-IDI_ACTION_REMOVE       ICON    DISCARDABLE     "action_remove.ico"
+IDI_FILE_OPEN           ICON    DISCARDABLE     "gfx/buttons/file_open.ico"
+IDI_FILE_SAVE           ICON    DISCARDABLE     "gfx/buttons/file_save.ico"
+IDI_FILE_PROPERTIES     ICON    DISCARDABLE     "gfx/buttons/file_properties.ico"
+IDI_ACTION_INSERT       ICON    DISCARDABLE     "gfx/buttons/action_insert.ico"
+IDI_ACTION_EXTRACT      ICON    DISCARDABLE     "gfx/buttons/action_extract.ico"
+IDI_ACTION_EXTRACT_ALL  ICON    DISCARDABLE     "gfx/buttons/action_extract_all.ico"
+IDI_ACTION_REMOVE       ICON    DISCARDABLE     "gfx/buttons/action_remove.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
