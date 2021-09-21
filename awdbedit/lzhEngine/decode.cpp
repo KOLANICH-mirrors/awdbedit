@@ -21,12 +21,12 @@ void decode_start(void)
 
 void decode(ushort count, uchar *buffer)
 	/* The calling function must keep the number of
-	   bytes to be processed.  This function decodes
-	   either 'count' bytes or 'DICSIZ' bytes, whichever
-	   is smaller, into the array 'buffer[]' of size
-	   'DICSIZ' or more.
-	   Call decode_start() once for each new file
-	   before calling this function. */
+	bytes to be processed.  This function decodes
+	either 'count' bytes or 'DICSIZ' bytes, whichever
+	is smaller, into the array 'buffer[]' of size
+	'DICSIZ' or more.
+	Call decode_start() once for each new file
+	before calling this function. */
 {
 	static ushort i;
 	ushort r, c;

@@ -27,8 +27,8 @@
 #define SYSBIOS_CHIPSET_H
 
 #pragma pack(push, 1)
- typedef struct
- {
+typedef struct
+{
 	uchar	type;
 	uchar	index;
 	uchar	function:3;
@@ -37,7 +37,7 @@
 	uchar	_0x00_2;
 	uchar	value;
 	uchar	_0x00_3;
- } sysbiosChipRegEntry;
+} sysbiosChipRegEntry;
 #pragma pack(pop)
 
 BOOL CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);

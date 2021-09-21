@@ -27,13 +27,13 @@
 #define SYSBIOS_IRQROUTING_H
 
 #pragma pack(push, 1)
- typedef struct
- {
+typedef struct
+{
 	uchar inta;
 	uchar intb;
 	uchar intc;
 	uchar intd;
- } sysbiosPCIRoutingEntry;
+} sysbiosPCIRoutingEntry;
 #pragma pack(pop)
 
 BOOL CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);

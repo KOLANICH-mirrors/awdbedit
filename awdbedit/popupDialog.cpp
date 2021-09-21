@@ -211,19 +211,19 @@ void popupDialog::constructDialogBitmap(void)
 	}
 
 	// create a bitmap of required size and select it into the dc
-    ZeroMemory(&bmi, sizeof(BITMAPINFO));
+	ZeroMemory(&bmi, sizeof(BITMAPINFO));
 
-    // setup bitmap info 
-    bmi.bmiHeader.biSize		= sizeof(BITMAPINFOHEADER);
-    bmi.bmiHeader.biWidth		= winxsize;
-    bmi.bmiHeader.biHeight		= winysize;
-    bmi.bmiHeader.biPlanes		= 1;
-    bmi.bmiHeader.biBitCount	= 32;
-    bmi.bmiHeader.biCompression = BI_RGB;
-    bmi.bmiHeader.biSizeImage	= winxsize * winysize * 4;
+	// setup bitmap info 
+	bmi.bmiHeader.biSize		= sizeof(BITMAPINFOHEADER);
+	bmi.bmiHeader.biWidth		= winxsize;
+	bmi.bmiHeader.biHeight		= winysize;
+	bmi.bmiHeader.biPlanes		= 1;
+	bmi.bmiHeader.biBitCount	= 32;
+	bmi.bmiHeader.biCompression = BI_RGB;
+	bmi.bmiHeader.biSizeImage	= winxsize * winysize * 4;
 
-    // create our DIB section and select the bitmap into the dc
-    hDlgBmp = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
+	// create our DIB section and select the bitmap into the dc
+	hDlgBmp = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
 	SelectObject(hdc, hDlgBmp);
 
 	// if we have a background bitmap, tile blit it repeatedly...

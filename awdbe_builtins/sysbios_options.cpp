@@ -323,7 +323,7 @@ void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
 
 		if (vers != awdbeBIOSVer600PG)
 		{
-			 sptr  = ptr + 0x1E6FA;
+			sptr  = ptr + 0x1E6FA;
 			*sptr |= 0x04;
 		}
 	}
@@ -333,7 +333,7 @@ void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
 
 		if (vers != awdbeBIOSVer600PG)
 		{
-			 sptr  = ptr + 0x1E6FA;
+			sptr  = ptr + 0x1E6FA;
 			*sptr &= ~0x04;
 		}
 	}

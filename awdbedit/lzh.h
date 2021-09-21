@@ -31,8 +31,8 @@
 #pragma warning(disable: 4200)			// zero-sized array warning
 
 #pragma pack(push, 1)
- typedef struct
- {
+typedef struct
+{
 	uchar	headerSize;
 	uchar	headerSum;
 
@@ -45,15 +45,15 @@
 	uchar	_0x01;
 	uchar	filenameLen;
 	uchar	filename[0];
- } lzhHeader;
+} lzhHeader;
 
- typedef struct
- {
+typedef struct
+{
 	ushort	crc;
 	uchar	_0x20;
 	ushort	extendedHeaderSize;
 	uchar	extendedHeader[0];
- } lzhHeaderAfterFilename;
+} lzhHeaderAfterFilename;
 #pragma pack(pop)
 
 typedef enum

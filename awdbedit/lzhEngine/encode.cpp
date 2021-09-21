@@ -34,13 +34,13 @@ static ushort remainder, matchlen;
 static void allocate_memory(void)
 {
 	if (next != NULL) return;
-    text = (uchar *)malloc(DICSIZ * 2 + MAXMATCH);
+	text = (uchar *)malloc(DICSIZ * 2 + MAXMATCH);
 	level      = (uchar *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*level));
 	childcount = (uchar *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*childcount));
 	#if PERCOLATE
-	  position = (short *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*position));
+	position = (short *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*position));
 	#else
-	  position = (short *)malloc(DICSIZ * sizeof(*position));
+	position = (short *)malloc(DICSIZ * sizeof(*position));
 	#endif
 	parent     = (short *)malloc(DICSIZ * 2 * sizeof(*parent));
 	prev       = (short *)malloc(DICSIZ * 2 * sizeof(*prev));
@@ -236,7 +236,7 @@ void encode(void)
 			output(text[pos - 1], 0);
 		else {
 			output(lastmatchlen + (UCHAR_MAX + 1 - THRESHOLD),
-				   (pos - lastmatchpos - 2) & (DICSIZ - 1));
+				(pos - lastmatchpos - 2) & (DICSIZ - 1));
 			while (--lastmatchlen > 0) get_next_match();
 			if (matchlen > remainder) matchlen = remainder;
 		}

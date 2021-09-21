@@ -27,8 +27,8 @@ ushort left[2 * NC - 1], right[2 * NC - 1];
 static uchar *buf, c_len[NC], pt_len[NPT];
 static ushort bufsiz = 0, blocksize;
 static ushort c_freq[2 * NC - 1], c_table[4096], c_code[NC],
-			  p_freq[2 * NP - 1], pt_table[256], pt_code[NPT],
-			  t_freq[2 * NT - 1];
+			p_freq[2 * NP - 1], pt_table[256], pt_code[NPT],
+			t_freq[2 * NT - 1];
 
 /***** encoding *****/
 
@@ -132,7 +132,7 @@ static void send_block(void)
 		}
 		write_c_len();
 	} else {
-        putbits(TBIT, 0);  putbits(TBIT, 0);
+		putbits(TBIT, 0);  putbits(TBIT, 0);
 		putbits(CBIT, 0);  putbits(CBIT, root);
 	}
 	root = make_tree(NP, p_freq, pt_len, pt_code);

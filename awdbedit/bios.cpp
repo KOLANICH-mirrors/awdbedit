@@ -99,15 +99,15 @@ void biosRemoveEntry(fileEntry *toRemove);
 
 BOOL CALLBACK LoadSaveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
-        case WM_INITDIALOG:
-            SetDlgItemText(hdlg, IDC_LOADING_TEXT, "");
-            SendMessage(GetDlgItem(hdlg, IDC_LOADING_PROGRESS), PBM_SETPOS, 0, 0);
-            return TRUE;
-    }
+	switch (message)
+	{
+		case WM_INITDIALOG:
+			SetDlgItemText(hdlg, IDC_LOADING_TEXT, "");
+			SendMessage(GetDlgItem(hdlg, IDC_LOADING_PROGRESS), PBM_SETPOS, 0, 0);
+			return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 void biosTitleUpdate(void)
@@ -163,15 +163,15 @@ void biosInit(HINSTANCE hi, HWND hw, HWND statwnd, HWND treewnd, HTREEITEM recgi
 	count = pluginScan(exePath, FALSE);
 
 	// now, open our working dialog
-    loaddlg = CreateDialog(hinst, MAKEINTRESOURCE(IDD_WORKING), hwnd, (DLGPROC)LoadSaveProc);
-    
+	loaddlg = CreateDialog(hinst, MAKEINTRESOURCE(IDD_WORKING), hwnd, (DLGPROC)LoadSaveProc);
+	
 	SetWindowText(loaddlg, "Scanning for plugins...");
-    hwnd_loadtext = GetDlgItem(loaddlg, IDC_LOADING_TEXT);
-    hwnd_loadprog = GetDlgItem(loaddlg, IDC_LOADING_PROGRESS);
+	hwnd_loadtext = GetDlgItem(loaddlg, IDC_LOADING_TEXT);
+	hwnd_loadprog = GetDlgItem(loaddlg, IDC_LOADING_PROGRESS);
 
 	SetWindowText(hwnd_loadtext, "");
-    SendMessage(hwnd_loadprog, PBM_SETRANGE, 0, MAKELPARAM(0, count));
-    SendMessage(hwnd_loadprog, PBM_SETSTEP, 1, 0);
+	SendMessage(hwnd_loadprog, PBM_SETRANGE, 0, MAKELPARAM(0, count));
+	SendMessage(hwnd_loadprog, PBM_SETSTEP, 1, 0);
 
 	// initialize the plugin system with the window to the controls
 	pluginInitScan(hwnd_loadtext, hwnd_loadprog);
@@ -182,11 +182,11 @@ void biosInit(HINSTANCE hi, HWND hw, HWND statwnd, HWND treewnd, HTREEITEM recgi
 	if (count == 0)
 	{
 		MessageBox(hwnd, "No Award BIOS Editor compatible plugins were found in the current directory or\n"
-						 "any subdirectory from the location where the Award BIOS Editor is located.  All\n"
-						 "components within a loaded BIOS will show up as \'Unknown Items\'.  Please\n"
-						 "ensure that you have unzipped the Award BIOS Editor with directories, and any\n"
-						 "old vesion of the Editor or its plugins has been cleanly removed before\n"
-						 "installing the new version.", "Warning", MB_OK);
+						"any subdirectory from the location where the Award BIOS Editor is located.  All\n"
+						"components within a loaded BIOS will show up as \'Unknown Items\'.  Please\n"
+						"ensure that you have unzipped the Award BIOS Editor with directories, and any\n"
+						"old vesion of the Editor or its plugins has been cleanly removed before\n"
+						"installing the new version.", "Warning", MB_OK);
 	}
 
 	// destroy our window
@@ -592,7 +592,7 @@ bool biosOpenFile(char *fname)
 	uchar *ptr;
 	uchar _0xEA;
 	ulong count, _MRB;
-    HWND loaddlg, hwnd_loadtext, hwnd_loadprog;
+	HWND loaddlg, hwnd_loadtext, hwnd_loadprog;
 	lzhHeader *lzhhdr;
 	lzhHeaderAfterFilename *lzhhdra;
 	bool done;
@@ -644,15 +644,15 @@ bool biosOpenFile(char *fname)
 	biosFreeMemory();
 
 	// put up our loading dialog and initialize it
-    loaddlg = CreateDialog(hinst, MAKEINTRESOURCE(IDD_WORKING), hwnd, (DLGPROC)LoadSaveProc);
-    
+	loaddlg = CreateDialog(hinst, MAKEINTRESOURCE(IDD_WORKING), hwnd, (DLGPROC)LoadSaveProc);
+	
 	SetWindowText(loaddlg, "Loading Image...");
-    hwnd_loadtext = GetDlgItem(loaddlg, IDC_LOADING_TEXT);
-    hwnd_loadprog = GetDlgItem(loaddlg, IDC_LOADING_PROGRESS);
+	hwnd_loadtext = GetDlgItem(loaddlg, IDC_LOADING_TEXT);
+	hwnd_loadprog = GetDlgItem(loaddlg, IDC_LOADING_PROGRESS);
 
 	SetWindowText(hwnd_loadtext, "Loading image into memory...");
-    SendMessage(hwnd_loadprog, PBM_SETRANGE, 0, MAKELPARAM(0, count));
-    SendMessage(hwnd_loadprog, PBM_SETSTEP, 1, 0);
+	SendMessage(hwnd_loadprog, PBM_SETRANGE, 0, MAKELPARAM(0, count));
+	SendMessage(hwnd_loadprog, PBM_SETSTEP, 1, 0);
 
 	// allocate space and load the image into memory
 	biosdata.imageData = new uchar[biosdata.imageSize];
@@ -1053,7 +1053,7 @@ bool biosOpenFile(char *fname)
 	}
 
 	// kill our window
-    DestroyWindow(loaddlg);
+	DestroyWindow(loaddlg);
 
 	// enable all editing controls
 	enableControls(TRUE, TRUE);
@@ -1085,20 +1085,20 @@ bool biosOpen(void)
 	// display the open dialog
 	fname[0] = 0;
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
-    ofn.lStructSize			= sizeof(OPENFILENAME);
-    ofn.hwndOwner			= hwnd;
+	ofn.lStructSize			= sizeof(OPENFILENAME);
+	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
-    ofn.lpstrFilter			= "Award BIOS Image (*.awd,*.bin)\0*.awd;*.bin\0All Files (*.*)\0*.*\0\0";
+	ofn.lpstrFilter			= "Award BIOS Image (*.awd,*.bin)\0*.awd;*.bin\0All Files (*.*)\0*.*\0\0";
 	ofn.lpstrCustomFilter	= NULL;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
-    ofn.lpstrFile			= fname;
-    ofn.nMaxFile			= 256;
+	ofn.lpstrFile			= fname;
+	ofn.nMaxFile			= 256;
 	ofn.lpstrFileTitle		= NULL;
 	ofn.nMaxFileTitle		= 0;
 	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
 	ofn.lpstrTitle			= NULL;
-    ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
+	ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
 	ofn.lpstrDefExt			= NULL;
@@ -1106,7 +1106,7 @@ bool biosOpen(void)
 	ofn.lpfnHook			= NULL;
 	ofn.lpTemplateName		= NULL;
 
-    if (GetOpenFileName(&ofn) == FALSE)
+	if (GetOpenFileName(&ofn) == FALSE)
 		return FALSE;
 
 	// strip out path from returned filename
@@ -1211,7 +1211,7 @@ void biosWriteComponent(fileEntry *fe, FILE *fp, int fileIdx)
 
 bool biosSaveFile(char *fname)
 {
-    HWND loaddlg, hwnd_loadtext, hwnd_loadprog;
+	HWND loaddlg, hwnd_loadtext, hwnd_loadprog;
 	FILE *fp;
 	int t, pos, count;
 	fileEntry *fe;
@@ -1228,11 +1228,11 @@ bool biosSaveFile(char *fname)
 	}
 
 	// put up our saving dialog and initialize it
-    loaddlg = CreateDialog(hinst, MAKEINTRESOURCE(IDD_WORKING), hwnd, (DLGPROC)LoadSaveProc);
-    
+	loaddlg = CreateDialog(hinst, MAKEINTRESOURCE(IDD_WORKING), hwnd, (DLGPROC)LoadSaveProc);
+	
 	SetWindowText(loaddlg, "Saving Image...");
-    hwnd_loadtext = GetDlgItem(loaddlg, IDC_LOADING_TEXT);
-    hwnd_loadprog = GetDlgItem(loaddlg, IDC_LOADING_PROGRESS);
+	hwnd_loadtext = GetDlgItem(loaddlg, IDC_LOADING_TEXT);
+	hwnd_loadprog = GetDlgItem(loaddlg, IDC_LOADING_PROGRESS);
 
 	SetWindowText(hwnd_loadtext, "Writing components...");
 	SendMessage(hwnd_loadprog, PBM_SETRANGE32, 0, biosdata.fileCount);
@@ -1344,7 +1344,7 @@ bool biosSaveFile(char *fname)
 	fclose(fp);
 
 	// kill our window
-    DestroyWindow(loaddlg);
+	DestroyWindow(loaddlg);
 
 	return TRUE;
 }
@@ -1382,20 +1382,20 @@ bool biosSaveAs(void)
 	// display the save dialog
 	fname[0] = 0;
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
-    ofn.lStructSize			= sizeof(OPENFILENAME);
-    ofn.hwndOwner			= hwnd;
+	ofn.lStructSize			= sizeof(OPENFILENAME);
+	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
-    ofn.lpstrFilter			= "Award BIOS Image (*.awd,*.bin)\0*.awd;*.bin\0All Files (*.*)\0*.*\0\0";
+	ofn.lpstrFilter			= "Award BIOS Image (*.awd,*.bin)\0*.awd;*.bin\0All Files (*.*)\0*.*\0\0";
 	ofn.lpstrCustomFilter	= NULL;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
-    ofn.lpstrFile			= fname;
-    ofn.nMaxFile			= 256;
+	ofn.lpstrFile			= fname;
+	ofn.nMaxFile			= 256;
 	ofn.lpstrFileTitle		= NULL;
 	ofn.nMaxFileTitle		= 0;
 	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
 	ofn.lpstrTitle			= NULL;
-    ofn.Flags				= OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
+	ofn.Flags				= OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
 	ofn.lpstrDefExt			= "awd";
@@ -1403,7 +1403,7 @@ bool biosSaveAs(void)
 	ofn.lpfnHook			= NULL;
 	ofn.lpTemplateName		= NULL;
 
-    if (GetSaveFileName(&ofn) == FALSE)
+	if (GetSaveFileName(&ofn) == FALSE)
 		return FALSE;
 
 	// zap the modified flag
@@ -1427,8 +1427,8 @@ BOOL APIENTRY LayoutProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	biosLayout oldLayout;
 
-    switch (message)
-    {
+	switch (message)
+	{
 		case WM_INITDIALOG:
 			switch (biosdata.layout)
 			{
@@ -1438,7 +1438,7 @@ BOOL APIENTRY LayoutProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 
-        case WM_COMMAND:
+		case WM_COMMAND:
 			switch (LOWORD(wParam))
 			{
 				case IDOK:
@@ -1463,7 +1463,7 @@ BOOL APIENTRY LayoutProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 					EndDialog(hdlg, TRUE);
 					break;
 			}
-            return TRUE;
+			return TRUE;
 	}
 
 	return FALSE;
@@ -1508,8 +1508,8 @@ BOOL APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  54, "Check",		0, 5, 0, 0 },
 	};
 
-    switch (message)
-    {
+	switch (message)
+	{
 		case WM_PAINT:
 			hdc = BeginPaint(hdlg, &ps);
 
@@ -1669,7 +1669,7 @@ BOOL APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 			EndPaint(hdlg, &ps);
 			return 0;
 
-        case WM_INITDIALOG:
+		case WM_INITDIALOG:
 			SetWindowText(GetDlgItem(hdlg, IDC_TEXT_FILENAME), biosdata.fname);
 
 			sprintf(buf, "%d bytes (%dMbit)", biosdata.imageSize, biosdata.imageSize / 131072);
@@ -1819,7 +1819,7 @@ BOOL APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 			EndDialog(hdlg, TRUE);
 			return TRUE;
 
-        case WM_COMMAND:
+		case WM_COMMAND:
 			switch (LOWORD(wParam))
 			{
 				case IDC_LAYOUT_CHANGE:
@@ -1841,10 +1841,10 @@ BOOL APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 					PostMessage(hdlg, WM_CLOSE, 0, 0);
 					break;
 			}
-            return TRUE;
-    }
+			return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 void biosProperties(void)
@@ -1855,7 +1855,7 @@ void biosProperties(void)
 		return;
 	}
 
-    DialogBox(hinst, MAKEINTRESOURCE(IDD_PROPERTIES), hwnd, PropertiesProc);
+	DialogBox(hinst, MAKEINTRESOURCE(IDD_PROPERTIES), hwnd, PropertiesProc);
 }
 
 static bool isUnderRoot(HTREEITEM rootItem, HTREEITEM hitem)
@@ -1873,10 +1873,10 @@ BOOL CALLBACK BiosInternalDialogFunc(HWND hdlg, UINT message, WPARAM wParam, LPA
 {
 	awdbeItem *item;
 
-    switch (message)
-    {
-        case WM_INITDIALOG:
-            return TRUE;
+	switch (message)
+	{
+		case WM_INITDIALOG:
+			return TRUE;
 
 		case WM_COMMAND:
 			switch (LOWORD(wParam))
@@ -1892,9 +1892,9 @@ BOOL CALLBACK BiosInternalDialogFunc(HWND hdlg, UINT message, WPARAM wParam, LPA
 					break;
 			}
 			break;
-    }
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 void biosUpdateCurrentDialog(void)
@@ -2287,8 +2287,8 @@ BOOL APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 	fileEntry *fe;
 	int t;
 
-    switch (message)
-    {
+	switch (message)
+	{
 		case WM_INITDIALOG:
 			SetDlgItemText(hdlg, IDC_INSERT_OFFSET, "00000000");
 
@@ -2305,7 +2305,7 @@ BOOL APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 
-        case WM_COMMAND:
+		case WM_COMMAND:
 			switch (LOWORD(wParam))
 			{
 				case IDC_INSERT_SEARCH:
@@ -2406,7 +2406,7 @@ BOOL APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 					EndDialog(hdlg, FALSE);
 					break;
 			}
-            return TRUE;
+			return TRUE;
 	}
 
 	return FALSE;
@@ -2563,20 +2563,20 @@ void biosReplace(void)
 	// display the open dialog
 	fname[0] = 0;
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
-    ofn.lStructSize			= sizeof(OPENFILENAME);
-    ofn.hwndOwner			= hwnd;
+	ofn.lStructSize			= sizeof(OPENFILENAME);
+	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
-    ofn.lpstrFilter			= "All Files (*.*)\0*.*\0\0";
+	ofn.lpstrFilter			= "All Files (*.*)\0*.*\0\0";
 	ofn.lpstrCustomFilter	= NULL;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
-    ofn.lpstrFile			= fname;
-    ofn.nMaxFile			= 256;
+	ofn.lpstrFile			= fname;
+	ofn.nMaxFile			= 256;
 	ofn.lpstrFileTitle		= NULL;
 	ofn.nMaxFileTitle		= 0;
 	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
 	ofn.lpstrTitle			= NULL;
-    ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
+	ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
 	ofn.lpstrDefExt			= NULL;
@@ -2584,7 +2584,7 @@ void biosReplace(void)
 	ofn.lpfnHook			= NULL;
 	ofn.lpTemplateName		= NULL;
 
-    if (GetOpenFileName(&ofn) == FALSE)
+	if (GetOpenFileName(&ofn) == FALSE)
 		return;
 
 	biosReplaceFile(fname);
@@ -2605,20 +2605,20 @@ void biosExtract(void)
 
 	// display the save dialog
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
-    ofn.lStructSize			= sizeof(OPENFILENAME);
-    ofn.hwndOwner			= hwnd;
+	ofn.lStructSize			= sizeof(OPENFILENAME);
+	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
-    ofn.lpstrFilter			= "All Files (*.*)\0*.*\0\0";
+	ofn.lpstrFilter			= "All Files (*.*)\0*.*\0\0";
 	ofn.lpstrCustomFilter	= NULL;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
-    ofn.lpstrFile			= fname;
-    ofn.nMaxFile			= 256;
+	ofn.lpstrFile			= fname;
+	ofn.nMaxFile			= 256;
 	ofn.lpstrFileTitle		= NULL;
 	ofn.nMaxFileTitle		= 0;
 	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
 	ofn.lpstrTitle			= NULL;
-    ofn.Flags				= OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
+	ofn.Flags				= OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
 	ofn.lpstrDefExt			= NULL;
@@ -2626,7 +2626,7 @@ void biosExtract(void)
 	ofn.lpfnHook			= NULL;
 	ofn.lpTemplateName		= NULL;
 
-    if (GetSaveFileName(&ofn) == FALSE)
+	if (GetSaveFileName(&ofn) == FALSE)
 		return;
 
 	// open the file
@@ -2718,13 +2718,13 @@ void biosExtractAll(void)
 
 BOOL APIENTRY RemoveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
+	switch (message)
+	{
 		case WM_INITDIALOG:
 			CheckDlgButton(hdlg, IDC_ASK_AGAIN, BST_UNCHECKED);
 			break;
 
-        case WM_COMMAND:
+		case WM_COMMAND:
 			switch (LOWORD(wParam))
 			{
 				case IDOK:
@@ -2738,7 +2738,7 @@ BOOL APIENTRY RemoveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 					EndDialog(hdlg, FALSE);
 					break;
 			}
-            return TRUE;
+			return TRUE;
 	}
 
 	return FALSE;
@@ -2746,13 +2746,13 @@ BOOL APIENTRY RemoveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 BOOL APIENTRY RemoveBDProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
+	switch (message)
+	{
 		case WM_INITDIALOG:
 			CheckDlgButton(hdlg, IDC_ASK_AGAIN, BST_UNCHECKED);
 			break;
 
-        case WM_COMMAND:
+		case WM_COMMAND:
 			switch (LOWORD(wParam))
 			{
 				case IDOK:
@@ -2766,7 +2766,7 @@ BOOL APIENTRY RemoveBDProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam
 					EndDialog(hdlg, FALSE);
 					break;
 			}
-            return TRUE;
+			return TRUE;
 	}
 
 	return FALSE;

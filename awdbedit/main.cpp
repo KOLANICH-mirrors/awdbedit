@@ -60,17 +60,17 @@ static char *mainChangedText = "This BIOS image has been changed.  Do you want t
 
 BOOL APIENTRY ConfigBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    OPENFILENAME ofn;
+	OPENFILENAME ofn;
 	char fname[256];
 
-    switch (message)
-    {
-        case WM_INITDIALOG:
+	switch (message)
+	{
+		case WM_INITDIALOG:
 			SetWindowText(GetDlgItem(hDlg, IDC_HEXEDIT_PATH), config.hexEditor);
-            return TRUE;
+			return TRUE;
 
-        case WM_COMMAND:
-            switch (LOWORD(wParam))
+		case WM_COMMAND:
+			switch (LOWORD(wParam))
 			{
 				case IDC_HEXEDIT_SEARCH:
 					// display an open dialog
@@ -116,13 +116,13 @@ BOOL APIENTRY ConfigBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 					// fall through to end the dialog...
 
 				case IDCANCEL:
-	                EndDialog(hDlg, TRUE);
+					EndDialog(hDlg, TRUE);
 					break;					
 			}
-            return TRUE;
-    }
+			return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 BOOL APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -133,14 +133,14 @@ BOOL APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam
 	POINT pt[2];
 	HPEN hpen, oldpen;
 
-    switch (message)
-    {
-        case WM_INITDIALOG:
+	switch (message)
+	{
+		case WM_INITDIALOG:
 			SetDlgItemText(hDlg, IDC_TEXT_APPVERSION, APP_VERSION);
 
 			sprintf(buf, "Compiled on %s at %s", __DATE__, __TIME__);
 			SetDlgItemText(hDlg, IDC_TEXT_COMPILETIME, buf);
-            return TRUE;
+			return TRUE;
 
 		case WM_DRAWITEM:
 			lpdis = (LPDRAWITEMSTRUCT)lParam;
@@ -194,14 +194,14 @@ BOOL APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam
 				}
 			}
 
-            if (LOWORD(wParam) == IDOK)
+			if (LOWORD(wParam) == IDOK)
 			{
-                EndDialog(hDlg, TRUE);
+				EndDialog(hDlg, TRUE);
 			}
-            return TRUE;
-    }
+			return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 void enableControls(bool fileLoaded, bool selIsValid)
@@ -515,7 +515,7 @@ void createControls(HWND hwnd)
 	insertRebarControls(hwnd);
 
 	// now, create our tree view (for the left-side pane), but hidden for now
-    globals.hTreeView = CreateWindowEx(WS_EX_CLIENTEDGE, WC_TREEVIEW, NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS |
+	globals.hTreeView = CreateWindowEx(WS_EX_CLIENTEDGE, WC_TREEVIEW, NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS |
 		TVS_HASLINES | TVS_HASBUTTONS | TVS_SHOWSELALWAYS | TVS_LINESATROOT, 0, 0, 0, 0, hwnd, NULL, globals.MainhInst, NULL);
 
 	// add the root items to the tree...
@@ -631,8 +631,8 @@ int handleMenuPopup(HMENU menu)
 {
 	int count, t;
 	char cwd[256], skindir[256];
-    struct _finddata_t fd;
-    long hFile;
+	struct _finddata_t fd;
+	long hFile;
 
 	// figure out which menu this is...
 	if (menu == globals.hRecentFilesMenu)
@@ -874,7 +874,7 @@ LRESULT APIENTRY SplitterWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 			break;
 	}
 
-    return DefWindowProc(hWnd, message, wParam, lParam);
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 LRESULT APIENTRY PopupWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -902,7 +902,7 @@ LRESULT APIENTRY PopupWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			return globals.pMenu->onTimer(hWnd, wParam);
 	}
 
-    return DefWindowProc(hWnd, message, wParam, lParam);
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 void updateMRU(void)
@@ -934,8 +934,8 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	char statusBuf[256];
 	SIZE sz;
 
-    switch (message)
-    {
+	switch (message)
+	{
 		case WM_ACTIVATEAPP:
 			if (wParam == FALSE)
 			{
@@ -949,9 +949,9 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			// create our status bar and controls (this must be here, or things won't size right!)
 			createStatusBar(hWnd);
 			createControls(hWnd);
-            break;
+			break;
 
-        case WM_SIZE:
+		case WM_SIZE:
 			sz.cx = LOWORD(lParam); // + 8;
 			sz.cy = HIWORD(lParam); // + 29;
 
@@ -968,22 +968,22 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 			config.rootXSize = sz.cx + 8;
 			config.rootYSize = sz.cy + 29;
-            break;
+			break;
 
-        case WM_PAINT:
-            break;
+		case WM_PAINT:
+			break;
 
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            break;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
 
-        case WM_QUIT:
-            break;
+		case WM_QUIT:
+			break;
 
-        case WM_CLOSE:
+		case WM_CLOSE:
 			if (biosHandleModified(mainChangedText) == FALSE)
 				return 0;
-            break;
+			break;
 
 		case WM_NOTIFY:
 			return DoNotify(hWnd, wParam, lParam);
@@ -1008,9 +1008,9 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			}
 			return 0;
 
-        case WM_COMMAND:
-            switch (LOWORD(wParam))
-            {
+		case WM_COMMAND:
+			switch (LOWORD(wParam))
+			{
 				case ID_FILE_MRU_FILE1:
 				case ID_FILE_MRU_FILE2:
 				case ID_FILE_MRU_FILE3:
@@ -1055,10 +1055,10 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					biosProperties();
 					return 0;
 
-                case ID_FILE_EXIT:
+				case ID_FILE_EXIT:
 					if (biosHandleModified(mainChangedText) == TRUE)
-	                    PostQuitMessage(0);
-                    return 0;
+						PostQuitMessage(0);
+					return 0;
 
 				case ID_ACTION_INSERT:
 					biosInsert(0);
@@ -1121,9 +1121,9 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					}
 					return 0;
 
-                case ID_HELP_ABOUT:
+				case ID_HELP_ABOUT:
 					DialogBox(globals.MainhInst, MAKEINTRESOURCE(IDD_ABOUT), globals.MainhWnd, AboutBoxProc);
-                    return 0;
+					return 0;
 
 				case ID_HELP_PLUGIN0:
 				case ID_HELP_PLUGIN1:
@@ -1151,83 +1151,83 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 				case ID_HELP_HOMEPAGE:
 					ShellExecute(globals.MainhWnd, "open", "http://awdbedit.sourceforge.net", NULL, NULL, SW_SHOWNORMAL);
 					break;
-            }
-            break;
+			}
+			break;
 
 		case WM_LBUTTONDOWN:
 			return globals.pMenu->onLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
-    }
+	}
 
-    return DefWindowProc(hWnd, message, wParam, lParam);
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 HWND CreateMainWindow(uint xsize, uint ysize, HINSTANCE hInstance, int nCmdShow, char *name)
 {
-    HWND hwnd;
-    WNDCLASSEX wc;
+	HWND hwnd;
+	WNDCLASSEX wc;
 	HBRUSH hSplitterBrush;
 
 	// Create a popup window class...
 	wc.cbSize			= sizeof(WNDCLASSEX);
-    wc.style			= CS_HREDRAW | CS_VREDRAW | CS_GLOBALCLASS;
-    wc.lpfnWndProc		= PopupWindowProc;
-    wc.cbClsExtra		= 0;
-    wc.cbWndExtra		= 0;
-    wc.hInstance		= hInstance;
-    wc.hIcon			= NULL;
-    wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground	= (HBRUSH)GetStockObject(WHITE_BRUSH);
-    wc.lpszMenuName		= NULL;
-    wc.lpszClassName	= AWDBEDIT_POPUP_CLASSNAME;
+	wc.style			= CS_HREDRAW | CS_VREDRAW | CS_GLOBALCLASS;
+	wc.lpfnWndProc		= PopupWindowProc;
+	wc.cbClsExtra		= 0;
+	wc.cbWndExtra		= 0;
+	wc.hInstance		= hInstance;
+	wc.hIcon			= NULL;
+	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground	= (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.lpszMenuName		= NULL;
+	wc.lpszClassName	= AWDBEDIT_POPUP_CLASSNAME;
 	wc.hIconSm			= NULL;
 
-    if (!RegisterClassEx(&wc)) return FALSE;
+	if (!RegisterClassEx(&wc)) return FALSE;
 
 	// create the splitter window's brush
 	hSplitterBrush = CreateSolidBrush(RGB(224, 223, 227));
 
 	// Create a splitter window class...
 	wc.cbSize			= sizeof(WNDCLASSEX);
-    wc.style			= CS_HREDRAW | CS_VREDRAW | CS_GLOBALCLASS;
-    wc.lpfnWndProc		= SplitterWindowProc;
-    wc.cbClsExtra		= 0;
-    wc.cbWndExtra		= 0;
-    wc.hInstance		= hInstance;
-    wc.hIcon			= NULL;
-    wc.hCursor			= LoadCursor(NULL, IDC_SIZEWE);
-    wc.hbrBackground	= hSplitterBrush;
-    wc.lpszMenuName		= NULL;
-    wc.lpszClassName	= AWDBEDIT_SPLITTER_CLASSNAME;
+	wc.style			= CS_HREDRAW | CS_VREDRAW | CS_GLOBALCLASS;
+	wc.lpfnWndProc		= SplitterWindowProc;
+	wc.cbClsExtra		= 0;
+	wc.cbWndExtra		= 0;
+	wc.hInstance		= hInstance;
+	wc.hIcon			= NULL;
+	wc.hCursor			= LoadCursor(NULL, IDC_SIZEWE);
+	wc.hbrBackground	= hSplitterBrush;
+	wc.lpszMenuName		= NULL;
+	wc.lpszClassName	= AWDBEDIT_SPLITTER_CLASSNAME;
 	wc.hIconSm			= NULL;
 
-    if (!RegisterClassEx(&wc)) return FALSE;
+	if (!RegisterClassEx(&wc)) return FALSE;
 
-    // Finally, create the window class and the window...
+	// Finally, create the window class and the window...
 	wc.cbSize			= sizeof(WNDCLASSEX);
-    wc.style			= CS_HREDRAW | CS_VREDRAW;
-    wc.lpfnWndProc		= WindowProc;
-    wc.cbClsExtra		= 0;
-    wc.cbWndExtra		= 0;
-    wc.hInstance		= hInstance;
-    wc.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPICON));
-    wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground	= (HBRUSH)GetStockObject(GRAY_BRUSH);
-    wc.lpszMenuName		= NULL;
-    wc.lpszClassName	= AWDBEDIT_MAIN_CLASSNAME;
+	wc.style			= CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc		= WindowProc;
+	wc.cbClsExtra		= 0;
+	wc.cbWndExtra		= 0;
+	wc.hInstance		= hInstance;
+	wc.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPICON));
+	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground	= (HBRUSH)GetStockObject(GRAY_BRUSH);
+	wc.lpszMenuName		= NULL;
+	wc.lpszClassName	= AWDBEDIT_MAIN_CLASSNAME;
 	wc.hIconSm			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPICON));
-    if (!RegisterClassEx(&wc)) return FALSE;
+	if (!RegisterClassEx(&wc)) return FALSE;
 
-    hwnd = CreateWindowEx(0, AWDBEDIT_MAIN_CLASSNAME, name, WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME, CW_USEDEFAULT, 
+	hwnd = CreateWindowEx(0, AWDBEDIT_MAIN_CLASSNAME, name, WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME, CW_USEDEFAULT, 
 		CW_USEDEFAULT, xsize, ysize, NULL, NULL, hInstance, NULL);
 
-    if (hwnd == NULL)
+	if (hwnd == NULL)
 		return 0;
 
-    ShowWindow(hwnd, nCmdShow);
-    UpdateWindow(hwnd);
-    SetFocus(hwnd);
+	ShowWindow(hwnd, nCmdShow);
+	UpdateWindow(hwnd);
+	SetFocus(hwnd);
 
-    return hwnd;
+	return hwnd;
 }
 
 void mapMenuIcon(int cmdId, int iconId)
@@ -1327,14 +1327,14 @@ void makeTempPath(void)
 
 int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 {
-    MSG msg;
-    bool done;
+	MSG msg;
+	bool done;
 	INITCOMMONCONTROLSEX icex;
 
-    // Begin basic initialization...
+	// Begin basic initialization...
 	getExePath(GetCommandLine(), exePath, 256);
 	globals.MainhWnd  = NULL;
-    globals.MainhInst = hInstance;
+	globals.MainhInst = hInstance;
 
 	icex.dwSize	= sizeof(INITCOMMONCONTROLSEX);
 	icex.dwICC	= ICC_WIN95_CLASSES | ICC_COOL_CLASSES | ICC_BAR_CLASSES | ICC_USEREX_CLASSES;
@@ -1367,7 +1367,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	// load the menu data first.
 	globals.MainhMenu = LoadMenu(globals.MainhInst, MAKEINTRESOURCE(IDR_MENU));
 
-    // next, create the main window...
+	// next, create the main window...
 	globals.MainhWnd = CreateMainWindow(config.rootXSize, config.rootYSize, globals.MainhInst, nCmdShow, APP_VERSION);
 	if (globals.MainhWnd == NULL)
 	{
@@ -1402,9 +1402,9 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	globals.hSkinsMenu			= GetSubMenu(GetSubMenu(globals.MainhMenu, 2), 1);
 	globals.hAboutPluginsMenu	= GetSubMenu(GetSubMenu(globals.MainhMenu, 3), 1);
 
-    // Invalidate the windows's rectangle to paint the window.
-    InvalidateRect(globals.MainhWnd, NULL, FALSE);
-    UpdateWindow(globals.MainhWnd);
+	// Invalidate the windows's rectangle to paint the window.
+	InvalidateRect(globals.MainhWnd, NULL, FALSE);
+	UpdateWindow(globals.MainhWnd);
 
 	// Initialize some text in our status bar
 	SendMessage(globals.hStatusBar, SB_SETTEXT, 1, (LPARAM)"No BIOS loaded");
@@ -1412,21 +1412,21 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	// initialize bios system
 	biosInit(globals.MainhInst, globals.MainhWnd, globals.hStatusBar, globals.hTreeView, globals.hTreeRecgItem, globals.hTreeInclItem, globals.hTreeUnkItem, &globals.dialogrc);
 
-    // Begin main message loop...
-    done = FALSE;
+	// Begin main message loop...
+	done = FALSE;
 
-    while (!done)
-    {
-        if (!GetMessage(&msg, NULL, 0, 0))
-        {
-            done = TRUE;
-        }
-        else
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-    }
+	while (!done)
+	{
+		if (!GetMessage(&msg, NULL, 0, 0))
+		{
+			done = TRUE;
+		}
+		else
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
 
 	// save config to registry
 	configSave();
@@ -1453,5 +1453,5 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	// remove any temporary files
 	cleanTempPath();
 
-    return 0;
+	return 0;
 }

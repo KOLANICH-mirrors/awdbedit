@@ -27,8 +27,8 @@
 #define SYSBIOS_DRIVE_H
 
 #pragma pack(push, 1)
- typedef struct
- {
+typedef struct
+{
 	ushort	cylinders;
 	uchar	heads;
 	ushort	_0x0000_1;
@@ -38,7 +38,7 @@
 	ushort	_0x0000_3;
 	ushort	landzone;
 	ushort	sectors;
- } sysbiosDrvTblEntry;
+} sysbiosDrvTblEntry;
 #pragma pack(pop)
 
 BOOL CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
