@@ -10,3 +10,7 @@ License: GPL-2.0-or-later or GPL-3.0-or-later
 Files: .gitignore
 Copyright: 2006 Keith Packard <keithp@keithp.com>
 License: GPL-2.0-or-later
+
+Files: .editorconfig
+Copyright: 2021 KOLANICH
+License: Unlicense

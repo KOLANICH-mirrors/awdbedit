@@ -85,10 +85,10 @@ BOOL CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 	ulong count;
 	uchar *tempbuf, *sptr, *dptr;
 
-    switch (message)
-    {
-        case WM_INITDIALOG:
-            return TRUE;
+	switch (message)
+	{
+		case WM_INITDIALOG:
+			return TRUE;
 
 		case WM_PAINT:
 			dc = BeginPaint(hdlg, &ps);
@@ -177,9 +177,9 @@ BOOL CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 					break;
 			}
 			break;
-    }
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 HWND epaCreateDialog(HWND parentWnd)

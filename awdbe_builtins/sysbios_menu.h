@@ -34,8 +34,8 @@
 #define TYPE_SETUP			1
 
 #pragma pack(push, 1)
- typedef struct
- {
+typedef struct
+{
 	ushort	status;
 	ushort	pointerToHeader;
 	ushort	chipRegIndex;
@@ -50,14 +50,14 @@
 	ushort	biosDefaultIdx;
 	ushort	setupDefaultIdx;
 	ushort	pointerToHelp;
- } sysbiosMenuStruct;
+} sysbiosMenuStruct;
 
- typedef struct
- {
+typedef struct
+{
 	ushort	pointerToPageStart;
 	ushort	pointerToPageEnd;
 	ushort	pointerToStartupString;
- } sysbiosMenuDef;
+} sysbiosMenuDef;
 #pragma pack(pop)
 
 

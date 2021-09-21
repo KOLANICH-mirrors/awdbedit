@@ -27,8 +27,8 @@
 #define SYSBIOS_TIMING_H
 
 #pragma pack(push, 1)
- typedef struct
- {
+typedef struct
+{
 	ulong	refreshRate;
 	ushort	fddMotorSpinUp;
 	uchar	fddHeadSettle;
@@ -42,7 +42,7 @@
 	u24		hdcDataRequest;
 	u24		comPortTimeout;
 	u24		lptBusyCheck;
- } sysbiosTimingStruct;
+} sysbiosTimingStruct;
 #pragma pack(pop)
 
 BOOL CALLBACK sysbiosBIOSTimingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);

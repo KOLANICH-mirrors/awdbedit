@@ -40,14 +40,14 @@ BOOL CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPa
 	int len, maxlen;
 	char buf[256];
 
-    switch (message)
-    {
-        case WM_INITDIALOG:
+	switch (message)
+	{
+		case WM_INITDIALOG:
 			SetDlgItemText(hdlg, IDC_TEXT_SYSBIOS_VERSION, "");
 			SetDlgItemText(hdlg, IDC_TEXT_SYSBIOS_INFO,	   "");
 			SetDlgItemText(hdlg, IDC_TEXT_SYSBIOS_MESSAGE, "");
 			SetDlgItemText(hdlg, IDC_TEXT_SYSBIOS_ID,      "");
-            return TRUE;
+			return TRUE;
 
 		case WM_COMMAND:
 			if (HIWORD(wParam) == EN_CHANGE)
@@ -78,9 +78,9 @@ BOOL CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPa
 				}
 			}
 			break;
-    }
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 BOOL CALLBACK VerDiffProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)

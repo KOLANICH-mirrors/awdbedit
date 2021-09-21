@@ -178,9 +178,9 @@ BOOL CALLBACK sysbiosTabCtrlFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM 
 						if (setupMsgShown == FALSE)
 						{
 							MessageBox(sysbiosTabList[curtab].hwnd, "This tab is still under development.  The items in the BIOS Setup Menu are shown properly\n"
-																   "in the tree, but any changes made in any of the controls will not be applied to the BIOS image.\n"
-																   "You can also test-run the setup menu in a console window by clicking a menu header, then\n"
-																   "clicking the \"Run >\" button.\n\nThis message will only appear once per execution of the Editor.", "Warning", MB_OK);
+																"in the tree, but any changes made in any of the controls will not be applied to the BIOS image.\n"
+																"You can also test-run the setup menu in a console window by clicking a menu header, then\n"
+																"clicking the \"Run >\" button.\n\nThis message will only appear once per execution of the Editor.", "Warning", MB_OK);
 
 							setupMsgShown = TRUE;
 						}

@@ -64,7 +64,7 @@ static void downheap(ushort i)
 	k = heap[i];
 	while ((j = 2 * i) <= heapsize) {
 		if (j < heapsize && freq[heap[j]] > freq[heap[j + 1]])
-		 	j++;
+			j++;
 		if (freq[k] <= freq[heap[j]]) break;
 		heap[i] = heap[j];  i = j;
 	}

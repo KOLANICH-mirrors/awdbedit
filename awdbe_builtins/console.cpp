@@ -45,7 +45,7 @@ HANDLE getConsoleHandle(void)
 
 void init_console(bool useExistConsole, int mode, PHANDLER_ROUTINE ctrlHandler)
 {
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
 
 	madeConsole = FALSE;
 
@@ -65,16 +65,16 @@ void init_console(bool useExistConsole, int mode, PHANDLER_ROUTINE ctrlHandler)
 		madeConsole = TRUE;
 	}
 
-    SetConsoleTextAttribute(hCon, attrib);
+	SetConsoleTextAttribute(hCon, attrib);
 
-    switch (mode)
-    {
-        case MODE_80x25: go_25(); break;
-        case MODE_80x50: go_50(); break;
-    }
+	switch (mode)
+	{
+		case MODE_80x25: go_25(); break;
+		case MODE_80x50: go_50(); break;
+	}
 
-    GetConsoleScreenBufferInfo(hCon, &csbi);
-    gotoxy(csbi.dwCursorPosition.X + 1, csbi.dwCursorPosition.Y + 1);
+	GetConsoleScreenBufferInfo(hCon, &csbi);
+	gotoxy(csbi.dwCursorPosition.X + 1, csbi.dwCursorPosition.Y + 1);
 
 	if (GetConsoleOutputCP() != 437)
 	{
@@ -108,37 +108,37 @@ void free_console(void)
 
 void change_size(int xs, int ys)
 {
-    COORD size, pos;
-    SMALL_RECT r;
+	COORD size, pos;
+	SMALL_RECT r;
 
-    size.X = xs;
-    size.Y = ys;
+	size.X = xs;
+	size.Y = ys;
 
-    // Try changing buffer size first.
-    if (SetConsoleScreenBufferSize(hCon, size) == FALSE)
-    {
-        r.Top    = 0;
-        r.Left   = 0;
-        r.Right  = xs - 1;
-        r.Bottom = ys - 1;
+	// Try changing buffer size first.
+	if (SetConsoleScreenBufferSize(hCon, size) == FALSE)
+	{
+		r.Top    = 0;
+		r.Left   = 0;
+		r.Right  = xs - 1;
+		r.Bottom = ys - 1;
 
-        // Buffer size set failed... size must be smaller than previous, so shrink window first.
-        if (SetConsoleWindowInfo(hCon, TRUE, &r) == FALSE)
-        {
-            // Something bad... should do error checking here.
-            return;
-        }
+		// Buffer size set failed... size must be smaller than previous, so shrink window first.
+		if (SetConsoleWindowInfo(hCon, TRUE, &r) == FALSE)
+		{
+			// Something bad... should do error checking here.
+			return;
+		}
 
-        // Now set the size of the buffer.
-        if (SetConsoleScreenBufferSize(hCon, size) == FALSE)
-        {
-            // Something bad too...
-            return;
-        }
-    }
+		// Now set the size of the buffer.
+		if (SetConsoleScreenBufferSize(hCon, size) == FALSE)
+		{
+			// Something bad too...
+			return;
+		}
+	}
 
-    size_x = xs;
-    size_y = ys;
+	size_x = xs;
+	size_y = ys;
 
 	if (screen) delete []screen;
 	screen = new ushort[size_x * size_y * 2];
@@ -153,25 +153,25 @@ void change_size(int xs, int ys)
 	r.Right  = size_x - 1;
 	r.Bottom = size_y - 1;
 
-    ReadConsoleOutput(hCon, (CHAR_INFO *)screen, size, pos, &r);
+	ReadConsoleOutput(hCon, (CHAR_INFO *)screen, size, pos, &r);
 }
 
 void go_25(void)
 {
-    change_size(80, 25);
+	change_size(80, 25);
 }
 
 void go_50(void)
 {
-    change_size(80, 50);
+	change_size(80, 50);
 }
 
 void flip_to_console(void)
 {
-    COORD size = { size_x, size_y }, pos = { 0, 0 };
-    SMALL_RECT r = { 0, 0, size_x - 1, size_y - 1 };
+	COORD size = { size_x, size_y }, pos = { 0, 0 };
+	SMALL_RECT r = { 0, 0, size_x - 1, size_y - 1 };
 
-    WriteConsoleOutput(hCon, (CHAR_INFO *)screen, size, pos, &r);
+	WriteConsoleOutput(hCon, (CHAR_INFO *)screen, size, pos, &r);
 }
 
 void update_console_position(void)
@@ -201,22 +201,22 @@ void clrscr(void)
 		*ptr++ = attrib;
 	}
 
-    gotoxy(1, 1);
+	gotoxy(1, 1);
 }
 
 void textattr(int c)
 {
-    attrib = c;
+	attrib = c;
 }
 
 void textcolor(int c)
 {
-    attrib = (attrib & 0xF0) | (c & 0x0F);
+	attrib = (attrib & 0xF0) | (c & 0x0F);
 }
 
 void textbackground(int c)
 {
-    attrib = (attrib & 0x0F) | (c << 4);
+	attrib = (attrib & 0x0F) | (c << 4);
 }
 
 void gotoxy(uint x, uint y)
@@ -224,8 +224,8 @@ void gotoxy(uint x, uint y)
 	if (x > size_x) x = size_x;
 	if (y > size_y) y = size_y;
 
-    cursor_x = x;
-    cursor_y = y;
+	cursor_x = x;
+	cursor_y = y;
 
 //	scrptr = screen + ((size_x * (y - 1)) << 1) + ((x - 1) << 1);		// zero based coordinates
 	scrptr = screen + ((size_x * y) << 1) + (x << 1);
@@ -233,26 +233,26 @@ void gotoxy(uint x, uint y)
 
 int wherex(void)
 {
-    return cursor_x;
+	return cursor_x;
 }
 
 int wherey(void)
 {
-    return cursor_y;
+	return cursor_y;
 }
 
 void gettext(int x1, int y1, int x2, int y2, char *buf)
 {
-    COORD size = { (x2 - x1) + 1, (y2 - y1) + 1 }, pos = { 0, 0 };
-    SMALL_RECT r = { x1, y1, x2, y2 };
+	COORD size = { (x2 - x1) + 1, (y2 - y1) + 1 }, pos = { 0, 0 };
+	SMALL_RECT r = { x1, y1, x2, y2 };
 
 //    ReadConsoleOutput(hCon, (CHAR_INFO *)buf, size, pos, &r);
 }
 
 void puttext(int x1, int y1, int x2, int y2, char *buf)
 {
-    COORD size = { (x2 - x1) + 1, (y2 - y1) + 1 }, pos = { 0, 0 };
-    SMALL_RECT r = { x1, y1, x2, y2 };
+	COORD size = { (x2 - x1) + 1, (y2 - y1) + 1 }, pos = { 0, 0 };
+	SMALL_RECT r = { x1, y1, x2, y2 };
 
 //    WriteConsoleOutput(hCon, (CHAR_INFO *)buf, size, pos, &r);
 }
@@ -260,35 +260,35 @@ void puttext(int x1, int y1, int x2, int y2, char *buf)
 /*
 void get_char(int x, int y, int *ch, int *attrib)
 {
-    unsigned char *ScrPtr;
+	unsigned char *ScrPtr;
 
-    x--; y--;
+	x--; y--;
 
-    ScrPtr = ((unsigned char *)Console_Row[y] + (x << 1));
+	ScrPtr = ((unsigned char *)Console_Row[y] + (x << 1));
 
-    *ch     = *ScrPtr++;
-    *attrib = *ScrPtr;
+	*ch     = *ScrPtr++;
+	*attrib = *ScrPtr;
 }
 
 void put_char(int x, int y, int ch, int attrib)
 {
-    unsigned char *ScrPtr;
+	unsigned char *ScrPtr;
 
-    x--; y--;
+	x--; y--;
 
-    ScrPtr = ((unsigned char *)Console_Row[y] + (x << 1));
+	ScrPtr = ((unsigned char *)Console_Row[y] + (x << 1));
 
-    *ScrPtr++ = ch;
-    *ScrPtr   = attrib;
+	*ScrPtr++ = ch;
+	*ScrPtr   = attrib;
 }
 
 void window(int l, int t, int r, int b)
 {
-    left_win = l;
-    top_win = t;
-    right_win = r;
-    bottom_win = b;
-    gotoxy(top_win, left_win);
+	left_win = l;
+	top_win = t;
+	right_win = r;
+	bottom_win = b;
+	gotoxy(top_win, left_win);
 }
 */
 
@@ -319,47 +319,47 @@ void scroll(void)
 
 void c_linefeed(void)
 {
-    if (cursor_y == size_y)
-        scroll();
-    else
-        gotoxy(cursor_x, cursor_y + 1);
+	if (cursor_y == size_y)
+		scroll();
+	else
+		gotoxy(cursor_x, cursor_y + 1);
 
 	flip_to_console();
 }
 
 void c_carriage(void)
 {
-    gotoxy(1, cursor_y);
+	gotoxy(1, cursor_y);
 	flip_to_console();
 }
 
 void c_retreat(void)
 {
-    if (cursor_x == 1) return;
+	if (cursor_x == 1) return;
 
-    gotoxy(cursor_x - 1, cursor_y);
+	gotoxy(cursor_x - 1, cursor_y);
 //    c_putch(' ');
 //    gotoxy(cursor_x - 1, cursor_y);
 }
 
 void c_rawputch(char ch)
 {
-    if (cursor_x > size_x)
-    {
-        cursor_x = 1;
+	if (cursor_x > size_x)
+	{
+		cursor_x = 1;
 
-        if (cursor_y != size_y)
-            gotoxy(cursor_x, cursor_y + 1);
+		if (cursor_y != size_y)
+			gotoxy(cursor_x, cursor_y + 1);
 		else
 		{
 			scroll();
 			gotoxy(cursor_x, cursor_y);
 		}
-    }
-    else
-    {
-        cursor_x++;
-    }
+	}
+	else
+	{
+		cursor_x++;
+	}
 
 	*scrptr++ = ch;
 	*scrptr++ = attrib;
@@ -367,8 +367,8 @@ void c_rawputch(char ch)
 
 void c_rawputs(char *s)
 {
-    while (*s)
-        c_rawputch(*s++);
+	while (*s)
+		c_rawputch(*s++);
 }
 
 void c_rawputblk(char *s, int len)
@@ -379,48 +379,48 @@ void c_rawputblk(char *s, int len)
 
 void c_rawprintf(char *format, ...)
 {
-    char tempstr[256], *p;
-    va_list stuff;
+	char tempstr[256], *p;
+	va_list stuff;
 
-    p = tempstr;
+	p = tempstr;
 
-    va_start(stuff, format);
-    vsprintf(p, format, stuff);
-    va_end(stuff);
+	va_start(stuff, format);
+	vsprintf(p, format, stuff);
+	va_end(stuff);
 
-    c_rawputs(tempstr);
+	c_rawputs(tempstr);
 }
 
 void c_putch(char ch)
 {
-    if (ch == '\n')
-        c_linefeed();
-    else if (ch == '\r')
-        c_carriage();
-    else if (ch == '\b')
-        c_retreat();
-    else
+	if (ch == '\n')
+		c_linefeed();
+	else if (ch == '\r')
+		c_carriage();
+	else if (ch == '\b')
+		c_retreat();
+	else
 		c_rawputch(ch);
 }
 
 void c_puts(char *s)
 {
-    while (*s)
-        c_putch(*s++);
+	while (*s)
+		c_putch(*s++);
 }
 
 void c_printf(char *format, ...)
 {
-    char tempstr[256], *p;
-    va_list stuff;
+	char tempstr[256], *p;
+	va_list stuff;
 
-    p = tempstr;
+	p = tempstr;
 
-    va_start(stuff, format);
-    vsprintf(p, format, stuff);
-    va_end(stuff);
+	va_start(stuff, format);
+	vsprintf(p, format, stuff);
+	va_end(stuff);
 
-    c_puts(tempstr);
+	c_puts(tempstr);
 }
 
 bool c_kbhit(void)
@@ -474,55 +474,55 @@ WORD c_getkeycode(void)
 
 void zap_line(int y, char ch)
 {
-    int t;
+	int t;
 
-    gotoxy(1, y);
-    for (t = 0; t < 80; t++)
-        c_rawputch(ch);
+	gotoxy(1, y);
+	for (t = 0; t < 80; t++)
+		c_rawputch(ch);
 }
 
 void center_text(char *str, int y)
 {
-    int x;
+	int x;
 
-    x = 40 - (strlen(str) >> 1);
-    gotoxy(x, y);
-    c_puts(str);
+	x = 40 - (strlen(str) >> 1);
+	gotoxy(x, y);
+	c_puts(str);
 }
 
 void draw_window(int x1, int y1, int x2, int y2, int fg, int bg)
 {
-    int t;
-    char hbuf[80], *ptr;
+	int t;
+	char hbuf[80], *ptr;
 
-    textcolor(fg);
-    textbackground(bg);
+	textcolor(fg);
+	textbackground(bg);
 
-    gotoxy(x1, y1); c_putch('+');
-    gotoxy(x2, y1); c_putch('+');
-    gotoxy(x1, y2); c_putch('+');
-    gotoxy(x2, y2); c_putch('+');
+	gotoxy(x1, y1); c_putch('+');
+	gotoxy(x2, y1); c_putch('+');
+	gotoxy(x1, y2); c_putch('+');
+	gotoxy(x2, y2); c_putch('+');
 
-    for (t = (x1 + 1); t < x2; t++)
-    {
-        gotoxy(t, y1); c_putch('-');
-        gotoxy(t, y2); c_putch('-');
-    }
+	for (t = (x1 + 1); t < x2; t++)
+	{
+		gotoxy(t, y1); c_putch('-');
+		gotoxy(t, y2); c_putch('-');
+	}
 
-    ptr = hbuf;
-    *ptr++ = '|';
-    for (t = (x1 + 1); t < x2; t++)
-        *ptr++ = ' ';
-    *ptr++ = '|';
-    *ptr++ = 0;
+	ptr = hbuf;
+	*ptr++ = '|';
+	for (t = (x1 + 1); t < x2; t++)
+		*ptr++ = ' ';
+	*ptr++ = '|';
+	*ptr++ = 0;
 
-    for (t = (y1 + 1); t < y2; t++)
-    {
-        gotoxy(x1, t); 
-        c_puts(hbuf);
-    }
+	for (t = (y1 + 1); t < y2; t++)
+	{
+		gotoxy(x1, t); 
+		c_puts(hbuf);
+	}
 
-    gotoxy(x1 + 1, y1 + 1);
+	gotoxy(x1 + 1, y1 + 1);
 }
 
 void cursor_on(int pct)

@@ -15,7 +15,7 @@
 #include <string.h>
 
 #define CRCPOLY  0xA001  /* ANSI CRC-16 */
-                         /* CCITT: 0x8408 */
+						/* CCITT: 0x8408 */
 #define UPDATE_CRC(c) \
 	crc = crctable[(crc ^ (c)) & 0xFF] ^ (crc >> CHAR_BIT)
 

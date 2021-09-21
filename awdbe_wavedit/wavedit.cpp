@@ -88,7 +88,7 @@ awdbeItem waveditItemList[] = {
 
 BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpvReserved)
 {
-    switch (fdwReason)
+	switch (fdwReason)
 	{
 		case DLL_PROCESS_ATTACH:
 			hinst = hModule;
@@ -102,9 +102,9 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpvReserved)
 			// on deinitialization, release our GDI objects
 			freeGDIObjects();
 			break;
-    }
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 
@@ -273,9 +273,9 @@ BOOL CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 	HDC dc;
 	PAINTSTRUCT ps;
 
-    switch (message)
-    {
-        case WM_INITDIALOG:			
+	switch (message)
+	{
+		case WM_INITDIALOG:			
 			// apply our play and stop icons to the buttons in our dialog
 			hicon = LoadIcon(hinst, MAKEINTRESOURCE(IDI_PLAY));
 			SendMessage(GetDlgItem(hdlg, IDC_WAVE_PLAY), BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon);
@@ -288,7 +288,7 @@ BOOL CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 			// enable the play button and disable the stop button
 			EnableWindow(GetDlgItem(hdlg, IDC_WAVE_PLAY), TRUE);
 			EnableWindow(GetDlgItem(hdlg, IDC_WAVE_STOP), FALSE);
-            return TRUE;
+			return TRUE;
 
 		case WM_PAINT:
 			dc = BeginPaint(hdlg, &ps);
@@ -300,7 +300,7 @@ BOOL CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 			return 0;
 
 		case WM_COMMAND:
-            switch (LOWORD(wParam))
+			switch (LOWORD(wParam))
 			{
 				case IDC_WAVE_PLAY:
 					// have the bios editor call us to update our controls.  we have to do this because we want any changes
@@ -364,9 +364,9 @@ BOOL CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 			EnableWindow(GetDlgItem(hdlg, IDC_WAVE_PLAY), TRUE);
 			EnableWindow(GetDlgItem(hdlg, IDC_WAVE_STOP), FALSE);
 			break; 
-    }
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 void updateControls(HWND hdlg, fileEntry *fe)
@@ -642,18 +642,18 @@ BOOL CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam
 {
 	char buf[256];
 
-    switch (message)
-    {
-        case WM_INITDIALOG:
+	switch (message)
+	{
+		case WM_INITDIALOG:
 			sprintf(buf, "Compiled on %s at %s", __DATE__, __TIME__);
 			SetDlgItemText(hDlg, IDC_TEXT_COMPILETIME, buf);
-            return TRUE;
+			return TRUE;
 
-        case WM_COMMAND:
-            if (LOWORD(wParam) == IDOK)
-                EndDialog(hDlg, TRUE);
-            return TRUE;
-    }
+		case WM_COMMAND:
+			if (LOWORD(wParam) == IDOK)
+				EndDialog(hDlg, TRUE);
+			return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }

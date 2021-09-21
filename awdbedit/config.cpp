@@ -50,53 +50,53 @@ void configCreate(void)
 	config.rootXSize     = 640;
 	config.rootYSize     = 480;
 
-    configSave();
+	configSave();
 }
 
 void configLoad(void)
 {
-    HKEY soft, awbedit, curr;
-    DWORD foo, len;
+	HKEY soft, awbedit, curr;
+	DWORD foo, len;
 
-    RegOpenKeyEx(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &soft);
-    if (RegOpenKeyEx(soft, progName, 0, KEY_ALL_ACCESS, &awbedit) != ERROR_SUCCESS)
-    {
-        // Key not found, create default config.
-        configCreate();
-        RegCloseKey(soft);
-        return;
-    }
+	RegOpenKeyEx(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &soft);
+	if (RegOpenKeyEx(soft, progName, 0, KEY_ALL_ACCESS, &awbedit) != ERROR_SUCCESS)
+	{
+		// Key not found, create default config.
+		configCreate();
+		RegCloseKey(soft);
+		return;
+	}
 
-    if (RegOpenKeyEx(awbedit, progSubName, 0, KEY_ALL_ACCESS, &curr) != ERROR_SUCCESS)
-    {
-        // Key not found for this version, create default config.
-        configCreate();
-        RegCloseKey(awbedit);
-        RegCloseKey(soft);
-        return;
-    }
+	if (RegOpenKeyEx(awbedit, progSubName, 0, KEY_ALL_ACCESS, &curr) != ERROR_SUCCESS)
+	{
+		// Key not found for this version, create default config.
+		configCreate();
+		RegCloseKey(awbedit);
+		RegCloseKey(soft);
+		return;
+	}
 
-    // Key found, so read configuration data.
-    len = sizeof(cfgStruct);
-    if (RegQueryValueEx(curr, "Config", NULL, &foo, (uchar *)&config, &len) != ERROR_SUCCESS)
-        configCreate();
+	// Key found, so read configuration data.
+	len = sizeof(cfgStruct);
+	if (RegQueryValueEx(curr, "Config", NULL, &foo, (uchar *)&config, &len) != ERROR_SUCCESS)
+		configCreate();
 
-    RegCloseKey(curr);
-    RegCloseKey(awbedit);
-    RegCloseKey(soft);
+	RegCloseKey(curr);
+	RegCloseKey(awbedit);
+	RegCloseKey(soft);
 }
 
 void configSave(void)
 {
-    HKEY soft, awbedit, curr;
-    DWORD foo;
+	HKEY soft, awbedit, curr;
+	DWORD foo;
 
-    // Create config block for HKEY_CURRENT_USER.
-    RegOpenKeyEx(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &soft);
-    RegCreateKeyEx(soft, progName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &awbedit, &foo);
-    RegCreateKeyEx(awbedit, progSubName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &curr, &foo);
-    RegSetValueEx(curr, "Config", 0, REG_BINARY, (const uchar *)&config, sizeof(cfgStruct));
-    RegCloseKey(curr);
-    RegCloseKey(awbedit);
-    RegCloseKey(soft);
+	// Create config block for HKEY_CURRENT_USER.
+	RegOpenKeyEx(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &soft);
+	RegCreateKeyEx(soft, progName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &awbedit, &foo);
+	RegCreateKeyEx(awbedit, progSubName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &curr, &foo);
+	RegSetValueEx(curr, "Config", 0, REG_BINARY, (const uchar *)&config, sizeof(cfgStruct));
+	RegCloseKey(curr);
+	RegCloseKey(awbedit);
+	RegCloseKey(soft);
 }

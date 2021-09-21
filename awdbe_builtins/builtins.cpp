@@ -151,7 +151,7 @@ awdbeItem builtinsItemList[] = {
 
 BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpvReserved)
 {
-    switch (fdwReason)
+	switch (fdwReason)
 	{
 		case DLL_PROCESS_ATTACH:
 			hinst = hModule;
@@ -161,9 +161,9 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpvReserved)
 		case DLL_THREAD_DETACH:
 		case DLL_PROCESS_DETACH:
 			break;
-    }
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 
@@ -209,13 +209,13 @@ bool builtinsDetect(fileEntry *fe)
 
 BOOL CALLBACK unknownFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
-        case WM_INITDIALOG:
-            return TRUE;
-    }
+	switch (message)
+	{
+		case WM_INITDIALOG:
+			return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 HWND builtinsCreateDialog(awdbeItem *item, fileEntry *fe, HWND parentWnd, RECT *rc)
@@ -346,18 +346,18 @@ BOOL CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam
 {
 	char buf[256];
 
-    switch (message)
-    {
-        case WM_INITDIALOG:
+	switch (message)
+	{
+		case WM_INITDIALOG:
 			sprintf(buf, "Compiled on %s at %s", __DATE__, __TIME__);
 			SetDlgItemText(hDlg, IDC_TEXT_COMPILETIME, buf);
-            return TRUE;
+			return TRUE;
 
-        case WM_COMMAND:
-            if (LOWORD(wParam) == IDOK)
-                EndDialog(hDlg, TRUE);
-            return TRUE;
-    }
+		case WM_COMMAND:
+			if (LOWORD(wParam) == IDOK)
+				EndDialog(hDlg, TRUE);
+			return TRUE;
+	}
 
-    return FALSE;
+	return FALSE;
 }

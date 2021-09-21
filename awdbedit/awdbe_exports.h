@@ -59,7 +59,7 @@ typedef struct
 #define AWDBE_ITEM			0x00000001
 #define AWDBE_SUBITEM		0x00000002
 #define AWDBE_SUBMENU		0x00000003
- #define AWDBE_MENUMASK		0x00000003			// for internal use only!
+#define AWDBE_MENUMASK		0x00000003			// for internal use only!
 #define AWDBE_INCLUDABLE	0x00000004
 
 #define IS_ITEM(item)			((item->flags & AWDBE_MENUMASK) == AWDBE_ITEM)
@@ -103,7 +103,7 @@ typedef enum
 #else
 #define EXPORT __declspec(dllimport)
 #endif
- 
+
 EXPORT void awdbeAddToItemList(ulong pluginID, awdbeItem *itemList, int itemCount);
 EXPORT fileEntry *awdbeSearchForID(ulong pluginID, ushort ID);
 EXPORT void awdbeUpdateSelf(ulong pluginID);

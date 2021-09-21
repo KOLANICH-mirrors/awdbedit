@@ -183,7 +183,7 @@ void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl)
 
 	// update our controls
 	SetWindowText(textwnd, desc);
-    SendMessage(progwnd, PBM_STEPIT, 0, 0);
+	SendMessage(progwnd, PBM_STEPIT, 0, 0);
 
 	// insert this entry into our list
 	if (pluginFuncList == NULL)
@@ -633,17 +633,17 @@ EXPORT int awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp)
 	pdlg->create(xp + rc.left, yp + rc.top, LoadMenu(hinst, resid), pmenu->getOpenStyle(), pmenu->getBackgroundImage(), 
 		pmenu->getBackgroundColor(), pmenu->getTextColor(), pmenu->getInactiveColor());
 
-    done = FALSE;
+	done = FALSE;
 
-    while (!done)
-    {
-        if (!GetMessage(&msg, NULL, 0, 0))
-        {
-            done = TRUE;
-        }
-        else
-        {
-            TranslateMessage(&msg);
+	while (!done)
+	{
+		if (!GetMessage(&msg, NULL, 0, 0))
+		{
+			done = TRUE;
+		}
+		else
+		{
+			TranslateMessage(&msg);
 
 			if (msg.hwnd == pdlg->gethWnd())
 			{
@@ -679,8 +679,8 @@ EXPORT int awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp)
 
 				DispatchMessage(&msg);
 			}
-        }
-    }
+		}
+	}
 
 	pdlg->destroy();
 	delete pdlg;
