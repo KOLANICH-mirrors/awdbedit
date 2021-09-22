@@ -526,9 +526,9 @@ IDR_MENU MENU DISCARDABLE
 BEGIN
 	POPUP "&File"
 	BEGIN
-		MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
-		MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE, GRAYED
-		MENUITEM "Save &As...\tCtrl+A",         ID_FILE_SAVE_AS, GRAYED
+		MENUITEM "&Open...\tCtrl+O",            ID_ACTION_OPEN
+		MENUITEM "&Save\tCtrl+S",               ID_ACTION_SAVE, GRAYED
+		MENUITEM "Save &As...\tCtrl+A",         ID_ACTION_SAVE_AS, GRAYED
 		MENUITEM "Re&vert to Saved",            ID_FILE_REVERT, GRAYED
 		MENUITEM SEPARATOR
 		POPUP "Recent Files"
@@ -578,9 +578,9 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-	ID_FILE_OPEN            "Open a BIOS image"
-	ID_FILE_SAVE            "Save the current BIOS image"
-	ID_FILE_SAVE_AS         "Save the current BIOS image to a different filename"
+	ID_ACTION_OPEN            "Open a BIOS image"
+	ID_ACTION_SAVE            "Save the current BIOS image"
+	ID_ACTION_SAVE_AS         "Save the current BIOS image to a different filename"
 END
 
 STRINGTABLE DISCARDABLE 
