@@ -79,22 +79,22 @@ INT_PTR APIENTRY ConfigBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 					ofn.hwndOwner			= hDlg;
 					ofn.hInstance			= globals.MainhInst;
 					ofn.lpstrFilter			= "Executable Files (*.exe)\0*.exe\0All Files (*.*)\0*.*\0\0";
-					ofn.lpstrCustomFilter	= NULL;
+					ofn.lpstrCustomFilter	= nullptr;
 					ofn.nMaxCustFilter		= 0;
 					ofn.nFilterIndex		= 1;
 					ofn.lpstrFile			= fname;
 					ofn.nMaxFile			= 256;
-					ofn.lpstrFileTitle		= NULL;
+					ofn.lpstrFileTitle		= nullptr;
 					ofn.nMaxFileTitle		= 0;
-					ofn.lpstrInitialDir		= NULL;
-					ofn.lpstrTitle			= NULL;
+					ofn.lpstrInitialDir		= nullptr;
+					ofn.lpstrTitle			= nullptr;
 					ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 					ofn.nFileOffset			= 0;
 					ofn.nFileExtension		= 0;
-					ofn.lpstrDefExt			= NULL;
-					ofn.lCustData			= NULL;
-					ofn.lpfnHook			= NULL;
-					ofn.lpTemplateName		= NULL;
+					ofn.lpstrDefExt			= nullptr;
+					ofn.lCustData			= 0;
+					ofn.lpfnHook			= nullptr;
+					ofn.lpTemplateName		= nullptr;
 
 					if (GetOpenFileName(&ofn) == FALSE)
 						return TRUE;
@@ -184,7 +184,7 @@ INT_PTR APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPa
 					case IDC_TEXT_SOURCEFORGE_WEB:
 					case IDC_TEXT_TMOD_WEB:
 						GetWindowText(GetDlgItem(hDlg, LOWORD(wParam)), buf, 256);
-						ShellExecute(globals.MainhWnd, "open", buf, NULL, NULL, SW_SHOWNORMAL);
+						ShellExecute(globals.MainhWnd, "open", buf, nullptr, nullptr, SW_SHOWNORMAL);
 						return 0;
 
 					case IDC_TEXT_SOURCEFORGE_MAIL:
@@ -192,7 +192,7 @@ INT_PTR APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPa
 						GetWindowText(GetDlgItem(hDlg, LOWORD(wParam)), buf, 256);
 						sprintf(buf2, "mailto:%s", buf);
 
-						ShellExecute(globals.MainhWnd, "open", buf2, NULL, NULL, SW_SHOWNORMAL);
+						ShellExecute(globals.MainhWnd, "open", buf2, nullptr, nullptr, SW_SHOWNORMAL);
 						return 0;
 				}
 			}
@@ -316,14 +316,14 @@ void resizeControlsFromRoot(SIZE rootsz)
 	rc.right  = config.treeViewWidth;
 	rc.bottom = rootsz.cy - 2;
 
-	if (globals.hTreeView != NULL)
+	if (globals.hTreeView != nullptr)
 		SetWindowPos(globals.hTreeView, 0, rc.left, rc.top, rc.right, rc.bottom, SWP_NOZORDER);
 
 	// subtract the size of the treeview, and reposition our splitter bar
 	rc.left += config.treeViewWidth;
 	rc.right = rc.left + SPLITTER_WINDOW_SIZE;
 
-	if (globals.hSplitter != NULL)
+	if (globals.hSplitter != nullptr)
 		SetWindowPos(globals.hSplitter, 0, rc.left, rc.top, rc.right, rc.bottom + 2, SWP_NOZORDER);
 
 	// subtract the size of the splitter bar, and reposition our dialog
@@ -331,7 +331,7 @@ void resizeControlsFromRoot(SIZE rootsz)
 	rc.right = rootsz.cx - (config.treeViewWidth + SPLITTER_WINDOW_SIZE);
 
 	hwnd = biosGetDialog();
-	if (hwnd != NULL)
+	if (hwnd != nullptr)
 	{
 		SetWindowPos(hwnd, 0, rc.left, rc.top, rc.right, rc.bottom, SWP_NOZORDER);
 
@@ -417,37 +417,37 @@ void createControls(HWND hwnd)
 	};
 	
 	TBBUTTON toolList[] = {
-		{ 0, ID_ACTION_OPEN,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, NULL },
-		{ 0, ID_ACTION_SAVE,			0,					TBSTYLE_BUTTON,	0, NULL },
-		{ 0, ID_FILE_PROPERTIES,	0,					TBSTYLE_BUTTON,	0, NULL },
+		{ 0, ID_ACTION_OPEN,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, 0 },
+		{ 0, ID_ACTION_SAVE,			0,					TBSTYLE_BUTTON,	0, 0 },
+		{ 0, ID_FILE_PROPERTIES,	0,					TBSTYLE_BUTTON,	0, 0 },
 		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_ACTION_INSERT,		0,					TBSTYLE_BUTTON,	0, NULL },
-		{ 0, ID_ACTION_REPLACE,		0,					TBSTYLE_BUTTON,	0, NULL },
-		{ 0, ID_ACTION_EXTRACT,		0,					TBSTYLE_BUTTON,	0, NULL },
-		{ 0, ID_ACTION_EXTRACT_ALL,	0,					TBSTYLE_BUTTON,	0, NULL },
-		{ 0, ID_ACTION_REMOVE,		0,					TBSTYLE_BUTTON,	0, NULL },
+		{ 0, ID_ACTION_INSERT,		0,					TBSTYLE_BUTTON,	0, 0 },
+		{ 0, ID_ACTION_REPLACE,		0,					TBSTYLE_BUTTON,	0, 0 },
+		{ 0, ID_ACTION_EXTRACT,		0,					TBSTYLE_BUTTON,	0, 0 },
+		{ 0, ID_ACTION_EXTRACT_ALL,	0,					TBSTYLE_BUTTON,	0, 0 },
+		{ 0, ID_ACTION_REMOVE,		0,					TBSTYLE_BUTTON,	0, 0 },
 		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_ACTION_HEXEDIT,		0,					TBSTYLE_BUTTON,	0, NULL },
+		{ 0, ID_ACTION_HEXEDIT,		0,					TBSTYLE_BUTTON,	0, 0 },
 		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_OPTION_CONFIG,		TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, NULL },
+		{ 0, ID_OPTION_CONFIG,		TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, 0 },
 		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_FILE_EXIT,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, NULL }
+		{ 0, ID_FILE_EXIT,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, 0 }
 	};
 
 	// create a rebar
-	globals.hRebar = CreateWindowEx(WS_EX_CLIENTEDGE, REBARCLASSNAME, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+	globals.hRebar = CreateWindowEx(WS_EX_CLIENTEDGE, REBARCLASSNAME, nullptr, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
 		WS_CLIPCHILDREN | RBS_VARHEIGHT | RBS_BANDBORDERS | CCS_NODIVIDER, 0, 0, 0, 0, hwnd, 
-		NULL, globals.MainhInst, NULL);
+		nullptr, globals.MainhInst, nullptr);
 
 	// initialize and send the REBARINFO structure.
 	rbi.cbSize = sizeof(REBARINFO);
 	rbi.fMask  = 0;
-	rbi.himl   = (HIMAGELIST)NULL;
+	rbi.himl   = (HIMAGELIST)nullptr;
 	SendMessage(globals.hRebar, RB_SETBARINFO, 0, (LPARAM)&rbi);
 
 	// create a toolbar for our menu
-	globals.hMenuBar = CreateWindowEx(0, TOOLBARCLASSNAME, NULL, WS_CHILD | TBSTYLE_FLAT | TBSTYLE_LIST, 0, 0, 
-		0, 0, globals.hRebar, NULL, globals.MainhInst, NULL);
+	globals.hMenuBar = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | TBSTYLE_FLAT | TBSTYLE_LIST, 0, 0,
+		0, 0, globals.hRebar, nullptr, globals.MainhInst, nullptr);
 
 	SendMessage(globals.hMenuBar, TB_BUTTONSTRUCTSIZE, sizeof(TBBUTTON), 0);
 
@@ -460,8 +460,8 @@ void createControls(HWND hwnd)
 	SendMessage(globals.hMenuBar, TB_AUTOSIZE, 0, 0); 
 
 	// create our toolbar
-	globals.hToolBar = CreateWindowEx(0, TOOLBARCLASSNAME, NULL, WS_CHILD | WS_VISIBLE | TBSTYLE_FLAT | CCS_NOMOVEY | 
-		CCS_NOPARENTALIGN | CCS_NODIVIDER | CCS_NORESIZE, 0, 0, 0, 0, hwnd, NULL, globals.MainhInst, NULL);
+	globals.hToolBar = CreateWindowEx(0, TOOLBARCLASSNAME, nullptr, WS_CHILD | WS_VISIBLE | TBSTYLE_FLAT | CCS_NOMOVEY |
+		CCS_NOPARENTALIGN | CCS_NODIVIDER | CCS_NORESIZE, 0, 0, 0, 0, hwnd, nullptr, globals.MainhInst, nullptr);
 
 	SendMessage(globals.hToolBar, TB_BUTTONSTRUCTSIZE, sizeof(TBBUTTON), 0);
 	SendMessage(globals.hToolBar, TB_SETBITMAPSIZE, 0, MAKELONG(16, 16));
@@ -522,8 +522,8 @@ void createControls(HWND hwnd)
 	insertRebarControls(hwnd);
 
 	// now, create our tree view (for the left-side pane), but hidden for now
-	globals.hTreeView = CreateWindowEx(WS_EX_CLIENTEDGE, WC_TREEVIEW, NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS |
-		TVS_HASLINES | TVS_HASBUTTONS | TVS_SHOWSELALWAYS | TVS_LINESATROOT, 0, 0, 0, 0, hwnd, NULL, globals.MainhInst, NULL);
+	globals.hTreeView = CreateWindowEx(WS_EX_CLIENTEDGE, WC_TREEVIEW, nullptr, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS |
+		TVS_HASLINES | TVS_HASBUTTONS | TVS_SHOWSELALWAYS | TVS_LINESATROOT, 0, 0, 0, 0, hwnd, nullptr, globals.MainhInst, nullptr);
 
 	// add the root items to the tree...
 	tvis.hParent			= TVI_ROOT;
@@ -548,8 +548,8 @@ void createControls(HWND hwnd)
 	globals.hTreeInclItem	= (HTREEITEM)SendMessage(globals.hTreeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 
 	// create our tiny splitter window, but also hidden for now
-	globals.hSplitter = CreateWindowEx(0, AWDBEDIT_SPLITTER_CLASSNAME, NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, 0, 0, 0, 0, 
-		hwnd, NULL, globals.MainhInst, NULL);
+	globals.hSplitter = CreateWindowEx(0, AWDBEDIT_SPLITTER_CLASSNAME, nullptr, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, 0, 0, 0, 0,
+		hwnd, nullptr, globals.MainhInst, nullptr);
 
 	// resize our controls, and we're done!
 	sz.cx = config.rootXSize;
@@ -628,7 +628,7 @@ void resizeStatusBar(HWND hwnd)
 void createStatusBar(HWND hwnd)
 {
 	// Create the status bar. 
-	globals.hStatusBar = CreateWindowEx(0, STATUSCLASSNAME, NULL, WS_CHILD | SBARS_SIZEGRIP, 0, 0, 0, 0, hwnd, NULL, globals.MainhInst, NULL);
+	globals.hStatusBar = CreateWindowEx(0, STATUSCLASSNAME, nullptr, WS_CHILD | SBARS_SIZEGRIP, 0, 0, 0, 0, hwnd, nullptr, globals.MainhInst, nullptr);
 
 	// and resize it
 	resizeStatusBar(hwnd);
@@ -728,20 +728,20 @@ BOOL LoadBitmapFromBMPFile(LPTSTR szFileName, HBITMAP *phBitmap, HPALETTE *phPal
 {
 	BITMAP bm;
 
-	*phBitmap = NULL;
+	*phBitmap = nullptr;
 	
-	if (phPalette != NULL)
-		*phPalette = NULL;
+	if (phPalette != nullptr)
+		*phPalette = nullptr;
 
 	// Use LoadImage() to get the image loaded into a DIBSection
-	*phBitmap = (HBITMAP)LoadImage(NULL, szFileName, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_DEFAULTSIZE | LR_LOADFROMFILE);
-	if (*phBitmap == NULL)
+	*phBitmap = (HBITMAP)LoadImage(nullptr, szFileName, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_DEFAULTSIZE | LR_LOADFROMFILE);
+	if (*phBitmap == nullptr)
 		return FALSE;
 
 	// Get the color depth of the DIBSection
 	GetObject(*phBitmap, sizeof(BITMAP), &bm);
 
-	if (phPalette != NULL)
+	if (phPalette != nullptr)
 	{
 		// If the DIBSection is 256 color or less, it has a color table
 		if ((bm.bmBitsPixel * bm.bmPlanes) <= 8)
@@ -753,7 +753,7 @@ BOOL LoadBitmapFromBMPFile(LPTSTR szFileName, HBITMAP *phBitmap, HPALETTE *phPal
 			WORD          i;
 
 			// Create a memory DC and select the DIBSection into it
-			hMemDC = CreateCompatibleDC(NULL);
+			hMemDC = CreateCompatibleDC(nullptr);
 			hOldBitmap = (HBITMAP)SelectObject(hMemDC, *phBitmap);
 
 			// Get the DIBSection's color table
@@ -783,9 +783,9 @@ BOOL LoadBitmapFromBMPFile(LPTSTR szFileName, HBITMAP *phBitmap, HPALETTE *phPal
 		{
 			HDC    hRefDC;
 
-			hRefDC = GetDC(NULL);
+			hRefDC = GetDC(nullptr);
 			*phPalette = CreateHalftonePalette(hRefDC);
-			ReleaseDC(NULL, hRefDC);
+			ReleaseDC(nullptr, hRefDC);
 		}
 	}
 
@@ -805,14 +805,14 @@ bool selectSkin(char *fname)
 	_chdir(skindir);
 
 	// load the bitmap
-	if (LoadBitmapFromBMPFile(fname, &hbmp, NULL) == FALSE)
+	if (LoadBitmapFromBMPFile(fname, &hbmp, nullptr) == FALSE)
 		return FALSE;
 
 	// return to the previous dir
 	_chdir(cwd);
 
 	// nuke any current skin
-	if (globals.hSkin != NULL)
+	if (globals.hSkin != nullptr)
 		DeleteObject(globals.hSkin);
 
 	// store the handle to the new skin
@@ -947,7 +947,7 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			if (wParam == FALSE)
 			{
 				// we're being deactivated.  close any popup window which might be open
-				if (globals.pMenu != NULL)
+				if (globals.pMenu != nullptr)
 					globals.pMenu->closePopup();
 			}
 			break;
@@ -962,10 +962,10 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			sz.cx = LOWORD(lParam); // + 8;
 			sz.cy = HIWORD(lParam); // + 29;
 
-			if (globals.hRebar != NULL)
+			if (globals.hRebar != nullptr)
 				SendMessage(globals.hRebar, message, wParam, lParam);
 
-			if (globals.hStatusBar != NULL)
+			if (globals.hStatusBar != nullptr)
 			{
 				SendMessage(globals.hStatusBar, message, wParam, lParam);
 				resizeStatusBar(hWnd);
@@ -1028,7 +1028,7 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 						updateMRU();
 
 						// show the splitter window
-						if (globals.hSplitter != NULL)
+						if (globals.hSplitter != nullptr)
 							ShowWindow(globals.hSplitter, SW_SHOW);
 					}
 					return 0;
@@ -1040,7 +1040,7 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 						updateMRU();
 
 						// show the splitter window
-						if (globals.hSplitter != NULL)
+						if (globals.hSplitter != nullptr)
 							ShowWindow(globals.hSplitter, SW_SHOW);
 					}
 					return 0;
@@ -1156,7 +1156,7 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					break;
 
 				case ID_HELP_HOMEPAGE:
-					ShellExecute(globals.MainhWnd, "open", "http://awdbedit.sourceforge.net", NULL, NULL, SW_SHOWNORMAL);
+					ShellExecute(globals.MainhWnd, "open", "http://awdbedit.sourceforge.net", nullptr, nullptr, SW_SHOWNORMAL);
 					break;
 			}
 			break;
@@ -1181,12 +1181,12 @@ HWND CreateMainWindow(uint xsize, uint ysize, HINSTANCE hInstance, int nCmdShow,
 	wc.cbClsExtra		= 0;
 	wc.cbWndExtra		= 0;
 	wc.hInstance		= hInstance;
-	wc.hIcon			= NULL;
-	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
+	wc.hIcon			= nullptr;
+	wc.hCursor			= LoadCursor(nullptr, IDC_ARROW);
 	wc.hbrBackground	= (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wc.lpszMenuName		= NULL;
+	wc.lpszMenuName		= nullptr;
 	wc.lpszClassName	= AWDBEDIT_POPUP_CLASSNAME;
-	wc.hIconSm			= NULL;
+	wc.hIconSm			= nullptr;
 
 	if (!RegisterClassEx(&wc)) return FALSE;
 
@@ -1200,12 +1200,12 @@ HWND CreateMainWindow(uint xsize, uint ysize, HINSTANCE hInstance, int nCmdShow,
 	wc.cbClsExtra		= 0;
 	wc.cbWndExtra		= 0;
 	wc.hInstance		= hInstance;
-	wc.hIcon			= NULL;
-	wc.hCursor			= LoadCursor(NULL, IDC_SIZEWE);
+	wc.hIcon			= nullptr;
+	wc.hCursor			= LoadCursor(nullptr, IDC_SIZEWE);
 	wc.hbrBackground	= hSplitterBrush;
-	wc.lpszMenuName		= NULL;
+	wc.lpszMenuName		= nullptr;
 	wc.lpszClassName	= AWDBEDIT_SPLITTER_CLASSNAME;
-	wc.hIconSm			= NULL;
+	wc.hIconSm			= nullptr;
 
 	if (!RegisterClassEx(&wc)) return FALSE;
 
@@ -1217,17 +1217,17 @@ HWND CreateMainWindow(uint xsize, uint ysize, HINSTANCE hInstance, int nCmdShow,
 	wc.cbWndExtra		= 0;
 	wc.hInstance		= hInstance;
 	wc.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPICON));
-	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
+	wc.hCursor			= LoadCursor(nullptr, IDC_ARROW);
 	wc.hbrBackground	= (HBRUSH)GetStockObject(GRAY_BRUSH);
-	wc.lpszMenuName		= NULL;
+	wc.lpszMenuName		= nullptr;
 	wc.lpszClassName	= AWDBEDIT_MAIN_CLASSNAME;
 	wc.hIconSm			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPICON));
 	if (!RegisterClassEx(&wc)) return FALSE;
 
 	hwnd = CreateWindowEx(0, AWDBEDIT_MAIN_CLASSNAME, name, WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME, CW_USEDEFAULT, 
-		CW_USEDEFAULT, xsize, ysize, NULL, NULL, hInstance, NULL);
+		CW_USEDEFAULT, xsize, ysize, nullptr, nullptr, hInstance, nullptr);
 
-	if (hwnd == NULL)
+	if (hwnd == nullptr)
 		return 0;
 
 	ShowWindow(hwnd, nCmdShow);
@@ -1316,7 +1316,7 @@ void makeTempPath(void)
 
 	// try to get the system temp path
 	tmp = getenv("Temp");
-	if (tmp == NULL)
+	if (tmp == nullptr)
 		tmp = "C:\\TEMP";
 
 	// make sure it exists (it really should...)
@@ -1340,14 +1340,14 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 
 	// Begin basic initialization...
 	getExePath(GetCommandLine(), exePath, 256);
-	globals.MainhWnd  = NULL;
+	globals.MainhWnd  = nullptr;
 	globals.MainhInst = hInstance;
 
 	icex.dwSize	= sizeof(INITCOMMONCONTROLSEX);
 	icex.dwICC	= ICC_WIN95_CLASSES | ICC_COOL_CLASSES | ICC_BAR_CLASSES | ICC_USEREX_CLASSES;
 	if (InitCommonControlsEx(&icex) == FALSE)
 	{
-		MessageBox(NULL, "Unable to init common controls!", "Error", MB_OK);
+		MessageBox(nullptr, "Unable to init common controls!", "Error", MB_OK);
 		return 0;
 	}
 
@@ -1376,9 +1376,9 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 
 	// next, create the main window...
 	globals.MainhWnd = CreateMainWindow(config.rootXSize, config.rootYSize, globals.MainhInst, nCmdShow, const_cast<char*>(APP_VERSION));
-	if (globals.MainhWnd == NULL)
+	if (globals.MainhWnd == nullptr)
 	{
-		MessageBox(NULL, "Unable to create main window!", "Error", MB_OK);
+		MessageBox(nullptr, "Unable to create main window!", "Error", MB_OK);
 		return 0;
 	}
 
@@ -1410,7 +1410,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	globals.hAboutPluginsMenu	= GetSubMenu(GetSubMenu(globals.MainhMenu, 3), 1);
 
 	// Invalidate the windows's rectangle to paint the window.
-	InvalidateRect(globals.MainhWnd, NULL, FALSE);
+	InvalidateRect(globals.MainhWnd, nullptr, FALSE);
 	UpdateWindow(globals.MainhWnd);
 
 	// Initialize some text in our status bar
@@ -1424,7 +1424,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 
 	while (!done)
 	{
-		if (!GetMessage(&msg, NULL, 0, 0))
+		if (!GetMessage(&msg, nullptr, 0, 0))
 		{
 			done = TRUE;
 		}
@@ -1442,7 +1442,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	biosFreeMemory();
 
 	delete globals.pMenu;
-	globals.pMenu = NULL;
+	globals.pMenu = nullptr;
 
 	DestroyWindow(globals.hToolBar);
 	DestroyWindow(globals.hStatusBar);

@@ -37,15 +37,13 @@
 #include "modbin.h"
 
 
-static menuItem   *menuItemList   = NULL;
-static menuEntry  *menuEntryList  = NULL;
-static menuHeader *menuHeaderList = NULL;
+static menuItem   *menuItemList   = nullptr;
+static menuEntry  *menuEntryList  = nullptr;
+static menuHeader *menuHeaderList = nullptr;
 static int		   menuHeaderCount = 0;
 
-static menuDefinition menuDef;
-
-static HANDLE hMenuThread = NULL;
-static HANDLE hCon = NULL;
+static HANDLE hMenuThread = nullptr;
+static HANDLE hCon = nullptr;
 static bool   gExitMenu = FALSE;
 
 static uint8_t cmosTable[0x80];
@@ -171,18 +169,18 @@ menuEntry *sysbiosAddToMenuEntryList(sysbiosMenuStruct *pMenu, uint8_t *biosPtr,
 	memcpy(me->helpText, ptr, me->helpMaxLen);
 
 	// zap item list and next pointers for now
-	me->itemList = NULL;
-	me->next	 = NULL;
+	me->itemList = nullptr;
+	me->next	 = nullptr;
 
 	// insert this entry into the end of our list
-	if (menuEntryList == NULL)
+	if (menuEntryList == nullptr)
 	{
 		menuEntryList = me;
 	}
 	else
 	{
 		mz = menuEntryList;
-		while (mz->next != NULL)
+		while (mz->next != nullptr)
 			mz = mz->next;
 
 		mz->next = me;
@@ -204,20 +202,20 @@ menuItem *sysbiosAddToMenuItemList(sysbiosMenuStruct *pMenu)
 	mi->itemCount		= 0;
 
 	// zap the pointers for now
-	mi->itemText	= NULL;
-	mi->maxLen		= NULL;
-	mi->selectable	= NULL;
-	mi->next		= NULL;
+	mi->itemText	= nullptr;
+	mi->maxLen		= nullptr;
+	mi->selectable	= nullptr;
+	mi->next		= nullptr;
 
 	// insert this entry into the end of our list
-	if (menuItemList == NULL)
+	if (menuItemList == nullptr)
 	{
 		menuItemList = mi;
 	}
 	else
 	{
 		mz = menuItemList;
-		while (mz->next != NULL)
+		while (mz->next != nullptr)
 			mz = mz->next;
 
 		mz->next = mi;
@@ -230,7 +228,7 @@ menuItem *sysbiosFindMenuItem(uint16_t pointerToItem)
 {
 	menuItem *mi = menuItemList;
 	
-	while (mi != NULL)
+	while (mi != nullptr)
 	{
 		if (mi->pointerIntoBios == pointerToItem)
 			return mi;
@@ -238,7 +236,7 @@ menuItem *sysbiosFindMenuItem(uint16_t pointerToItem)
 		mi = mi->next;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void sysbiosCreateMenuItems(uint8_t *biosPtr, uint32_t biosBaseOffset)
@@ -249,11 +247,11 @@ void sysbiosCreateMenuItems(uint8_t *biosPtr, uint32_t biosBaseOffset)
 	uint8_t *ptr, *baseptr;
 	int t;
 
-	while (me != NULL)
+	while (me != nullptr)
 	{
 		// lookup this item based on the pointer value stored in the BIOS
 		mi = sysbiosFindMenuItem(me->menuPtr->pointerToItemTable);
-		if (mi == NULL)
+		if (mi == nullptr)
 		{
 			// not found, create a new one
 			me->itemList = sysbiosAddToMenuItemList(me->menuPtr);
@@ -276,7 +274,7 @@ void sysbiosCreateMenuItems(uint8_t *biosPtr, uint32_t biosBaseOffset)
 
 	// now, go through all item lists, calculate counts, allocate item arrays and copy in data
 	mi = menuItemList;
-	while (mi != NULL)
+	while (mi != nullptr)
 	{
 		if (mi->bestMaxIdx != 0xFFFF)
 		{
@@ -342,17 +340,17 @@ void sysbiosAddToMenuHeaderList(char *text, int entryCount, menuEntry *firstEntr
 	memcpy(mh->headerText, text, mh->headerMaxLen);
 
 	// zap next pointer
-	mh->next = NULL;
+	mh->next = nullptr;
 
 	// insert this entry into the end of our list
-	if (menuHeaderList == NULL)
+	if (menuHeaderList == nullptr)
 	{
 		menuHeaderList = mh;
 	}
 	else
 	{
 		mz = menuHeaderList;
-		while (mz->next != NULL)
+		while (mz->next != nullptr)
 			mz = mz->next;
 
 		mz->next = mh;
@@ -368,7 +366,7 @@ void sysbiosReleaseMenuItems(void)
 	menuHeader *mh = menuHeaderList, *mhn;
 	int t;
 
-	while (mi != NULL)
+	while (mi != nullptr)
 	{
 		for (t = 0; t < mi->itemCount; t++)
 			delete []mi->itemText[t];
@@ -383,7 +381,7 @@ void sysbiosReleaseMenuItems(void)
 		mi = min;
 	}
 
-	while (me != NULL)
+	while (me != nullptr)
 	{
 		delete []me->headerText;
 		delete []me->helpText;
@@ -394,7 +392,7 @@ void sysbiosReleaseMenuItems(void)
 		me = men;
 	}
 
-	while (mh != NULL)
+	while (mh != nullptr)
 	{
 		delete []mh->headerText;
 
@@ -404,9 +402,9 @@ void sysbiosReleaseMenuItems(void)
 		mh = mhn;
 	}
 
-	menuItemList    = NULL;
-	menuEntryList   = NULL;
-	menuHeaderList  = NULL;
+	menuItemList    = nullptr;
+	menuEntryList   = nullptr;
+	menuHeaderList  = nullptr;
 	menuHeaderCount = 0;
 }
 
@@ -891,9 +889,9 @@ DWORD WINAPI runSetupMenu(LPVOID unused)
 	gExitMenu = FALSE;
 
 	// initialize console
-	if (hCon == NULL)
+	if (hCon == nullptr)
 	{
-		init_console(FALSE, MODE_80x25, NULL);
+		init_console(FALSE, MODE_80x25, nullptr);
 		cursor_off();
 
 		hCon = getConsoleHandle();
@@ -901,7 +899,7 @@ DWORD WINAPI runSetupMenu(LPVOID unused)
 	}
 
 	// search for color table
-	colTbl = NULL;
+	colTbl = nullptr;
 	ptr    = (uint8_t *)(sysbiosBasePtr + 0x10000);
 	cnt    = 0xFFF0;
 
@@ -917,13 +915,13 @@ DWORD WINAPI runSetupMenu(LPVOID unused)
 	}
 
 	// use monochrome if none found
-	if (colTbl == NULL)
+	if (colTbl == nullptr)
 		colTbl = (colorTableStruct *)monoTbl;
 
 	// run the root menu page
 	runSetupMenuPage(colTbl, menuHeaderList);
 
-	hMenuThread = NULL;
+	hMenuThread = nullptr;
 	return 0;
 }
 
@@ -951,8 +949,8 @@ INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, L
 				case TVN_SELCHANGED:
 					lpnmtv = (LPNMTREEVIEW)lParam;
 
-					// ignore NULL selects
-					if (lpnmtv->itemNew.hItem == NULL)
+					// ignore nullptr selects
+					if (lpnmtv->itemNew.hItem == nullptr)
 						return FALSE;
 
 					// make pointer to newly selected item's handle
@@ -1048,10 +1046,10 @@ INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, L
 						}
 					}
 
-					if (hMenuThread != NULL)
+					if (hMenuThread != nullptr)
 						return FALSE;
 
-					hMenuThread = CreateThread(NULL, 0, runSetupMenu, 0, 0, &foo);
+					hMenuThread = CreateThread(nullptr, 0, runSetupMenu, 0, 0, &foo);
 					break;
 			}
 			break;
@@ -1095,7 +1093,7 @@ void sysbiosRefreshMenu(uint8_t *ptr)
 	if (sysbiosVersion == awdbeBIOSVer60)
 	{
 		setupFE = awdbeSearchForID(myID, 0x6000);
-		if (setupFE != NULL)
+		if (setupFE != nullptr)
 		{
 			setupPtr   = (uint8_t *)setupFE->data;
 			baseOffset = 0;
@@ -1205,7 +1203,7 @@ void sysbiosRefreshMenu(uint8_t *ptr)
 
 	// add the goodies to the tree
 	mh = menuHeaderList;
-	while (mh != NULL)
+	while (mh != nullptr)
 	{
 		// create a root entry
 		tvis.hParent		= TVI_ROOT;
@@ -1240,24 +1238,24 @@ void sysbiosRefreshMenu(uint8_t *ptr)
 void sysbiosDestroyMenu(void)
 {
 	// kill the setup menu thread if it is still running
-	if (hMenuThread != NULL)
+	if (hMenuThread != nullptr)
 	{
 		gExitMenu = TRUE;
 
 		if (WaitForSingleObject(hMenuThread, 1000) == WAIT_TIMEOUT)
 		{
 			TerminateThread(hMenuThread, 0);
-			hMenuThread = NULL;
+			hMenuThread = nullptr;
 		}
 
 		gExitMenu = FALSE;
 	}
 
 	// kill the console, if it's still around
-	if (hCon != NULL)
+	if (hCon != nullptr)
 	{
 		free_console();
-		hCon = NULL;
+		hCon = nullptr;
 	}
 
 	// free any existing memory
@@ -1336,7 +1334,7 @@ void sysbiosCMOSLoadDefaults(int type)
 	memset(cmosTable, 0, 0x80);
 
 	// iterate through all menu entries and store the default values
-	while (me != NULL)
+	while (me != nullptr)
 	{
 		idx = me->menuPtr->cmosIndex;
 		if (idx < 0x80)

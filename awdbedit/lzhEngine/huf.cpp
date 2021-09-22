@@ -186,7 +186,7 @@ void huf_encode_start(void)
 
 	if (bufsiz == 0) {
 		bufsiz = 16 * 1024U;
-		while ((buf = (uint8_t *)malloc(bufsiz)) == NULL) {
+		while ((buf = (uint8_t *)malloc(bufsiz)) == nullptr) {
 			bufsiz = (bufsiz / 10U) * 9U;
 
 			if (bufsiz < 4 * 1024U)

@@ -78,7 +78,7 @@ void configLoad(void)
 
 	// Key found, so read configuration data.
 	len = sizeof(cfgStruct);
-	if (RegQueryValueEx(curr, "Config", NULL, &foo, (uint8_t *)&config, &len) != ERROR_SUCCESS)
+	if (RegQueryValueEx(curr, "Config", nullptr, &foo, (uint8_t *)&config, &len) != ERROR_SUCCESS)
 		configCreate();
 
 	RegCloseKey(curr);
@@ -97,8 +97,8 @@ void configSave(void)
 
 	// Create config block for HKEY_CURRENT_USER.
 	RegOpenKeyEx(HKEY_CURRENT_USER, const_cast<char *>(REGISTRY_KEY_NAME_Software), 0, KEY_ALL_ACCESS, &soft);
-	RegCreateKeyEx(soft, progName, 0, const_cast<char *>(EMPTY_STRING), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &awbedit, &foo);
-	RegCreateKeyEx(awbedit, progSubName, 0, const_cast<char *>(EMPTY_STRING), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &curr, &foo);
+	RegCreateKeyEx(soft, progName, 0, const_cast<char *>(EMPTY_STRING), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, nullptr, &awbedit, &foo);
+	RegCreateKeyEx(awbedit, progSubName, 0, const_cast<char *>(EMPTY_STRING), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, nullptr, &curr, &foo);
 	RegSetValueEx(curr, REGISTRY_KEY_NAME_Config, 0, REG_BINARY, (const uint8_t *)&config, sizeof(cfgStruct));
 	RegCloseKey(curr);
 	RegCloseKey(awbedit);

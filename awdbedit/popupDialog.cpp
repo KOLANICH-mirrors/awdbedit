@@ -35,9 +35,9 @@ popupDialog::popupDialog(HINSTANCE inst, HWND parentwnd)
 	hInst		= inst;
 	hParentWnd	= parentwnd;
 
-	hDlgWnd		= NULL;
-	hDlgBmp		= NULL;
-	pChild		= NULL;
+	hDlgWnd		= nullptr;
+	hDlgBmp		= nullptr;
+	pChild		= nullptr;
 
 	winxsize	= 0;
 	winysize	= 0;
@@ -51,10 +51,10 @@ popupDialog::~popupDialog()
 	destroy();
 
 	// delete any existing bitmap
-	if (hDlgBmp != NULL)
+	if (hDlgBmp != nullptr)
 	{
 		DeleteObject(hDlgBmp);
-		hDlgBmp = NULL;
+		hDlgBmp = nullptr;
 	}
 }
 
@@ -62,20 +62,20 @@ void popupDialog::drawPopupDialog(HDC dc)
 {
 	HDC bmdc;
 
-	if ((hDlgWnd == NULL) || (hDlgBmp == NULL))
+	if ((hDlgWnd == nullptr) || (hDlgBmp == nullptr))
 		return;
 
 	// ensure we have a valid device context...
-	if (dc == NULL)
+	if (dc == nullptr)
 	{
 		dc = GetDC(hDlgWnd);
 
-		if (dc == NULL)
+		if (dc == nullptr)
 			return;
 	}
 
 	// get a DC of the bitmap
-	bmdc = CreateCompatibleDC(NULL);
+	bmdc = CreateCompatibleDC(nullptr);
 	SelectObject(bmdc, hDlgBmp);
 
 	// bit the bitmap
@@ -123,7 +123,7 @@ void popupDialog::constructDialogBitmap(void)
 	TEXTMETRIC tm;
 
 	// create a DC we can use to draw into
-	hdc = CreateCompatibleDC(NULL);
+	hdc = CreateCompatibleDC(nullptr);
 
 	// setup some defaults into our DC...
 	hfnt = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
@@ -152,13 +152,13 @@ void popupDialog::constructDialogBitmap(void)
 			nonsepitems++;
 			ptr = buf;
 
-			// stop when we hit a 0x09 (for tab) or a null
+			// stop when we hit a 0x09 (for tab) or a nullptr
 			while ((*ptr != 0x09) && (*ptr != 0))
 				ptr++;
 
 			if (*ptr == 0)
 			{
-				// we hit a null, so just test the buffer as the left side portion of the menu
+				// we hit a nullptr, so just test the buffer as the left side portion of the menu
 				len = getStringWidth(hdc, buf);
 				if (len > maxleft)
 					maxleft = len;
@@ -204,10 +204,10 @@ void popupDialog::constructDialogBitmap(void)
 				1;			// 1 pixel for the border
 
 	// delete any existing bitmap
-	if (hDlgBmp != NULL)
+	if (hDlgBmp != nullptr)
 	{
 		DeleteObject(hDlgBmp);
-		hDlgBmp = NULL;
+		hDlgBmp = nullptr;
 	}
 
 	// create a bitmap of required size and select it into the dc
@@ -223,11 +223,11 @@ void popupDialog::constructDialogBitmap(void)
 	bmi.bmiHeader.biSizeImage	= winxsize * winysize * 4;
 
 	// create our DIB section and select the bitmap into the dc
-	hDlgBmp = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
+	hDlgBmp = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &pvBits, nullptr, 0);
 	SelectObject(hdc, hDlgBmp);
 
 	// if we have a background bitmap, tile blit it repeatedly...
-	if (hCurBackImg != NULL)
+	if (hCurBackImg != nullptr)
 	{
 		hbackdc = CreateCompatibleDC(hdc);
 		SelectObject(hbackdc, hCurBackImg);
@@ -368,7 +368,7 @@ void popupDialog::constructDialogBitmap(void)
 		if (!(mii.fType & MFT_SEPARATOR))
 		{
 			// check if there is an icon attached to this item
-			if (mii.hbmpChecked != NULL)
+			if (mii.hbmpChecked != nullptr)
 			{
 				// create a structure to rebuild the icon from two bitmaps
 				ii.fIcon	= TRUE;
@@ -377,7 +377,7 @@ void popupDialog::constructDialogBitmap(void)
 
 				// draw the icon
 				hicon = CreateIconIndirect(&ii);
-				DrawIconEx(hdc, (1 + 4) + 1, rc.top, hicon, 16, 16, 0, NULL, DI_NORMAL);
+				DrawIconEx(hdc, (1 + 4) + 1, rc.top, hicon, 16, 16, 0, nullptr, DI_NORMAL);
 				DestroyIcon(hicon);
 			}
 			else
@@ -413,7 +413,7 @@ void popupDialog::constructDialogBitmap(void)
 			}
 
 			// check if this item has a submenu
-			if (mii.hSubMenu != NULL)
+			if (mii.hSubMenu != nullptr)
 			{
 				// draw a little arrow to the right
 				SelectObject(hdc, GetStockObject(BLACK_PEN));
@@ -436,7 +436,7 @@ void popupDialog::constructDialogBitmap(void)
 			// start parsing the menu text
 			ptr = buf;
 
-			// stop when we hit a 0x09 (for tab) or a null
+			// stop when we hit a 0x09 (for tab) or a nullptr
 			while ((*ptr != 0x09) && (*ptr != 0))
 				ptr++;
 
@@ -457,7 +457,7 @@ void popupDialog::constructDialogBitmap(void)
 
 			if (*ptr == 0)
 			{
-				// we hit a null, so just draw the text on the left side
+				// we hit a nullptr, so just draw the text on the left side
 				DrawText(hdc, buf, -1, &rc, DT_NOCLIP | DT_TOP | DT_LEFT);
 			}
 			else
@@ -530,13 +530,13 @@ void popupDialog::create(int x, int y, HMENU submenu, int style, HBITMAP backImg
 	constructDialogBitmap();
 
 	// create the window
-	hDlgWnd = CreateWindowEx(0, AWDBEDIT_POPUP_CLASSNAME, NULL, WS_CHILD | WS_VISIBLE, baseX, baseY, winxsize, winysize, hParentWnd, NULL, hInst, NULL);
+	hDlgWnd = CreateWindowEx(0, AWDBEDIT_POPUP_CLASSNAME, nullptr, WS_CHILD | WS_VISIBLE, baseX, baseY, winxsize, winysize, hParentWnd, nullptr, hInst, nullptr);
 
 	// move it in Z-order above all windows
 	BringWindowToTop(hDlgWnd);
 
 	// and blit the bitmap
-	drawPopupDialog(NULL);
+	drawPopupDialog(nullptr);
 }
 
 void popupDialog::destroy(void)
@@ -547,16 +547,16 @@ void popupDialog::destroy(void)
 		hTimer = 0;
 	}
 
-	if (pChild != NULL)
+	if (pChild != nullptr)
 	{
 		delete pChild;
-		pChild = NULL;
+		pChild = nullptr;
 	}
 
-	if (hDlgWnd != NULL)
+	if (hDlgWnd != nullptr)
 	{
 		DestroyWindow(hDlgWnd);
-		hDlgWnd = NULL;
+		hDlgWnd = nullptr;
 	}
 }
 
@@ -565,7 +565,7 @@ void popupDialog::selectItem(int item)
 	curSelItem = item;
 
 	constructDialogBitmap();
-	drawPopupDialog(NULL);
+	drawPopupDialog(nullptr);
 }
 
 int popupDialog::getSelectedItem(void)
@@ -590,7 +590,7 @@ int popupDialog::onPaint(HWND hwnd, HDC dc)
 		drawPopupDialog(dc);
 
 	// if we have any children, draw them too.
-	if (pChild != NULL)
+	if (pChild != nullptr)
 		pChild->onPaint(hwnd, dc);
 
 	return 0;
@@ -602,7 +602,7 @@ int popupDialog::onTimer(HWND hwnd, UINT timerID)
 	if (hDlgWnd != hwnd)
 	{
 		// nope, so send it to any children.
-		if (pChild != NULL)
+		if (pChild != nullptr)
 			return pChild->onTimer(hwnd, timerID);
 
 		return 0;
@@ -613,7 +613,7 @@ int popupDialog::onTimer(HWND hwnd, UINT timerID)
 		return 0;
 
 	// call the "mouse left button down" handler as if it was pressed by the user...
-	return onLButtonDown(hwnd, timerXSave, timerYSave, NULL);
+	return onLButtonDown(hwnd, timerXSave, timerYSave, nullptr);
 }
 
 int popupDialog::doHitTest(int ypos, MENUITEMINFO *retmii, RECT *retrc)
@@ -650,10 +650,10 @@ int popupDialog::doHitTest(int ypos, MENUITEMINFO *retmii, RECT *retrc)
 		if ((ypos >= rc.top) && (ypos <= rc.bottom))
 		{
 			// copy the returned menu data, if requested
-			if (retmii != NULL)
+			if (retmii != nullptr)
 				memcpy(retmii, &mii, sizeof(MENUITEMINFO));
 
-			if (retrc != NULL)
+			if (retrc != nullptr)
 				memcpy(retrc, &rc, sizeof(RECT));
 
 			return t;
@@ -678,14 +678,14 @@ int popupDialog::onMouseMove(HWND hwnd, int xpos, int ypos, int *retval)
 	if (hDlgWnd != hwnd)
 	{
 		// nope, so send it to any children.
-		if (pChild != NULL)
-			return pChild->onMouseMove(hwnd, xpos, ypos, NULL);
+		if (pChild != nullptr)
+			return pChild->onMouseMove(hwnd, xpos, ypos, nullptr);
 
 		return 0;
 	}
 
 	// find the current item the cursor is over
-	curitem = doHitTest(ypos, &mii, NULL);
+	curitem = doHitTest(ypos, &mii, nullptr);
 
 	// update only if the hit item is not the same as the currently selected item
 	if (curitem == curSelItem)
@@ -701,25 +701,25 @@ int popupDialog::onMouseMove(HWND hwnd, int xpos, int ypos, int *retval)
 	// update the current item
 	curSelItem = curitem;
 
-	// send this menu's command ID as a "select" to the main window, if retval is NULL
-	if (retval == NULL)	
+	// send this menu's command ID as a "select" to the main window, if retval is nullptr
+	if (retval == nullptr)
 		SendMessage(hParentWnd, WM_MENUSELECT, mii.wID, 0);
 	else
 		*retval = mii.wID;
 
 	// rebuild the bitmap, and redraw it
 	constructDialogBitmap();
-	drawPopupDialog(NULL);
+	drawPopupDialog(nullptr);
 
 	// if this item does not have a submenu, then kill off any existing child
-	if ((mii.hSubMenu == NULL) && (pChild != NULL))
+	if ((mii.hSubMenu == nullptr) && (pChild != nullptr))
 	{
 		delete pChild;
-		pChild = NULL;
+		pChild = nullptr;
 	}
 
 	// if this item has a submenu, create a timer to popup the child automatically after 800 milliseconds
-	if (mii.hSubMenu != NULL)
+	if (mii.hSubMenu != nullptr)
 	{
 		// create a timer id/handle
 		hTimer = IDT_POPUPDIALOG;
@@ -729,7 +729,7 @@ int popupDialog::onMouseMove(HWND hwnd, int xpos, int ypos, int *retval)
 		timerYSave = ypos;
 		
 		// setup the timer proc
-		SetTimer(hDlgWnd, hTimer, 800, NULL);
+		SetTimer(hDlgWnd, hTimer, 800, nullptr);
 	}
 
 	return 0;
@@ -749,10 +749,10 @@ int popupDialog::onLButtonDown(HWND hwnd, int xpos, int ypos, int *retval)
 		if (hwnd == hParentWnd)
 		{
 			// yes, so kill off all popups!
-			if (pChild != NULL)
+			if (pChild != nullptr)
 			{
 				delete pChild;
-				pChild = NULL;
+				pChild = nullptr;
 			}
 
 			// and clear out the "select" item
@@ -761,8 +761,8 @@ int popupDialog::onLButtonDown(HWND hwnd, int xpos, int ypos, int *retval)
 		}
 */
 		// nope, so send it to any children.
-		if (pChild != NULL)
-			return pChild->onLButtonDown(hwnd, xpos, ypos, NULL);
+		if (pChild != nullptr)
+			return pChild->onLButtonDown(hwnd, xpos, ypos, nullptr);
 
 		// return -1 for "not our window"...
 		return -1;
@@ -783,17 +783,17 @@ int popupDialog::onLButtonDown(HWND hwnd, int xpos, int ypos, int *retval)
 		return FALSE;
 
 	// see if this menu item has a submenu
-	if (mii.hSubMenu != NULL)
+	if (mii.hSubMenu != nullptr)
 	{
 		// cleanup any existing child
-		if (pChild != NULL)
+		if (pChild != nullptr)
 		{
 			// if the existing child has the same submenu, and this menu item is the same as the currently selected item, then we can end here.  (*whew*)
 			if ((pChild->getMenu() == mii.hSubMenu) && (curitem == curSelItem))
 				return FALSE;
 
 			delete pChild;
-			pChild = NULL;
+			pChild = nullptr;
 		}
 
 		// send a message to the main window that we're about to create a submenu
@@ -808,8 +808,8 @@ int popupDialog::onLButtonDown(HWND hwnd, int xpos, int ypos, int *retval)
 	// clear out the "select" item
 	SendMessage(hParentWnd, WM_MENUSELECT, 0, 0);
 
-	// post this menu item's command to the main window, if the return value pointer is NULL
-	if (retval == NULL)
+	// post this menu item's command to the main window, if the return value pointer is nullptr
+	if (retval == nullptr)
 		PostMessage(hParentWnd, WM_COMMAND, mii.wID, 0);
 	else
 		*retval = mii.wID;

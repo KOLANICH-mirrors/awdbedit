@@ -42,7 +42,7 @@ popupMenu::popupMenu(HINSTANCE inst, HWND parentwnd, HWND toolbarwnd, HMENU menu
 	lowBound	= -1;
 	highBound	= -1;
 	style		= PDSTYLE_NO_ANIMATION;
-	hBackBitmap	= NULL;
+	hBackBitmap	= nullptr;
 	cBackColor	= RGB(255, 255, 255);
 	cTextColor	= RGB(0, 0, 0);
 	cInactColor	= RGB(128, 128, 128);
@@ -53,7 +53,7 @@ popupMenu::popupMenu(HINSTANCE inst, HWND parentwnd, HWND toolbarwnd, HMENU menu
 popupMenu::~popupMenu()
 {
 	delete pMenuDlg;
-	pMenuDlg = NULL;
+	pMenuDlg = nullptr;
 }
 
 void popupMenu::drawPopupDialog(void)
@@ -235,7 +235,7 @@ int popupMenu::onMouseMove(HWND hwnd, int xpos, int ypos)
 		return 0;
 
 	// pass the mouse move to our dialog.
-	return pMenuDlg->onMouseMove(hwnd, xpos, ypos, NULL);
+	return pMenuDlg->onMouseMove(hwnd, xpos, ypos, nullptr);
 }
 
 int popupMenu::onLButtonDown(HWND hwnd, int xpos, int ypos)
@@ -247,7 +247,7 @@ int popupMenu::onLButtonDown(HWND hwnd, int xpos, int ypos)
 		return 0;
 
 	// pass the button press to our dialog, and check for a child popup
-	res = pMenuDlg->onLButtonDown(hwnd, xpos, ypos, NULL);
+	res = pMenuDlg->onLButtonDown(hwnd, xpos, ypos, nullptr);
 
 	if ((res == TRUE) || (res == -1))
 	{

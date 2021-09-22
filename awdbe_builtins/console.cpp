@@ -36,7 +36,7 @@ HANDLE hCon = (HANDLE)-1;
 bool madeConsole = FALSE;
 WORD   attrib = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
 SHORT  cursor_x, cursor_y, size_x, size_y;
-SHORT *screen = NULL, *scrptr;
+SHORT *screen = nullptr, *scrptr;
 
 HANDLE getConsoleHandle(void)
 {
@@ -58,7 +58,7 @@ void init_console(bool useExistConsole, int mode, PHANDLER_ROUTINE ctrlHandler)
 	{
 		// no console, so allocate one...
 		AllocConsole();
-		hCon = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+		hCon = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, nullptr, CONSOLE_TEXTMODE_BUFFER, nullptr);
 		SetConsoleActiveScreenBuffer(hCon);
 		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 
@@ -85,7 +85,7 @@ void init_console(bool useExistConsole, int mode, PHANDLER_ROUTINE ctrlHandler)
 	}
 
 	// set control handler
-	if (ctrlHandler != NULL)
+	if (ctrlHandler != nullptr)
 		SetConsoleCtrlHandler(ctrlHandler, TRUE);
 }
 
@@ -95,7 +95,7 @@ void free_console(void)
 	update_console_position();
 
 	if (screen) delete []screen;
-	screen = NULL;
+	screen = nullptr;
 
 	if (madeConsole)
 	{
