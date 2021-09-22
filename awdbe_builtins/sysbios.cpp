@@ -40,7 +40,7 @@
 #include "resource.h"
 
 
-uint8_t *sysbiosBasePtr = NULL;
+uint8_t *sysbiosBasePtr = nullptr;
 awdbeBIOSVersion sysbiosVersion = awdbeBIOSVerUnknown;
 awdbeBIOSVersion sysbiosNowVer  = awdbeBIOSVerUnknown;
 
@@ -53,13 +53,13 @@ const char SYSBIOS_ENTRY_NAME_Setup_Menu[] = "Setup Menu";
 const char SYSBIOS_ENTRY_NAME_IRQ_Routing[] = "IRQ Routing";
 
 sysbiosTabEntry sysbiosTabList[] = {
-	{ 0, SYSBIOS_ENTRY_NAME_BIOS_ID_or_Versions,	IDD_SYSBIOS_MAIN,				sysbiosMainFunc,				NULL },
-	{ 1, SYSBIOS_ENTRY_NAME_Drive_Table,			IDD_SYSBIOS_DRIVE_TABLE,		sysbiosDriveTableFunc,			NULL },
-	{ 2, SYSBIOS_ENTRY_NAME_Chipset_Registers,		IDD_SYSBIOS_CHIPSET_REGS,		sysbiosChipsetRegsFunc,			NULL },
-	{ 3, SYSBIOS_ENTRY_NAME_BIOS_Timings,			IDD_SYSBIOS_TIMINGS,			sysbiosBIOSTimingFunc,			NULL },
-	{ 4, SYSBIOS_ENTRY_NAME_BIOS_Options,			IDD_SYSBIOS_BIOS_OPTIONS,		sysbiosBIOSOptionsFunc,			NULL },
-	{ 5, SYSBIOS_ENTRY_NAME_Setup_Menu,				IDD_SYSBIOS_CONFIG_MENU,		sysbiosConfigMenuFunc,			NULL },
-	{ 6, SYSBIOS_ENTRY_NAME_IRQ_Routing,			IDD_SYSBIOS_IRQ_ROUTING,		sysbiosIRQRoutingFunc,			NULL }
+	{ 0, SYSBIOS_ENTRY_NAME_BIOS_ID_or_Versions,	IDD_SYSBIOS_MAIN,				sysbiosMainFunc,				nullptr },
+	{ 1, SYSBIOS_ENTRY_NAME_Drive_Table,			IDD_SYSBIOS_DRIVE_TABLE,		sysbiosDriveTableFunc,			nullptr },
+	{ 2, SYSBIOS_ENTRY_NAME_Chipset_Registers,		IDD_SYSBIOS_CHIPSET_REGS,		sysbiosChipsetRegsFunc,			nullptr },
+	{ 3, SYSBIOS_ENTRY_NAME_BIOS_Timings,			IDD_SYSBIOS_TIMINGS,			sysbiosBIOSTimingFunc,			nullptr },
+	{ 4, SYSBIOS_ENTRY_NAME_BIOS_Options,			IDD_SYSBIOS_BIOS_OPTIONS,		sysbiosBIOSOptionsFunc,			nullptr },
+	{ 5, SYSBIOS_ENTRY_NAME_Setup_Menu,				IDD_SYSBIOS_CONFIG_MENU,		sysbiosConfigMenuFunc,			nullptr },
+	{ 6, SYSBIOS_ENTRY_NAME_IRQ_Routing,			IDD_SYSBIOS_IRQ_ROUTING,		sysbiosIRQRoutingFunc,			nullptr }
 };
 
 
@@ -96,7 +96,7 @@ void sysbiosRecalcChecksum(bool showErr)
 	char buf[256];
 
 	// can't do anything without a window...
-	if (sysbiosTabList[0].hwnd == NULL)
+	if (sysbiosTabList[0].hwnd == nullptr)
 		return;
 
 	// and unknown versions are bad.
@@ -266,7 +266,7 @@ void sysbiosOnResizeDialog(HWND dialogWnd, RECT *rc)
 	rc2.left = 10;
 	rc2.right = (rc->right - rc->left) - 20;
 	rc2.bottom = (rc->bottom - rc->top) - 20;
-	SetWindowPos(tabwnd, NULL, rc2.left, rc2.top, rc2.right, rc2.bottom, SWP_NOZORDER);
+	SetWindowPos(tabwnd, nullptr, rc2.left, rc2.top, rc2.right, rc2.bottom, SWP_NOZORDER);
 
 	// now resize the sub-dialog within our tab
 	curtab = SendMessage(GetDlgItem(dialogWnd, IDC_SYSBIOS_TABCTRL), TCM_GETCURSEL, 0, 0);
@@ -291,15 +291,15 @@ void sysbiosOnDestroyDialog(HWND dialogWnd)
 	// destroy all of our tabbed dialogs
 	for (t = 0; t < 7; t++)
 	{
-		if (sysbiosTabList[t].hwnd != NULL)
+		if (sysbiosTabList[t].hwnd != nullptr)
 		{
 			DestroyWindow(sysbiosTabList[t].hwnd);
-			sysbiosTabList[t].hwnd = NULL;
+			sysbiosTabList[t].hwnd = nullptr;
 		}
 	}
 
 	// destroy the root tab window
-	if (dialogWnd != NULL)
+	if (dialogWnd != nullptr)
 		DestroyWindow(dialogWnd);
 }
 
@@ -309,15 +309,15 @@ uint8_t sysbiosFindLimit(uint8_t *base)
 	uint8_t *ptr = base;
 	uint32_t len;
 
-	// first, skip all bytes that are not NULLs
+	// first, skip all bytes that are not nullptrs
 	while (*ptr != 0)
 		ptr++;
 
-	// now advance past all NULLs until we hit a byte that is not NULL
+	// now advance past all nullptrs until we hit a byte that is not nullptr
 	while (*ptr == 0)
 		ptr++;
 
-	// backup 1 byte (allowing for a NULL terminator)
+	// backup 1 byte (allowing for a nullptr terminator)
 	ptr--;
 
 	// this is the maximum length allowed
@@ -346,7 +346,7 @@ void sysbiosUpdateLimit(HWND hdlg, int id, uint32_t curlen, uint32_t maxlen)
 void sysbiosOnLoad(fileEntry *fe)
 {
 	// zap some pointers/vars, free memory
-	sysbiosBasePtr = NULL;
+	sysbiosBasePtr = nullptr;
 	sysbiosVersion = awdbeBIOSVerUnknown;
 
 	sysbiosReleaseMenuItems();
@@ -362,7 +362,7 @@ void sysbiosRefreshDialog(HWND hwnd, fileEntry *fe)
 
 	if (sysbiosVersion == awdbeBIOSVerUnknown)
 	{
-		MessageBox(NULL, "Unable to determine the System BIOS's version!", "Error", MB_OK);
+		MessageBox(nullptr, "Unable to determine the System BIOS's version!", "Error", MB_OK);
 		return;
 	}
 
@@ -370,7 +370,7 @@ void sysbiosRefreshDialog(HWND hwnd, fileEntry *fe)
 	sysbiosBasePtr = (uint8_t *)fe->data;
 
 	// check to make sure we have a valid window handle (only the first is sufficient)
-	if (sysbiosTabList[0].hwnd == NULL)
+	if (sysbiosTabList[0].hwnd == nullptr)
 		return;
 
 	// refresh file info
@@ -414,7 +414,7 @@ bool sysbiosUpdateDialog(HWND hwnd, fileEntry *fe)
 	awdbeBIOSVersion vers;
 
 	// check to make sure we have a valid window handle (only the first is sufficient)
-	if (sysbiosTabList[0].hwnd == NULL)
+	if (sysbiosTabList[0].hwnd == nullptr)
 		return FALSE;
 
 	// store the current version

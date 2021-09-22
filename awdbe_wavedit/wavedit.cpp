@@ -35,12 +35,12 @@ static uint32_t myID, timerID;
 static HINSTANCE hinst;
 
 // structures required to playback the wave data
-static WAVEFORMATEX *wfex = NULL;
+static WAVEFORMATEX *wfex = nullptr;
 static HWAVEOUT hWaveOut;
 static WAVEHDR wh;
 
 // all GDI objects required for drawing the wave data
-static HDC hdc = NULL;
+static HDC hdc = nullptr;
 static HBITMAP waveBitmap;
 static HBRUSH hDarkGreyBrush;
 static HPEN hOrangePen, hCyanPen, hWhitePen;
@@ -178,7 +178,7 @@ HWND waveditCreateDialog(awdbeItem *item, fileEntry *fe, HWND parentWnd, RECT *r
 	hwnd = CreateDialog(hinst, MAKEINTRESOURCE(IDD_WAVEDIT), parentWnd, waveditDialogProc);
 
 	// allocate the GDI objects we need to draw the wave data, if we haven't yet done so...
-	if (hdc == NULL)
+	if (hdc == nullptr)
 		allocateGDIObjects(hwnd);
 
 	// update the controls with the file data passed to us
@@ -435,7 +435,7 @@ void allocateGDIObjects(HWND hdlg)
 
 	// allocate our GDI objects (we have to do this because older versions of Windows [95/98/ME] don't release the
 	// memory resources used by GDI objects when created/deleted dynamically... what a pain.)
-	hdc = CreateCompatibleDC(NULL);
+	hdc = CreateCompatibleDC(nullptr);
 	hDarkGreyBrush	= CreateSolidBrush(RGB(96, 96, 96));
 	hOrangePen		= CreatePen(PS_SOLID, 1, RGB(230, 127, 40));
 	hCyanPen		= CreatePen(PS_SOLID, 1, RGB(40, 180, 255));
@@ -451,7 +451,7 @@ void allocateGDIObjects(HWND hdlg)
 	bmi.bmiHeader.biCompression = BI_RGB;
 	bmi.bmiHeader.biSizeImage	= bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 4;
 
-	waveBitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
+	waveBitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &pvBits, nullptr, 0);
 
 	// select some default objects and modes into our DC
 	SelectObject(hdc, waveBitmap);
@@ -473,7 +473,7 @@ void buildWaveBitmap(bool showPosMarker)
 	MMTIME mmt;
 
 	// exit out if we don't have a valid pointer to the wave data
-	if (wfex == NULL)
+	if (wfex == nullptr)
 		return;
 
 	// build a rectangle that we'll use for various drawing things...
@@ -546,7 +546,7 @@ void buildWaveBitmap(bool showPosMarker)
 			ptr8 += samplesPerPixel;
 
 			rc.left = 1;
-			MoveToEx(hdc, rc.left, (s8 / heightScale) + yOffset, NULL);
+			MoveToEx(hdc, rc.left, (s8 / heightScale) + yOffset, nullptr);
 
 			// draw it!
 			while (count--)
@@ -568,7 +568,7 @@ void buildWaveBitmap(bool showPosMarker)
 			ptr16 = (signed short *)wh.lpData;
 
 			rc.left = 1;
-			MoveToEx(hdc, rc.left, (*ptr16 / heightScale) + yOffset, NULL);
+			MoveToEx(hdc, rc.left, (*ptr16 / heightScale) + yOffset, nullptr);
 			ptr16 += samplesPerPixel;
 
 			// draw it!
@@ -624,7 +624,7 @@ void blitWaveBitmap(HDC blitToDC)
 
 void freeGDIObjects(void)
 {
-	if (hdc != NULL)
+	if (hdc != nullptr)
 	{
 		// delete our GDI objects
 		DeleteObject(waveBitmap);
@@ -635,7 +635,7 @@ void freeGDIObjects(void)
 
 		// now delete our DC
 		DeleteDC(hdc);
-		hdc = NULL;
+		hdc = nullptr;
 	}
 }
 

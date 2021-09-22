@@ -74,7 +74,7 @@ typedef struct updateEntry
 	struct updateEntry	*next;
 } updateEntry;
 
-static updateEntry *updateList = NULL;
+static updateEntry *updateList = nullptr;
 static UINT updateTimerID = 0;
 static bool updateIgnoreTimer = FALSE;
 
@@ -151,8 +151,8 @@ void biosInit(HINSTANCE hi, HWND hw, HWND statwnd, HWND treewnd, HTREEITEM recgi
 	inclItem	= inclitem;
 	unkItem		= unkitem;
 
-	hPropDlgListWnd = NULL;
-	hModDlgWnd		= NULL;
+	hPropDlgListWnd = nullptr;
+	hModDlgWnd		= nullptr;
 
 	dlgrc = dlgrect;
 	ignoreNotify = FALSE;
@@ -200,7 +200,7 @@ void biosFreeMemory(void)
 	awdbeItem *item;
 
 	// if the current hash points to a plugin, call it's "onDestroy" function to tell it it's about to be killed
-	if ((curFileEntry != NULL) && (curHash > HASH_UNKNOWN_ITEM_MAX))
+	if ((curFileEntry != nullptr) && (curHash > HASH_UNKNOWN_ITEM_MAX))
 	{
 		switch (curHash)
 		{
@@ -213,7 +213,7 @@ void biosFreeMemory(void)
 			default:
 				// find the item that responds to this hash
 				item = pluginFindHash(curHash);
-				if (item != NULL)
+				if (item != nullptr)
 				{
 					// call this plugin's create dialog function to show the window
 					pluginCallOnDestroyDialog(item, hModDlgWnd);
@@ -222,19 +222,19 @@ void biosFreeMemory(void)
 		}
 	}
 
-	if (hPropDlgListWnd != NULL)
+	if (hPropDlgListWnd != nullptr)
 	{
 		DestroyWindow(hPropDlgListWnd);
-		hPropDlgListWnd = NULL;
+		hPropDlgListWnd = nullptr;
 	}
 
-	if (hModDlgWnd != NULL)
+	if (hModDlgWnd != nullptr)
 	{
 		DestroyWindow(hModDlgWnd);
-		hModDlgWnd = NULL;
+		hModDlgWnd = nullptr;
 	}
 
-	if (biosdata.fileTable != NULL)
+	if (biosdata.fileTable != nullptr)
 	{
 		for (t = 0; t < biosdata.fileCount; t++)
 		{
@@ -244,13 +244,13 @@ void biosFreeMemory(void)
 		}
 
 		delete []biosdata.fileTable;
-		biosdata.fileTable = NULL;
+		biosdata.fileTable = nullptr;
 	}
 
-	if (biosdata.imageData != NULL)
+	if (biosdata.imageData != nullptr)
 	{
 		delete []biosdata.imageData;
-		biosdata.imageData = NULL;
+		biosdata.imageData = nullptr;
 	}
 }
 
@@ -345,7 +345,7 @@ fileEntry *biosScanForID(uint16_t id)
 		fe++;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void biosUpdateComponents(void)
@@ -364,19 +364,19 @@ void biosUpdateComponents(void)
 	// delete all existing items under the root tree
 	ignoreNotify = TRUE;
 
-	while ( (hti = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_CHILD, (LPARAM)recgItem)) != NULL)
+	while ( (hti = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_CHILD, (LPARAM)recgItem)) != nullptr)
 		SendMessage(treeView, TVM_DELETEITEM, 0, (LPARAM)hti);
 
-	while ( (hti = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_CHILD, (LPARAM)inclItem)) != NULL)
+	while ( (hti = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_CHILD, (LPARAM)inclItem)) != nullptr)
 		SendMessage(treeView, TVM_DELETEITEM, 0, (LPARAM)hti);
 
-	while ( (hti = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_CHILD, (LPARAM)unkItem)) != NULL)
+	while ( (hti = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_CHILD, (LPARAM)unkItem)) != nullptr)
 		SendMessage(treeView, TVM_DELETEITEM, 0, (LPARAM)hti);
 
 	ignoreNotify = FALSE;
 
 	// add the components found in our image...
-	lastSubMenuPtr = NULL;
+	lastSubMenuPtr = nullptr;
 
 	for (t = 0; t < biosdata.fileCount; t++)
 	{
@@ -384,7 +384,7 @@ void biosUpdateComponents(void)
 		
 		// call the plugin interface and see if anyone responds to this type ID...
 		item = pluginFindResponder(fe);
-		if (item != NULL)
+		if (item != nullptr)
 		{
 			// check if this item is a subitem
 			if (IS_SUBITEM(item))
@@ -393,7 +393,7 @@ void biosUpdateComponents(void)
 				subMenuPtr = pluginFindSubMenu(item);
 
 				// flog an error if we didn't find one (so the plugin creator can fix his bug)
-				if (subMenuPtr == NULL)
+				if (subMenuPtr == nullptr)
 				{
 					sprintf(buf, "Unable to find a submenu definition for the [%s] type!\n\nThis error is being generated "
 						"due to an error in the item definition structure of one of your plugins.  If you are\ncreating a "
@@ -459,9 +459,9 @@ void biosUpdateComponents(void)
 	ilist = pluginGetItemList();
 
 	// iterate through *ALL* lists
-	lastSubMenuPtr = NULL;
+	lastSubMenuPtr = nullptr;
 
-	while (ilist != NULL)
+	while (ilist != nullptr)
 	{
 		item  = ilist->list;
 		count = ilist->count;
@@ -473,7 +473,7 @@ void biosUpdateComponents(void)
 			{
 				// see if this ID is in our BIOS image
 				fe = biosScanForID(item->biosTypeID);
-				if (fe == NULL)
+				if (fe == nullptr)
 				{
 					// check if this item is a submenu
 					if (IS_SUBMENU(item))
@@ -486,7 +486,7 @@ void biosUpdateComponents(void)
 						subMenuPtr = pluginFindSubMenu(item);
 
 						// flog an error if we didn't find one (so the plugin creator can fix his bug)
-						if (subMenuPtr == NULL)
+						if (subMenuPtr == nullptr)
 						{
 							sprintf(buf, "Unable to find a submenu definition for the [%s] type!\n\nThis error is being generated "
 								"due to an error in the item definition structure of one of your plugins.  If you are\ncreating a "
@@ -551,7 +551,7 @@ void biosUpdateComponents(void)
 	SendMessage(treeView, TVM_EXPAND, TVE_EXPAND, (LPARAM)unkItem);
 
 	// and select the root recognized tree
-	SendMessage(treeView, TVM_SELECTITEM, TVGN_CARET, (LPARAM)NULL);
+	SendMessage(treeView, TVM_SELECTITEM, TVGN_CARET, (LPARAM)nullptr);
 	SendMessage(treeView, TVM_SELECTITEM, TVGN_CARET, (LPARAM)recgItem);
 }
 
@@ -597,7 +597,7 @@ bool biosOpenFile(char *fname)
 	lzhHeaderAfterFilename *lzhhdra;
 	bool done;
 	int curFile;
-	uint8_t *nextUpdate, *bootBlockData = NULL, *decompBlockData = NULL;
+	uint8_t *nextUpdate, *bootBlockData = nullptr, *decompBlockData = nullptr;
 	uint32_t bootBlockSize = 0, decompBlockSize = 0;
 	fileEntry *fe;
 
@@ -610,7 +610,7 @@ bool biosOpenFile(char *fname)
 
 	// open the image
 	fp = fopen(fname, "rb");
-	if (fp == NULL)
+	if (fp == nullptr)
 	{
 		MessageBox(hwnd, "Unable to open BIOS image!", "Error", MB_OK);
 		return FALSE;
@@ -690,7 +690,7 @@ bool biosOpenFile(char *fname)
 		ptr++;
 	}
 
-	if (bootBlockData == NULL)
+	if (bootBlockData == nullptr)
 	{
 		MessageBox(hwnd, "Unable to locate the Boot Block within the BIOS Image!\n\n"
 			"The editor will still be able to modify this image, but this component will be\n"
@@ -717,7 +717,7 @@ bool biosOpenFile(char *fname)
 		ptr++;
 	}
 
-	if (decompBlockData == NULL)
+	if (decompBlockData == nullptr)
 	{
 		MessageBox(hwnd, "Unable to locate the Decompression Block within the BIOS Image!\n\n"
 			"The editor will still be able to modify this image, but this component will be\n"
@@ -1012,7 +1012,7 @@ bool biosOpenFile(char *fname)
 	}
 
 	// insert the decompression and boot blocks
-	if (decompBlockData != NULL)
+	if (decompBlockData != nullptr)
 	{
 		fe = biosExpandTable();
 		fe->nameLen = strlen("decomp_blk.bin");
@@ -1032,7 +1032,7 @@ bool biosOpenFile(char *fname)
 		delete []decompBlockData;
 	}
 
-	if (bootBlockData != NULL)
+	if (bootBlockData != nullptr)
 	{
 		fe = biosExpandTable();
 		fe->nameLen = strlen("boot_blk.bin");
@@ -1089,29 +1089,29 @@ bool biosOpen(void)
 	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
 	ofn.lpstrFilter			= "Award BIOS Image (*.awd,*.bin)\0*.awd;*.bin\0All Files (*.*)\0*.*\0\0";
-	ofn.lpstrCustomFilter	= NULL;
+	ofn.lpstrCustomFilter	= nullptr;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
 	ofn.lpstrFile			= fname;
 	ofn.nMaxFile			= 256;
-	ofn.lpstrFileTitle		= NULL;
+	ofn.lpstrFileTitle		= nullptr;
 	ofn.nMaxFileTitle		= 0;
-	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
-	ofn.lpstrTitle			= NULL;
+	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? nullptr : config.lastPath;
+	ofn.lpstrTitle			= nullptr;
 	ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
-	ofn.lpstrDefExt			= NULL;
-	ofn.lCustData			= NULL;
-	ofn.lpfnHook			= NULL;
-	ofn.lpTemplateName		= NULL;
+	ofn.lpstrDefExt			= nullptr;
+	ofn.lCustData			= 0;
+	ofn.lpfnHook			= nullptr;
+	ofn.lpTemplateName		= nullptr;
 
 	if (GetOpenFileName(&ofn) == FALSE)
 		return FALSE;
 
 	// strip out path from returned filename
 	sptr = strchr(fname, '\\');
-	if (sptr != NULL)
+	if (sptr != nullptr)
 	{
 		sptr++;
 		strcpy(config.lastPath, fname);
@@ -1121,7 +1121,7 @@ bool biosOpen(void)
 		{
 			dptr = strchr(sptr, '\\');
 			if (dptr) sptr = dptr + 1;
-		} while (dptr != NULL);
+		} while (dptr != nullptr);
 
 		*sptr = 0;
 	}
@@ -1221,7 +1221,7 @@ bool biosSaveFile(char *fname)
 
 	// open the file
 	fp = fopen(fname, "wb");
-	if (fp == NULL)
+	if (fp == nullptr)
 	{
 		MessageBox(hwnd, "Unable to write BIOS image!", "Error", MB_OK);
 		return FALSE;
@@ -1260,20 +1260,20 @@ bool biosSaveFile(char *fname)
 	SetWindowText(hwnd_loadtext, "Writing boot/decomp blocks...");
 
 	fe = biosScanForID(TYPEID_DECOMPBLOCK);
-	decompSize = ((fe == NULL) ? (0) : (fe->size));
+	decompSize = ((fe == nullptr) ? (0) : (fe->size));
 
 	fe = biosScanForID(TYPEID_BOOTBLOCK);
-	bootSize = ((fe == NULL) ? (0) : (fe->size));
+	bootSize = ((fe == nullptr) ? (0) : (fe->size));
 
 	fseek(fp, biosdata.imageSize - (decompSize + bootSize), 0);
 
 	// write the blocks
 	fe = biosScanForID(TYPEID_DECOMPBLOCK);
-	if (fe != NULL)
+	if (fe != nullptr)
 		fwrite(fe->data, 1, fe->size, fp);
 
 	fe = biosScanForID(TYPEID_BOOTBLOCK);
-	if (fe != NULL)
+	if (fe != nullptr)
 		fwrite(fe->data, 1, fe->size, fp);
 
 	// now write components which have a fixed offset
@@ -1295,7 +1295,7 @@ bool biosSaveFile(char *fname)
 	if (biosGetVersion() == awdbeBIOSVer600PG)
 	{
 		fe = biosScanForID(TYPEID_DECOMPBLOCK);
-		if (fe != NULL)
+		if (fe != nullptr)
 		{
 			// re-open the file in read-only mode
 			fclose(fp);
@@ -1386,22 +1386,22 @@ bool biosSaveAs(void)
 	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
 	ofn.lpstrFilter			= "Award BIOS Image (*.awd,*.bin)\0*.awd;*.bin\0All Files (*.*)\0*.*\0\0";
-	ofn.lpstrCustomFilter	= NULL;
+	ofn.lpstrCustomFilter	= nullptr;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
 	ofn.lpstrFile			= fname;
 	ofn.nMaxFile			= 256;
-	ofn.lpstrFileTitle		= NULL;
+	ofn.lpstrFileTitle		= nullptr;
 	ofn.nMaxFileTitle		= 0;
-	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
-	ofn.lpstrTitle			= NULL;
+	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? nullptr : config.lastPath;
+	ofn.lpstrTitle			= nullptr;
 	ofn.Flags				= OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
 	ofn.lpstrDefExt			= "awd";
-	ofn.lCustData			= NULL;
-	ofn.lpfnHook			= NULL;
-	ofn.lpTemplateName		= NULL;
+	ofn.lCustData			= 0;
+	ofn.lpfnHook			= nullptr;
+	ofn.lpTemplateName		= nullptr;
 
 	if (GetSaveFileName(&ofn) == FALSE)
 		return FALSE;
@@ -1601,7 +1601,7 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 						{
 							// we need the size of the boot block first
 							fe2 = biosScanForID(TYPEID_BOOTBLOCK);
-							bootSize = ((fe2 == NULL) ? (0) : (fe2->size));
+							bootSize = ((fe2 == nullptr) ? (0) : (fe2->size));
 
 							rc.right = rc2.right - (fe2->size / bytesperpixel);
 							rc.left  = rc.right - (fe->size / bytesperpixel);
@@ -1699,12 +1699,12 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 			SetWindowText(GetDlgItem(hdlg, IDC_TEXT_OFFSET), buf);
 
 			fe = biosScanForID(TYPEID_BOOTBLOCK);
-			bootSize = ((fe == NULL) ? (0) : (fe->size));
+			bootSize = ((fe == nullptr) ? (0) : (fe->size));
 			sprintf(buf, "%d bytes", bootSize);
 			SetWindowText(GetDlgItem(hdlg, IDC_TEXT_BOOT_BLOCK), buf);
 			
 			fe = biosScanForID(TYPEID_DECOMPBLOCK);
-			decompSize = ((fe == NULL) ? (0) : (fe->size));
+			decompSize = ((fe == nullptr) ? (0) : (fe->size));
 			sprintf(buf, "%d bytes", decompSize);
 			SetWindowText(GetDlgItem(hdlg, IDC_TEXT_DECOMPRESSION_BLOCK), buf);
 
@@ -1738,7 +1738,7 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 
 			// create our file list
 			hPropDlgListWnd = CreateWindowEx(WS_EX_CLIENTEDGE, WC_LISTVIEW, "", WS_VISIBLE | WS_CHILD | LVS_REPORT, rc2.left, rc2.top,
-				rc2.right - rc2.left, rc2.bottom - rc2.top, hdlg, NULL, hinst, NULL);
+				rc2.right - rc2.left, rc2.bottom - rc2.top, hdlg, nullptr, hinst, nullptr);
 
 			// set full-row select
 			SendMessage(hPropDlgListWnd, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LVS_EX_FULLROWSELECT);
@@ -1820,10 +1820,10 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 			himl = (HIMAGELIST)SendMessage(hPropDlgListWnd, LVM_GETIMAGELIST, LVSIL_SMALL, 0);
 			ImageList_Destroy(himl);
 
-			if (hPropDlgListWnd != NULL)
+			if (hPropDlgListWnd != nullptr)
 			{
 				DestroyWindow(hPropDlgListWnd);
-				hPropDlgListWnd = NULL;
+				hPropDlgListWnd = nullptr;
 			}
 
 			EndDialog(hdlg, TRUE);
@@ -1859,7 +1859,7 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 
 void biosProperties(void)
 {
-	if (biosdata.fileTable == NULL)
+	if (biosdata.fileTable == nullptr)
 	{
 		MessageBox(hwnd, "There is no BIOS Image loaded, so no property information is available.", "Notice", MB_OK);
 		return;
@@ -1870,7 +1870,7 @@ void biosProperties(void)
 
 static bool isUnderRoot(HTREEITEM rootItem, HTREEITEM hitem)
 {
-	while ( (hitem = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_PARENT, (LPARAM)hitem)) != NULL)
+	while ( (hitem = (HTREEITEM)SendMessage(treeView, TVM_GETNEXTITEM, TVGN_PARENT, (LPARAM)hitem)) != nullptr)
 	{
 		if (hitem == rootItem)
 			return TRUE;
@@ -1894,7 +1894,7 @@ INT_PTR CALLBACK BiosInternalDialogFunc(HWND hdlg, UINT message, WPARAM wParam, 
 				case IDC_INSERT_FILE:
 					// find the item that responds to the current hash
 					item = pluginFindHash(curHash);
-					if (item == NULL)
+					if (item == nullptr)
 						return FALSE;
 
 					// and create an insert dialog with the ID preset
@@ -1916,7 +1916,7 @@ void biosUpdateCurrentDialog(void)
 	awdbeItem *item;
 
 	// first, update the data from our shared controls
-	if ((curFileEntry != NULL) && (hModDlgWnd != NULL))
+	if ((curFileEntry != nullptr) && (hModDlgWnd != nullptr))
 	{
 		hedit = GetDlgItem(hModDlgWnd, IDC_FILENAME);
 		if (IsWindow(hedit))
@@ -1984,15 +1984,15 @@ void biosUpdateCurrentDialog(void)
 			default:
 				// find the item that responds to this hash
 				item = pluginFindHash(curHash);
-				if (item == NULL)
+				if (item == nullptr)
 				{
-					sprintf(buf, "pluginFindHash() returned NULL for hash=%08Xh.  This hash value should be in the switch()...", curHash);
+					sprintf(buf, "pluginFindHash() returned nullptr for hash=%08Xh.  This hash value should be in the switch()...", curHash);
 					MessageBox(hwnd, buf, "Internal Error", MB_OK);
 					return;
 				}
 
-				// update only if the old item was *not* under the "includable" tree (curFileEntry will be NULL if under an includable item)
-				if (curFileEntry != NULL)
+				// update only if the old item was *not* under the "includable" tree (curFileEntry will be nullptr if under an includable item)
+				if (curFileEntry != nullptr)
 				{
 					// call this plugin's update function
 					if (pluginCallUpdateDialog(item, curFileEntry, hModDlgWnd) == TRUE)
@@ -2014,8 +2014,8 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 	if (ignoreNotify)
 		return;
 
-	// ignore NULL selects
-	if (lpnmtv->itemNew.hItem == NULL)
+	// ignore nullptr selects
+	if (lpnmtv->itemNew.hItem == nullptr)
 		return;
 
 	// update data from the current dialog (call plugin if necessary)
@@ -2026,7 +2026,7 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 	hKillWnd = hModDlgWnd;
 
 	// if the current hash points to a plugin, call it's "onDestroy" function to tell it it's about to be killed
-	if ((curFileEntry != NULL) && (curHash > HASH_UNKNOWN_ITEM_MAX))
+	if ((curFileEntry != nullptr) && (curHash > HASH_UNKNOWN_ITEM_MAX))
 	{
 		switch (curHash)
 		{
@@ -2039,7 +2039,7 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 			default:
 				// find the item that responds to this hash
 				item = pluginFindHash(curHash);
-				if (item != NULL)
+				if (item != nullptr)
 				{
 					// call this plugin's destroy dialog function to kill the window
 					pluginCallOnDestroyDialog(item, hModDlgWnd);
@@ -2061,7 +2061,7 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 	}
 	else
 	{
-		curFileEntry = NULL;
+		curFileEntry = nullptr;
 
 		switch (curHash)
 		{
@@ -2088,9 +2088,9 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 			default:
 				// find the item that responds to this hash
 				item = pluginFindHash(curHash);
-				if (item == NULL)
+				if (item == nullptr)
 				{
-					sprintf(buf, "pluginFindHash() returned NULL for hash=%08Xh.  This hash value should be in the switch()...", curHash);
+					sprintf(buf, "pluginFindHash() returned nullptr for hash=%08Xh.  This hash value should be in the switch()...", curHash);
 					MessageBox(hwnd, buf, "Internal Error", MB_OK);
 					return;
 				}
@@ -2099,7 +2099,7 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 				if (isUnderRoot(inclItem, lpnmtv->itemNew.hItem))
 				{
 					// this is an includable item, so we're obviously not pointing at any file in our table...
-					curFileEntry = NULL;
+					curFileEntry = nullptr;
 
 					// put up the includable component dialog
 					hModDlgWnd = CreateDialog(hinst, MAKEINTRESOURCE(IDDB_INCLUDABLE), hwnd, BiosInternalDialogFunc);
@@ -2134,7 +2134,7 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 	SetFocus(hModDlgWnd);
 
 	// if we're not pointing at any file in our table, exit out here (and don't try to update the child dialog)
-	if (curFileEntry == NULL)
+	if (curFileEntry == nullptr)
 		return;
 
 	// get handles to the filename, type ID, and other controls, and update them.
@@ -2218,11 +2218,11 @@ bool biosAddComponent(char *fname, uint16_t id, uint32_t offset)
 
 	// open the file
 	fp = fopen(fname, "rb");
-	if (fp == NULL)
+	if (fp == nullptr)
 		return FALSE;
 
 	// get just the name of this file
-	_splitpath(fname, NULL, NULL, name, ext);
+	_splitpath(fname, nullptr, nullptr, name, ext);
 	sprintf(fname, "%s%s", name, ext);
 
 	// get the size too
@@ -2326,22 +2326,22 @@ INT_PTR APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPara
 					ofn.hwndOwner			= hdlg;
 					ofn.hInstance			= hinst;
 					ofn.lpstrFilter			= "All Files (*.*)\0*.*\0\0";
-					ofn.lpstrCustomFilter	= NULL;
+					ofn.lpstrCustomFilter	= nullptr;
 					ofn.nMaxCustFilter		= 0;
 					ofn.nFilterIndex		= 1;
 					ofn.lpstrFile			= buf;
 					ofn.nMaxFile			= 256;
-					ofn.lpstrFileTitle		= NULL;
+					ofn.lpstrFileTitle		= nullptr;
 					ofn.nMaxFileTitle		= 0;
-					ofn.lpstrInitialDir		= NULL;
-					ofn.lpstrTitle			= NULL;
+					ofn.lpstrInitialDir		= nullptr;
+					ofn.lpstrTitle			= nullptr;
 					ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 					ofn.nFileOffset			= 0;
 					ofn.nFileExtension		= 0;
-					ofn.lpstrDefExt			= NULL;
-					ofn.lCustData			= NULL;
-					ofn.lpfnHook			= NULL;
-					ofn.lpTemplateName		= NULL;
+					ofn.lpstrDefExt			= nullptr;
+					ofn.lCustData			= 0;
+					ofn.lpfnHook			= nullptr;
+					ofn.lpTemplateName		= nullptr;
 
 					if (GetOpenFileName(&ofn) == FALSE)
 						return TRUE;
@@ -2441,11 +2441,11 @@ void biosReplaceFile(char *fname)
 
 	// open the file
 	fp = fopen(fname, "rb");
-	if (fp == NULL)
+	if (fp == nullptr)
 		return;
 
 	// get just the name of this file
-	_splitpath(fname, NULL, NULL, name, ext);
+	_splitpath(fname, nullptr, nullptr, name, ext);
 	sprintf(fname, "%s%s", name, ext);
 
 	// get the size too
@@ -2547,7 +2547,7 @@ void biosReplaceFile(char *fname)
 			default:
 				// find the item that responds to this hash
 				item = pluginFindHash(curHash);
-				if (item != NULL)
+				if (item != nullptr)
 				{
 					// call the plugins' refresh function
 					if (pluginCallRefreshDialog(item, curFileEntry, hModDlgWnd) == FALSE)
@@ -2567,7 +2567,7 @@ void biosReplace(void)
 	OPENFILENAME ofn;
 
 	// do nothing if we're not pointing at anything
-	if (curFileEntry == NULL)
+	if (curFileEntry == nullptr)
 		return;
 
 	// display the open dialog
@@ -2577,22 +2577,22 @@ void biosReplace(void)
 	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
 	ofn.lpstrFilter			= "All Files (*.*)\0*.*\0\0";
-	ofn.lpstrCustomFilter	= NULL;
+	ofn.lpstrCustomFilter	= nullptr;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
 	ofn.lpstrFile			= fname;
 	ofn.nMaxFile			= 256;
-	ofn.lpstrFileTitle		= NULL;
+	ofn.lpstrFileTitle		= nullptr;
 	ofn.nMaxFileTitle		= 0;
-	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
-	ofn.lpstrTitle			= NULL;
+	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? nullptr : config.lastPath;
+	ofn.lpstrTitle			= nullptr;
 	ofn.Flags				= OFN_FILEMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
-	ofn.lpstrDefExt			= NULL;
-	ofn.lCustData			= NULL;
-	ofn.lpfnHook			= NULL;
-	ofn.lpTemplateName		= NULL;
+	ofn.lpstrDefExt			= nullptr;
+	ofn.lCustData			= 0;
+	ofn.lpfnHook			= nullptr;
+	ofn.lpTemplateName		= nullptr;
 
 	if (GetOpenFileName(&ofn) == FALSE)
 		return;
@@ -2607,7 +2607,7 @@ void biosExtract(void)
 	FILE *fp;
 
 	// do nothing if we're not pointing at anything
-	if (curFileEntry == NULL)
+	if (curFileEntry == nullptr)
 		return;
 
 	// make a filename for this component
@@ -2619,22 +2619,22 @@ void biosExtract(void)
 	ofn.hwndOwner			= hwnd;
 	ofn.hInstance			= hinst;
 	ofn.lpstrFilter			= "All Files (*.*)\0*.*\0\0";
-	ofn.lpstrCustomFilter	= NULL;
+	ofn.lpstrCustomFilter	= nullptr;
 	ofn.nMaxCustFilter		= 0;
 	ofn.nFilterIndex		= 1;
 	ofn.lpstrFile			= fname;
 	ofn.nMaxFile			= 256;
-	ofn.lpstrFileTitle		= NULL;
+	ofn.lpstrFileTitle		= nullptr;
 	ofn.nMaxFileTitle		= 0;
-	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? NULL : config.lastPath;
-	ofn.lpstrTitle			= NULL;
+	ofn.lpstrInitialDir		= (config.lastPath[0] == 0) ? nullptr : config.lastPath;
+	ofn.lpstrTitle			= nullptr;
 	ofn.Flags				= OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 	ofn.nFileOffset			= 0;
 	ofn.nFileExtension		= 0;
-	ofn.lpstrDefExt			= NULL;
-	ofn.lCustData			= NULL;
-	ofn.lpfnHook			= NULL;
-	ofn.lpTemplateName		= NULL;
+	ofn.lpstrDefExt			= nullptr;
+	ofn.lCustData			= 0;
+	ofn.lpfnHook			= nullptr;
+	ofn.lpTemplateName		= nullptr;
 
 	if (GetSaveFileName(&ofn) == FALSE)
 		return;
@@ -2673,14 +2673,14 @@ void biosExtractAll(void)
 	IMalloc *pMalloc;
 
 	// do nothing if nothing is loaded...
-	if (biosdata.fileTable == NULL)
+	if (biosdata.fileTable == nullptr)
 		return;
 
 	if (SHGetMalloc(&pMalloc) == NOERROR)
 	{
 		bi.hwndOwner		= hwnd;
-		bi.pidlRoot			= NULL;
-		bi.pszDisplayName	= NULL;
+		bi.pidlRoot			= nullptr;
+		bi.pszDisplayName	= nullptr;
 		bi.lpszTitle		= "Select Directory for Extraction";
 		bi.ulFlags			= BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 		bi.lpfn				= BrowseCallbackProc;
@@ -2688,7 +2688,7 @@ void biosExtractAll(void)
 		bi.iImage			= 0;
 		pidlBrowse = SHBrowseForFolder(&bi);
 
-		if (pidlBrowse != NULL)
+		if (pidlBrowse != nullptr)
 		{
 			if (SHGetPathFromIDList(pidlBrowse, fullpath))
 			{
@@ -2702,7 +2702,7 @@ void biosExtractAll(void)
 
 					// write the data
 					fp = fopen(fname, "wb");
-					if (fp != NULL)
+					if (fp != nullptr)
 					{
 						fwrite(fe->data, 1, fe->size, fp);
 						fclose(fp);
@@ -2812,7 +2812,7 @@ void biosRemoveEntry(fileEntry *toRemove)
 	biosdata.fileCount--;
 
 	// zap curFileEntry (because it doesn't point to a valid table anymore)
-	curFileEntry = NULL;
+	curFileEntry = nullptr;
 }
 
 void biosRemove(void)
@@ -2820,7 +2820,7 @@ void biosRemove(void)
 	int res;
 
 	// do nothing if we're not pointing at anything
-	if (curFileEntry == NULL)
+	if (curFileEntry == nullptr)
 		return;
 
 	// pop up the dialog if we're supposed to...
@@ -2862,7 +2862,7 @@ void biosHexEdit(void)
 	HINSTANCE res;
 
 	// do nothing if we're not pointing at anything
-	if (curFileEntry == NULL)
+	if (curFileEntry == nullptr)
 		return;
 
 	// update the current dialog before we write any data
@@ -2880,7 +2880,7 @@ void biosHexEdit(void)
 	biosAddToUpdateList(fname);
 
 	// spawn the hexeditor
-	res = ShellExecute(hwnd, NULL, config.hexEditor, fname, NULL, SW_SHOWNORMAL);
+	res = ShellExecute(hwnd, nullptr, config.hexEditor, fname, nullptr, SW_SHOWNORMAL);
 	if (res <= reinterpret_cast<HINSTANCE>(32))
 	{
 		MessageBox(hwnd, "Unable to launch the configured hex editor!\n\nPlease check the path and/or filename under the "
@@ -2924,7 +2924,7 @@ VOID CALLBACK UpdateProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
 
 	updateIgnoreTimer = TRUE;
 
-	while (ue != NULL)
+	while (ue != nullptr)
 	{
 		lastwrite = biosGetLastWriteTime(ue);
 		if (ue->lastWrite != lastwrite)
@@ -2954,12 +2954,12 @@ void biosAddToUpdateList(char *fname)
 	char path[256], name[256], ext[256], fullname[512];
 
 	// split up our fname into path/name components
-	_splitpath(fname, NULL, path, name, ext);
+	_splitpath(fname, nullptr, path, name, ext);
 	sprintf(fullname, "%s%s", name, ext);
 
 	// make sure this entry is not already in the update list
 	ue = updateList;
-	while (ue != NULL)
+	while (ue != nullptr)
 	{
 		if (!stricmp(ue->path, path) && !stricmp(ue->fname, fullname))
 			return;
@@ -2976,20 +2976,20 @@ void biosAddToUpdateList(char *fname)
 	strcpy(ue->fname, fullname);
 
 	ue->lastWrite = biosGetLastWriteTime(ue);
-	ue->next	  = NULL;
+	ue->next	  = nullptr;
 
 	// add this file to our update list
-	if (updateList == NULL)
+	if (updateList == nullptr)
 	{
 		updateList = ue;
 
 		// since this is the first entry, set our timer...
-		updateTimerID = SetTimer(NULL, 0, 2000, UpdateProc);
+		updateTimerID = SetTimer(nullptr, 0, 2000, UpdateProc);
 	}
 	else
 	{
 		ui = updateList;
-		while (ui->next != NULL)
+		while (ui->next != nullptr)
 			ui = ui->next;
 
 		ui->next = ue;
@@ -3001,10 +3001,10 @@ void biosClearUpdateList(void)
 	updateEntry *ue = updateList, *nextue;
 
 	// kill our timer
-	KillTimer(NULL, updateTimerID);
+	KillTimer(nullptr, updateTimerID);
 
 	// nuke all update items
-	while (ue != NULL)
+	while (ue != nullptr)
 	{
 		delete []ue->path;
 		delete []ue->fname;
@@ -3015,7 +3015,7 @@ void biosClearUpdateList(void)
 		ue = nextue;
 	}
 
-	updateList = NULL;
+	updateList = nullptr;
 }
 
 void biosGetDialogSize(SIZE *sz)
@@ -3046,7 +3046,7 @@ void biosResizeCurrentDialog(HWND hwnd, RECT *rc)
 			default:
 				// find the item that responds to this hash
 				item = pluginFindHash(curHash);
-				if (item != NULL)
+				if (item != nullptr)
 				{
 					// call the plugins' refresh function
 					pluginCallOnResizeDialog(item, hwnd, rc);
@@ -3079,7 +3079,7 @@ void biosRefreshCurrentDialog(void)
 			default:
 				// find the item that responds to this hash
 				item = pluginFindHash(curHash);
-				if (item != NULL)
+				if (item != nullptr)
 				{
 					// call the plugins' refresh function
 					pluginCallRefreshDialog(item, curFileEntry, hModDlgWnd);
@@ -3097,7 +3097,7 @@ awdbeBIOSVersion biosGetVersion(void)
 	int len;
 
 	fe = biosScanForID(0x5000);
-	if (fe == NULL)
+	if (fe == nullptr)
 		return vers;
 
 	// get the bios's version

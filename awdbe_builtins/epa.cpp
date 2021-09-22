@@ -33,9 +33,9 @@
 
 #define MAKERGB(r, g, b)		(static_cast<DWORD>((r << 16) | (g << 8) | (b)))
 
-static HWND hGroupBox = NULL;
-static HBITMAP hBitmap = NULL;
-static HDC hBitmapDC = NULL;
+static HWND hGroupBox = nullptr;
+static HBITMAP hBitmap = nullptr;
+static HDC hBitmapDC = nullptr;
 static RECT blitrc;
 static BITMAPINFO bmi;
 static VOID *pvBits;
@@ -104,7 +104,7 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 			{
 				case IDC_EPA_EXPORT:
 					GetDlgItemText(hdlg, IDC_FILENAME, buf, 256);
-					_splitpath(buf, NULL, NULL, fname, NULL);
+					_splitpath(buf, nullptr, nullptr, fname, nullptr);
 					strcat(fname, ".bmp");
 
 					// display the save dialog
@@ -113,22 +113,22 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 					ofn.hwndOwner			= hdlg;
 					ofn.hInstance			= hinst;
 					ofn.lpstrFilter			= "Windows BMP (*.bmp)\0*.bmp\0All Files (*.*)\0*.*\0\0";
-					ofn.lpstrCustomFilter	= NULL;
+					ofn.lpstrCustomFilter	= nullptr;
 					ofn.nMaxCustFilter		= 0;
 					ofn.nFilterIndex		= 1;
 					ofn.lpstrFile			= fname;
 					ofn.nMaxFile			= 256;
-					ofn.lpstrFileTitle		= NULL;
+					ofn.lpstrFileTitle		= nullptr;
 					ofn.nMaxFileTitle		= 0;
-					ofn.lpstrInitialDir		= NULL;
-					ofn.lpstrTitle			= NULL;
+					ofn.lpstrInitialDir		= nullptr;
+					ofn.lpstrTitle			= nullptr;
 					ofn.Flags				= OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_EXPLORER;
 					ofn.nFileOffset			= 0;
 					ofn.nFileExtension		= 0;
 					ofn.lpstrDefExt			= "bmp";
-					ofn.lCustData			= NULL;
-					ofn.lpfnHook			= NULL;
-					ofn.lpTemplateName		= NULL;
+					ofn.lCustData			= 0;
+					ofn.lpfnHook			= nullptr;
+					ofn.lpTemplateName		= nullptr;
 
 					if (GetSaveFileName(&ofn) == FALSE)
 						return FALSE;
@@ -250,13 +250,13 @@ void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 
 	// create group box and set the font, then make it visible
 	hGroupBox = CreateWindow("BUTTON", "Preview", BS_GROUPBOX | WS_CHILD | WS_GROUP, rc.left, rc.top, width + 20,
-		height + 30, hwnd, NULL, hinst, NULL);
+		height + 30, hwnd, nullptr, hinst, nullptr);
 
 	SendMessage(hGroupBox, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), MAKELPARAM(FALSE, 0));
 	ShowWindow(hGroupBox, SW_SHOWNORMAL);
 
 	// create a DC for our bitmap
-	hBitmapDC = CreateCompatibleDC(NULL);
+	hBitmapDC = CreateCompatibleDC(nullptr);
 
 	// create a 32-bit bitmap of needed size
 	ZeroMemory(&bmi, sizeof(BITMAPINFO));
@@ -268,7 +268,7 @@ void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 	bmi.bmiHeader.biCompression = BI_RGB;
 	bmi.bmiHeader.biSizeImage	= static_cast<DWORD>(bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 4);
 
-	hBitmap = CreateDIBSection(hBitmapDC, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
+	hBitmap = CreateDIBSection(hBitmapDC, &bmi, DIB_RGB_COLORS, &pvBits, nullptr, 0);
 	SelectObject(hBitmapDC, hBitmap);
 
 	// use the pvBits pointer to render the preview based on its version...
@@ -317,22 +317,22 @@ void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 void epaOnDestroyDialog(HWND hwnd)
 {
 	// release all of our objects
-	if (hGroupBox != NULL)
+	if (hGroupBox != nullptr)
 	{
 		DestroyWindow(hGroupBox);
-		hGroupBox = NULL;
+		hGroupBox = nullptr;
 	}
 
-	if (hBitmap != NULL)
+	if (hBitmap != nullptr)
 	{
 		DeleteObject(hBitmap);
-		hBitmap = NULL;
+		hBitmap = nullptr;
 	}
 
-	if (hBitmapDC != NULL)
+	if (hBitmapDC != nullptr)
 	{
 		DeleteDC(hBitmapDC);
-		hBitmapDC = NULL;
+		hBitmapDC = nullptr;
 	}
 }
 

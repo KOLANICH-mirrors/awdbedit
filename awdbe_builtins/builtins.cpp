@@ -309,7 +309,7 @@ void builtinsOnLoad(fileEntry *fe, int count)
 	// cheat and just ask the editor for the sysbios pointer...
 	bfe = awdbeSearchForID(myID, 0x5000);
 
-	if (bfe != NULL)
+	if (bfe != nullptr)
 	{
 		sysbiosOnLoad(bfe);
 	}
@@ -333,7 +333,7 @@ INT_PTR CALLBACK unknownFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 
 HWND builtinsCreateDialog(awdbeItem *item, fileEntry *fe, HWND parentWnd, RECT *rc)
 {
-	HWND hwnd = NULL;
+	HWND hwnd = nullptr;
 
 	switch (item->biosTypeID)
 	{
@@ -359,7 +359,7 @@ HWND builtinsCreateDialog(awdbeItem *item, fileEntry *fe, HWND parentWnd, RECT *
 	}
 
 	// check if not handled
-	if (hwnd == NULL)
+	if (hwnd == nullptr)
 	{
 		// create a default dialog
 		hwnd = CreateDialog(hinst, MAKEINTRESOURCE(IDD_UNKNOWN), parentWnd, unknownFunc);

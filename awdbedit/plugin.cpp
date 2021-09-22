@@ -53,8 +53,8 @@ static inline bool isBuiltinsPlugin(char *desc)
 
 void pluginInit(void)
 {
-	pluginFuncList = NULL;
-	itemMenuList   = NULL;
+	pluginFuncList = nullptr;
+	itemMenuList   = nullptr;
 }
 
 void pluginShutdown(void)
@@ -63,7 +63,7 @@ void pluginShutdown(void)
 	awdbeItemEntry *item = itemMenuList, *nextitem;
 
 	// free all loaded plugins, and destroy the linked list
-	while (pe != NULL)
+	while (pe != nullptr)
 	{
 		delete []pe->fname;
 		FreeLibrary(pe->hInst);
@@ -75,7 +75,7 @@ void pluginShutdown(void)
 	}
 
 	// release our item entry linked list
-	while (item != NULL)
+	while (item != nullptr)
 	{
 		nextitem = item->next;
 		delete item;
@@ -135,10 +135,10 @@ uint32_t pluginScan(char *dir, bool doLoad)
 					{
 						// load this DLL
 						sprintf(fname, "%s%s", dir, fd.name);
-						if ( (hInst = LoadLibrary(fname)) != NULL )
+						if ( (hInst = LoadLibrary(fname)) != nullptr )
 						{
 							// look for our "awdbeRegisterPlugin" function in the DLL
-							if ( (regproc = GetProcAddress(hInst, "awdbeRegisterPlugin")) != NULL )
+							if ( (regproc = GetProcAddress(hInst, "awdbeRegisterPlugin")) != nullptr )
 							{
 								// get a pointer to the register function and call it to get the plugin's function table
 								regfunc = (registerPluginFunc)regproc;
@@ -186,7 +186,7 @@ void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl)
 	SendMessage(progwnd, PBM_STEPIT, 0, 0);
 
 	// insert this entry into our list
-	if (pluginFuncList == NULL)
+	if (pluginFuncList == nullptr)
 	{
 		pluginFuncList = new pluginFuncEntry;
 		fe = pluginFuncList;
@@ -194,7 +194,7 @@ void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl)
 	else
 	{
 		fe = pluginFuncList;
-		while (fe->next != NULL)
+		while (fe->next != nullptr)
 			fe = fe->next;
 
 		fe->next = new pluginFuncEntry;
@@ -205,7 +205,7 @@ void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl)
 	strcpy(fe->fname, fname);
 	fe->hInst	= hInst;
 	fe->functbl	= ftbl;
-	fe->next	= NULL;
+	fe->next	= nullptr;
 
 	// and call this plugin's init function
 	fe->functbl->initFunc((uint64_t)fe);
@@ -246,7 +246,7 @@ bool pluginHashExists(uint32_t hash)
 		return TRUE;
 
 	// iterate through all items in all lists to see if this hash value has already been assigned
-	while (ie != NULL)
+	while (ie != nullptr)
 	{
 		item  = ie->list;
 		count = ie->count;
@@ -301,7 +301,7 @@ awdbeItem *pluginFindResponder(fileEntry *fe)
 	uint32_t count;
 
 	// iterate through each item list, looking for a matching typeID
-	while (ie != NULL)
+	while (ie != nullptr)
 	{
 		item  = ie->list;
 		count = ie->count;
@@ -321,7 +321,7 @@ awdbeItem *pluginFindResponder(fileEntry *fe)
 		ie = ie->next;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 awdbeItem *pluginFindSubMenu(awdbeItem *item)
@@ -330,7 +330,7 @@ awdbeItem *pluginFindSubMenu(awdbeItem *item)
 	awdbeItem *itemmin, *itemmax;
 
 	// iterate through each item list, checking to see if the "item" pointer is within the bounds of the list we point to...
-	while (ie != NULL)
+	while (ie != nullptr)
 	{
 		itemmin = ie->list;
 		itemmax = ie->list + ie->count;
@@ -350,7 +350,7 @@ awdbeItem *pluginFindSubMenu(awdbeItem *item)
 		ie = ie->next;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 awdbeItem *pluginFindHash(uint32_t hash)
@@ -360,7 +360,7 @@ awdbeItem *pluginFindHash(uint32_t hash)
 	uint32_t count;
 
 	// iterate through each item list, looking for a matching hash
-	while (ie != NULL)
+	while (ie != nullptr)
 	{
 		item  = ie->list;
 		count = ie->count;
@@ -379,7 +379,7 @@ awdbeItem *pluginFindHash(uint32_t hash)
 		ie = ie->next;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 pluginFuncEntry *pluginFindItem(awdbeItem *item)
@@ -388,7 +388,7 @@ pluginFuncEntry *pluginFindItem(awdbeItem *item)
 	awdbeItem *itemmin, *itemmax;
 
 	// iterate through each item list, checking to see if the "item" pointer is within the bounds of the list we point to...
-	while (ie != NULL)
+	while (ie != nullptr)
 	{
 		itemmin = ie->list;
 		itemmax = ie->list + ie->count;
@@ -402,7 +402,7 @@ pluginFuncEntry *pluginFindItem(awdbeItem *item)
 		ie = ie->next;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void pluginCallOnLoad(fileEntry *fe, int count)
@@ -410,7 +410,7 @@ void pluginCallOnLoad(fileEntry *fe, int count)
 	pluginFuncEntry *pe = pluginFuncList;
 
 	// call each plugins' onLoad function
-	while (pe != NULL)
+	while (pe != nullptr)
 	{
 		pe->functbl->onLoadFunc(fe, count);
 		pe = pe->next;
@@ -424,13 +424,13 @@ HWND pluginCallCreateDialog(awdbeItem *item, fileEntry *curFileEntry, HWND paren
 	// lookup this plugin
 	pe = pluginFindItem(item);
 
-	if (pe != NULL)
+	if (pe != nullptr)
 	{
 		// now call the plugin's dialog create function
 		return pe->functbl->createDialogFunc(item, curFileEntry, parentWnd, dlgrc);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 bool pluginCallUpdateDialog(awdbeItem *item, fileEntry *curFileEntry, HWND dialogWnd)
@@ -440,7 +440,7 @@ bool pluginCallUpdateDialog(awdbeItem *item, fileEntry *curFileEntry, HWND dialo
 	// lookup this plugin
 	pe = pluginFindItem(item);
 
-	if (pe != NULL)
+	if (pe != nullptr)
 	{
 		// now call the plugin's dialog create function
 		return pe->functbl->updateDialogFunc(item, curFileEntry, dialogWnd);
@@ -456,7 +456,7 @@ bool pluginCallRefreshDialog(awdbeItem *item, fileEntry *fe, HWND hwnd)
 	// lookup this plugin
 	pe = pluginFindItem(item);
 
-	if (pe != NULL)
+	if (pe != nullptr)
 	{
 		// before we call refresh, we need to make sure the plugin still handles this data.
 		if (pe->functbl->detectFunc(fe) == FALSE)
@@ -476,7 +476,7 @@ void pluginCallOnDestroyDialog(awdbeItem *item, HWND hwnd)
 	// lookup this plugin
 	pe = pluginFindItem(item);
 
-	if (pe != NULL)
+	if (pe != nullptr)
 	{
 		// now call the plugin's on destroy function
 		pe->functbl->onDestroyDialogFunc(item, hwnd);
@@ -490,7 +490,7 @@ void pluginCallOnResizeDialog(awdbeItem *item, HWND hwnd, RECT *rc)
 	// lookup this plugin
 	pe = pluginFindItem(item);
 
-	if (pe != NULL)
+	if (pe != nullptr)
 	{
 		// now call the plugin's on destroy function
 		pe->functbl->onResizeDialogFunc(item, hwnd, rc);
@@ -502,7 +502,7 @@ void pluginAddToMenu(HMENU menu, uint32_t fromID)
 	pluginFuncEntry *pe = pluginFuncList;
 	char *desc;
 
-	while (pe != NULL)
+	while (pe != nullptr)
 	{
 		desc = pe->functbl->descriptionFunc();
 
@@ -519,7 +519,7 @@ void pluginShowAboutBox(uint32_t index, HWND parentWnd)
 {
 	pluginFuncEntry *pe = pluginFuncList;
 
-	while (pe != NULL)
+	while (pe != nullptr)
 	{
 		if (index == 0)
 		{
@@ -548,9 +548,9 @@ void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount)
 	{
 		// insert this entry at the end of our list
 		ie = itemMenuList;
-		if (ie != NULL)
+		if (ie != nullptr)
 		{
-			while (ie->next != NULL)
+			while (ie->next != nullptr)
 				ie = ie->next;
 
 			ie->next = new awdbeItemEntry;
@@ -564,7 +564,7 @@ void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount)
 
 		ie->list   = itemList;
 		ie->count  = itemCount;
-		ie->next   = NULL;
+		ie->next   = nullptr;
 		ie->plugin = pe;		
 	}
 	else
@@ -637,7 +637,7 @@ int awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp)
 
 	while (!done)
 	{
-		if (!GetMessage(&msg, NULL, 0, 0))
+		if (!GetMessage(&msg, nullptr, 0, 0))
 		{
 			done = TRUE;
 		}

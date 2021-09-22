@@ -22,7 +22,7 @@ typedef short node;
 
 static uint8_t *text, *childcount;
 static node pos, matchpos, avail,
-	*position, *parent, *prev, *next = NULL;
+	*position, *parent, *prev, *next = nullptr;
 static uint16_t remainder, matchlen;
 
 #if MAXMATCH <= (UCHAR_MAX + 1)
@@ -33,7 +33,7 @@ static uint16_t remainder, matchlen;
 
 static void allocate_memory(void)
 {
-	if (next != NULL) return;
+	if (next != nullptr) return;
 	text = (uint8_t *)malloc(DICSIZ * 2 + MAXMATCH);
 	level      = (uint8_t *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*level));
 	childcount = (uint8_t *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*childcount));
@@ -46,7 +46,7 @@ static void allocate_memory(void)
 	prev       = (short *)malloc(DICSIZ * 2 * sizeof(*prev));
 	next       = (short *)malloc((MAX_HASH_VAL + 1) * sizeof(*next));
 
-//	if (next == NULL) error("Out of memory.");
+//	if (next == nullptr) error("Out of memory.");
 }
 
 static void init_slide(void)
