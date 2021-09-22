@@ -304,7 +304,7 @@ void biosWriteEntry(fileEntry *fe, lzhHeader *lzhhdr, uint32_t offset)
 	fe->compSize = lzhhdr->compressedSize;
 	fe->type	 = lzhhdr->fileType;
 	fe->crc		 = lzhhdra->crc;
-	fe->data	 = (void *)new uint8_t[fe->size];
+	fe->data	 = new uint8_t[fe->size];
 	fe->offset	 = offset;
 	fe->flags	 = 0;
 
@@ -1024,7 +1024,7 @@ bool biosOpenFile(char *fname)
 		fe->type	 = TYPEID_DECOMPBLOCK;
 		fe->crc		 = 0;
 		fe->crcOK	 = TRUE;
-		fe->data	 = (void *)new char[fe->size];
+		fe->data	 = new uint8_t[fe->size];
 		fe->offset	 = 0;
 		fe->flags	 = FEFLAGS_DECOMP_BLOCK;
 
@@ -1044,7 +1044,7 @@ bool biosOpenFile(char *fname)
 		fe->type	 = TYPEID_BOOTBLOCK;
 		fe->crc		 = 0;
 		fe->crcOK	 = TRUE;
-		fe->data	 = (void *)new uint8_t[fe->size];
+		fe->data	 = new uint8_t[fe->size];
 		fe->offset	 = 0;
 		fe->flags	 = FEFLAGS_BOOT_BLOCK;
 
@@ -2242,7 +2242,7 @@ bool biosAddComponent(char *fname, uint16_t id, uint32_t offset)
 	fe->type	 = id;
 	fe->crc		 = 0;
 	fe->crcOK	 = TRUE;
-	fe->data	 = (void *)new uint8_t[fe->size];
+	fe->data	 = new uint8_t[fe->size];
 	fe->offset	 = offset;
 	fe->flags	 = 0;
 
