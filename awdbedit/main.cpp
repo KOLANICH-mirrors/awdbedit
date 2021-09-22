@@ -210,7 +210,7 @@ INT_PTR APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPa
 void enableControls(bool fileLoaded, bool selIsValid)
 {
 	int t;
-	int idLoadTable[6] = { ID_FILE_SAVE, ID_FILE_SAVE_AS, ID_FILE_REVERT, ID_FILE_PROPERTIES, ID_ACTION_INSERT, ID_ACTION_EXTRACT_ALL };
+	int idLoadTable[6] = { ID_ACTION_SAVE, ID_ACTION_SAVE_AS, ID_FILE_REVERT, ID_FILE_PROPERTIES, ID_ACTION_INSERT, ID_ACTION_EXTRACT_ALL };
 	int idSelVTable[4] = { ID_ACTION_REPLACE, ID_ACTION_EXTRACT, ID_ACTION_REMOVE, ID_ACTION_HEXEDIT };
 	LPARAM lflag;
 	UINT uflag;
@@ -417,8 +417,8 @@ void createControls(HWND hwnd)
 	};
 	
 	TBBUTTON toolList[] = {
-		{ 0, ID_FILE_OPEN,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, NULL },
-		{ 0, ID_FILE_SAVE,			0,					TBSTYLE_BUTTON,	0, NULL },
+		{ 0, ID_ACTION_OPEN,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, NULL },
+		{ 0, ID_ACTION_SAVE,			0,					TBSTYLE_BUTTON,	0, NULL },
 		{ 0, ID_FILE_PROPERTIES,	0,					TBSTYLE_BUTTON,	0, NULL },
 		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
 		{ 0, ID_ACTION_INSERT,		0,					TBSTYLE_BUTTON,	0, NULL },
@@ -1033,7 +1033,7 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					}
 					return 0;
 
-				case ID_FILE_OPEN:
+				case ID_ACTION_OPEN:
 					if (biosOpen() == TRUE)
 					{
 						// update the mru list
@@ -1045,11 +1045,11 @@ LRESULT APIENTRY WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					}
 					return 0;
 
-				case ID_FILE_SAVE:
+				case ID_ACTION_SAVE:
 					biosSave();
 					return 0;
 
-				case ID_FILE_SAVE_AS:
+				case ID_ACTION_SAVE_AS:
 					biosSaveAs();
 					return 0;
 
@@ -1391,8 +1391,8 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	globals.pMenu->setInactiveColor(RGB(128, 128, 128));
 
 	// setup icons
-	mapMenuIcon(ID_FILE_OPEN,			IDI_FILE_OPEN);
-	mapMenuIcon(ID_FILE_SAVE,			IDI_FILE_SAVE);
+	mapMenuIcon(ID_ACTION_OPEN,			IDI_FILE_OPEN);
+	mapMenuIcon(ID_ACTION_SAVE,			IDI_FILE_SAVE);
 	mapMenuIcon(ID_FILE_PROPERTIES,		IDI_FILE_PROPERTIES);
 	mapMenuIcon(ID_FILE_EXIT,			IDI_FILE_EXIT);
 	mapMenuIcon(ID_ACTION_INSERT,		IDI_ACTION_INSERT);

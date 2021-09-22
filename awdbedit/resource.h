@@ -106,6 +106,15 @@
 #define ID_ACTION_REMOVE_FILE           40012
 #define ID_ACTION_REMOVE                40013
 #define ID_ACTION_REPLACE               40014
+#define ID_ACTION_SAVE                  40018
+#define ID_ACTION_SAVE_AS               40019
+#define ID_ACTION_OPEN                  40020
+
+#define ID_FILE_MRU_FILE1               40021
+#define ID_FILE_MRU_FILE2               40022
+#define ID_FILE_MRU_FILE3               40023
+#define ID_FILE_MRU_FILE4               40024
+
 #define ID_HELP_HOMEPAGE                40016
 #define ID_FILE_REVERT                  40017
 #define IDC_TEXT_VERSION                -1
