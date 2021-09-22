@@ -30,7 +30,7 @@
 #include <windows.h>
 #include <commctrl.h>
 #include "types.h"
-#include "popupdialog.h"
+#include "popupDialog.h"
 
 class popupMenu
 {

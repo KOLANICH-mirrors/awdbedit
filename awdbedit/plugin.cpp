@@ -33,8 +33,8 @@
 #include "awdbe_exports.h"
 #include "bios.h"
 #include "plugin.h"
-#include "popupmenu.h"
-#include "popupdialog.h"
+#include "popupMenu.h"
+#include "popupDialog.h"
 #include "main.h"
 
 static pluginFuncEntry *pluginFuncList;
