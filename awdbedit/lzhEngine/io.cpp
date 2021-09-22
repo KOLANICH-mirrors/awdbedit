@@ -19,19 +19,19 @@
 #define UPDATE_CRC(c) \
 	crc = crctable[(crc ^ (c)) & 0xFF] ^ (crc >> CHAR_BIT)
 
-ushort bitbuf;
+uint16_t bitbuf;
 bool unpackable;
 
-static ushort crctable[UCHAR_MAX + 1], crc;
-static ushort subbitbuf;
+static uint16_t crctable[UCHAR_MAX + 1], crc;
+static uint16_t subbitbuf;
 static int    bitcount;
 
-static uchar *inbase, *instreamptr, *outbase, *outstreamptr, *instreammax, *outstreammax;
-static ulong insize, outsize;
+static uint8_t *inbase, *instreamptr, *outbase, *outstreamptr, *instreammax, *outstreammax;
+static uint32_t insize, outsize;
 
 void make_crctable(void)
 {
-	ushort i, j, r;
+	uint16_t i, j, r;
 
 	for (i = 0; i <= UCHAR_MAX; i++) {
 		r = i;
@@ -49,22 +49,22 @@ void fillbuf(int n)  // Shift bitbuf n bits left, read n bits
 		bitbuf |= subbitbuf << (n -= bitcount);
 		if (insize != 0) {
 			insize--;
-			subbitbuf = (uchar) *instreamptr++;
+			subbitbuf = (uint8_t) *instreamptr++;
 		} else subbitbuf = 0;
 		bitcount = CHAR_BIT;
 	}
 	bitbuf |= subbitbuf >> (bitcount -= n);
 }
 
-ushort getbits(int n)
+uint16_t getbits(int n)
 {
-	ushort x;
+	uint16_t x;
 
 	x = bitbuf >> (BITBUFSIZ - n);  fillbuf(n);
 	return x;
 }
 
-void putbits(int n, ushort x)  // Write rightmost n bits of x
+void putbits(int n, uint16_t x)  // Write rightmost n bits of x
 {
 	if (n < bitcount) {
 		subbitbuf |= x << (bitcount -= n);
@@ -86,7 +86,7 @@ void putbits(int n, ushort x)  // Write rightmost n bits of x
 }
 
 /*
-int fread_crc(uchar *p, int n, FILE *f)
+int fread_crc(uint8_t *p, int n, FILE *f)
 {
 	int i;
 
@@ -95,14 +95,14 @@ int fread_crc(uchar *p, int n, FILE *f)
 	return n;
 }
 
-void fwrite_crc(uchar *p, int n, FILE *f)
+void fwrite_crc(uint8_t *p, int n, FILE *f)
 {
 	if (fwrite(p, 1, n, f) < n) error("Unable to write");
 	while (--n >= 0) UPDATE_CRC(*p++);
 }
 */
 
-int memread_crc(uchar *dest, int n)
+int memread_crc(uint8_t *dest, int n)
 {
 	int i;
 
@@ -119,7 +119,7 @@ int memread_crc(uchar *dest, int n)
 	return n;
 }
 
-void memwrite_crc(uchar *src, int n)
+void memwrite_crc(uint8_t *src, int n)
 {
 	int i;
 
@@ -147,14 +147,14 @@ void init_putbits(void)
 
 //-----------------------------------
 
-void ioInit(void *instream, ulong instreamsize, void *outstream, ulong outstreamsize)
+void ioInit(void *instream, uint32_t instreamsize, void *outstream, uint32_t outstreamsize)
 {
-	inbase		 = (uchar *)instream;
-	outbase		 = (uchar *)outstream;
-	instreamptr  = (uchar *)instream;
-	outstreamptr = (uchar *)outstream;
-	instreammax	 = (uchar *)instreamptr + instreamsize;
-	outstreammax = (uchar *)outstreamptr + outstreamsize;
+	inbase		 = (uint8_t *)instream;
+	outbase		 = (uint8_t *)outstream;
+	instreamptr  = (uint8_t *)instream;
+	outstreamptr = (uint8_t *)outstream;
+	instreammax	 = (uint8_t *)instreamptr + instreamsize;
+	outstreammax = (uint8_t *)outstreamptr + outstreamsize;
 
 	insize  = instreamsize;
 	outsize = 0; // outstreamsize;		// bad hack, but it *is* what we want... :/
@@ -163,17 +163,17 @@ void ioInit(void *instream, ulong instreamsize, void *outstream, ulong outstream
 	crc = INIT_CRC;
 }
 
-ushort ioGetCRC(void)
+uint16_t ioGetCRC(void)
 {
 	return (crc ^ INIT_CRC);
 }
 
-ulong ioGetInSizeUsed(void)
+uint32_t ioGetInSizeUsed(void)
 {
-	return (ulong) (instreamptr - inbase);
+	return (uint32_t) (instreamptr - inbase);
 }
 
-ulong ioGetOutSizeUsed(void)
+uint32_t ioGetOutSizeUsed(void)
 {
-	return (ulong) (outstreamptr - outbase);
+	return (uint32_t) (outstreamptr - outbase);
 }

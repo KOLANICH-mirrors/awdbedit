@@ -30,7 +30,7 @@
 char *waveditDescription(void);
 void waveditAboutBox(HWND parentWnd);
 
-void waveditInit(ulong pluginID);
+void waveditInit(uint32_t pluginID);
 void waveditOnLoad(fileEntry *fe, int count);
 bool waveditDetect(fileEntry *fe);
 

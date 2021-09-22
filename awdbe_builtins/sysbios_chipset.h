@@ -30,19 +30,19 @@
 #pragma pack(push, 1)
 typedef struct
 {
-	uchar	type;
-	uchar	index;
-	uchar	function:3;
-	uchar	device:5;
-	uchar	mask;
-	uchar	_0x00_2;
-	uchar	value;
-	uchar	_0x00_3;
+	uint8_t	type;
+	uint8_t	index;
+	uint8_t	function:3;
+	uint8_t	device:5;
+	uint8_t	mask;
+	uint8_t	_0x00_2;
+	uint8_t	value;
+	uint8_t	_0x00_3;
 } sysbiosChipRegEntry;
 #pragma pack(pop)
 
 INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-void sysbiosRefreshChipsetRegs(uchar *ptr);
+void sysbiosRefreshChipsetRegs(uint8_t *ptr);
 
 #endif

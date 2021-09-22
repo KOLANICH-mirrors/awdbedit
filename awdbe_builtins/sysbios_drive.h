@@ -30,20 +30,20 @@
 #pragma pack(push, 1)
 typedef struct
 {
-	ushort	cylinders;
-	uchar	heads;
-	ushort	_0x0000_1;
-	ushort	precomp;
-	uchar	_0x00_2;
-	ushort	control;
-	ushort	_0x0000_3;
-	ushort	landzone;
-	ushort	sectors;
+	uint16_t	cylinders;
+	uint8_t	heads;
+	uint16_t	_0x0000_1;
+	uint16_t	precomp;
+	uint8_t	_0x00_2;
+	uint16_t	control;
+	uint16_t	_0x0000_3;
+	uint16_t	landzone;
+	uint16_t	sectors;
 } sysbiosDrvTblEntry;
 #pragma pack(pop)
 
 INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-void sysbiosRefreshDriveTable(uchar *ptr);
+void sysbiosRefreshDriveTable(uint8_t *ptr);
 
 #endif

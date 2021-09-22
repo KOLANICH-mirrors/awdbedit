@@ -27,6 +27,8 @@
 #ifndef BIOS_H
 #define BIOS_H
 
+#include <stdint.h>
+
 #define APP_NAME				"Award BIOS Editor"
 #define APP_REV					"1.0"
 #define APP_VERSION				APP_NAME " " APP_REV
@@ -60,19 +62,14 @@ bool biosSaveAs(void);
 void biosProperties(void);
 void biosRevert(void);
 
-void biosInsert(ushort typeID);
+void biosInsert(uint16_t typeID);
 void biosReplace(void);
 void biosExtract(void);
 void biosExtractAll(void);
 void biosRemove(void);
 void biosHexEdit(void);
 
-void biosItemChanged(LPNMTREEVIEW lpnmtv);
-
-void biosGetDialogSize(SIZE *sz);
-void biosResizeDialog(SIZE sz);
-
-fileEntry *biosScanForID(ushort id);
+fileEntry *biosScanForID(uint16_t id);
 
 void biosSetModified(bool val);
 awdbeBIOSVersion biosGetVersion(void);

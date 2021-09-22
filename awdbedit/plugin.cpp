@@ -45,7 +45,7 @@ static HWND textwnd, progwnd;
 
 static inline bool isBuiltinsPlugin(char *desc)
 {
-	if (((uchar)desc[0] == 0xFA) && ((uchar)desc[1] == 0xB9) && ((uchar)desc[2] == 0xC0) && ((uchar)desc[3] == 0xD2))
+	if (((uint8_t)desc[0] == 0xFA) && ((uint8_t)desc[1] == 0xB9) && ((uint8_t)desc[2] == 0xC0) && ((uint8_t)desc[3] == 0xD2))
 		return TRUE;
 
 	return FALSE;
@@ -90,7 +90,7 @@ void pluginInitScan(HWND text, HWND prog)
 	progwnd = prog;
 }
 
-ulong pluginScan(char *dir, bool doLoad)
+uint32_t pluginScan(char *dir, bool doLoad)
 {
 	typedef awdbeFuncTable* (*registerPluginFunc)(void);
 	long hFile;
@@ -100,7 +100,7 @@ ulong pluginScan(char *dir, bool doLoad)
 	FARPROC regproc;
 	awdbeFuncTable *ftbl;
 	registerPluginFunc regfunc;
-	ulong count = 0;
+	uint32_t count = 0;
 
 	// save off the current dir
 	_getcwd(cwd, 256);
@@ -211,13 +211,13 @@ void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl)
 	fe->functbl->initFunc((uint64_t)fe);
 }
 
-ulong pluginMakeBaseHash(ushort typeID, char *name)
+uint32_t pluginMakeBaseHash(uint16_t typeID, char *name)
 {
-	ulong hash = 0x12AB3C7F, *lptr;
+	uint32_t hash = 0x12AB3C7F, *lptr;
 	int len = strlen(name);
 	char *ptr;
 
-	lptr = (ulong *)name;
+	lptr = (uint32_t *)name;
 	while (len > 4)
 	{
 		hash += *lptr++;
@@ -231,11 +231,11 @@ ulong pluginMakeBaseHash(ushort typeID, char *name)
 		len--;
 	}
 
-	hash ^= (((ulong)typeID << 16) | (ulong)typeID);
+	hash ^= (((uint32_t)typeID << 16) | (uint32_t)typeID);
 	return hash;
 }
 
-bool pluginHashExists(ulong hash)
+bool pluginHashExists(uint32_t hash)
 {
 	awdbeItemEntry *ie = itemMenuList;
 	awdbeItem *item;
@@ -266,9 +266,9 @@ bool pluginHashExists(ulong hash)
 	return FALSE;
 }
 
-ulong pluginMakeHash(ushort typeID, char *name)
+uint32_t pluginMakeHash(uint16_t typeID, char *name)
 {
-	ulong hash;
+	uint32_t hash;
 
 	hash = pluginMakeBaseHash(typeID, name);
 
@@ -298,7 +298,7 @@ awdbeItem *pluginFindResponder(fileEntry *fe)
 {
 	awdbeItemEntry *ie = itemMenuList;
 	awdbeItem *item;
-	ulong count;
+	uint32_t count;
 
 	// iterate through each item list, looking for a matching typeID
 	while (ie != NULL)
@@ -353,11 +353,11 @@ awdbeItem *pluginFindSubMenu(awdbeItem *item)
 	return NULL;
 }
 
-awdbeItem *pluginFindHash(ulong hash)
+awdbeItem *pluginFindHash(uint32_t hash)
 {
 	awdbeItemEntry *ie = itemMenuList;
 	awdbeItem *item;
-	ulong count;
+	uint32_t count;
 
 	// iterate through each item list, looking for a matching hash
 	while (ie != NULL)
@@ -497,7 +497,7 @@ void pluginCallOnResizeDialog(awdbeItem *item, HWND hwnd, RECT *rc)
 	}
 }
 
-void pluginAddToMenu(HMENU menu, ulong fromID)
+void pluginAddToMenu(HMENU menu, uint32_t fromID)
 {
 	pluginFuncEntry *pe = pluginFuncList;
 	char *desc;
@@ -515,7 +515,7 @@ void pluginAddToMenu(HMENU menu, ulong fromID)
 	}
 }
 
-void pluginShowAboutBox(ulong index, HWND parentWnd)
+void pluginShowAboutBox(uint32_t index, HWND parentWnd)
 {
 	pluginFuncEntry *pe = pluginFuncList;
 
@@ -544,7 +544,7 @@ EXPORT void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemC
 
 	// check for the builtins magic in the description
 	desc = pe->functbl->descriptionFunc();
-	if (((uchar)desc[0] == 0xFA) && ((uchar)desc[1] == 0xB9) && ((uchar)desc[2] == 0xC0) && ((uchar)desc[3] == 0xD2))
+	if (((uint8_t)desc[0] == 0xFA) && ((uint8_t)desc[1] == 0xB9) && ((uint8_t)desc[2] == 0xC0) && ((uint8_t)desc[3] == 0xD2))
 	{
 		// insert this entry at the end of our list
 		ie = itemMenuList;
@@ -603,7 +603,7 @@ EXPORT void awdbeResizeDialog(uint64_t pluginID, SIZE sz)
 	biosResizeDialog(sz);
 }
 
-EXPORT fileEntry *awdbeSearchForID(uint64_t pluginID, ushort ID)
+EXPORT fileEntry *awdbeSearchForID(uint64_t pluginID, uint16_t ID)
 {
 	return biosScanForID(ID);
 }

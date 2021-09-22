@@ -12,10 +12,10 @@
 
 #include "lzhEngine.h"
 
-void make_table(ushort nchar, uchar bitlen[], ushort tablebits, ushort table[])
+void make_table(uint16_t nchar, uint8_t bitlen[], uint16_t tablebits, uint16_t table[])
 {
-	ushort count[17], weight[17], start[18], *p;
-	ushort i, k, len, ch, jutbits, avail, nextcode, mask;
+	uint16_t count[17], weight[17], start[18], *p;
+	uint16_t i, k, len, ch, jutbits, avail, nextcode, mask;
 
 	for (i = 1; i <= 16; i++) count[i] = 0;
 	for (i = 0; i < nchar; i++) count[bitlen[i]]++;
@@ -23,7 +23,7 @@ void make_table(ushort nchar, uchar bitlen[], ushort tablebits, ushort table[])
 	start[1] = 0;
 	for (i = 1; i <= 16; i++)
 		start[i + 1] = start[i] + (count[i] << (16 - i));
-	if (start[17] != (ushort)(1U << 16))
+	if (start[17] != (uint16_t)(1U << 16))
 	{
 //		error("Bad table");
 		return;
@@ -37,7 +37,7 @@ void make_table(ushort nchar, uchar bitlen[], ushort tablebits, ushort table[])
 	while (i <= 16) weight[i++] = 1U << (16 - i);
 
 	i = start[tablebits + 1] >> jutbits;
-	if (i != (ushort)(1U << 16)) {
+	if (i != (uint16_t)(1U << 16)) {
 		k = 1U << tablebits;
 		while (i != k) table[i++] = 0;
 	}

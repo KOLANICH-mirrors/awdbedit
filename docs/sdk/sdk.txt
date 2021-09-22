@@ -49,12 +49,12 @@ This item list structure is defined as such:
 
 typedef struct
 {
-	ulong		 hash;		// the unique 32-bit hash value of this item
+	uint32_t		 hash;		// the unique 32-bit hash value of this item
 
-	ulong		 flags;		// any of the AWDBE_* flags below
-	ushort		 biosTypeID;	// the 16-bit type ID of the component to be recognized
+	uint32_t		 flags;		// any of the AWDBE_* flags below
+	uint16_t		 biosTypeID;	// the 16-bit type ID of the component to be recognized
 	char		*itemName;	// a descriptive name of this item
-	ulong		 userData;	// any 32-bit user storable data
+	uint32_t		 userData;	// any 32-bit user storable data
 } awdbeItem;
 
 The item list's "hash" value is used internally by the Editor.  Initialize it to 0.
@@ -83,7 +83,7 @@ and the "userData" value is any 32-bit value which you may use for your internal
 The API function list
 ---------------------
 
-	void awdbeAddToItemList(ulong pluginID, awdbeItem *itemList, int itemCount);
+	void awdbeAddToItemList(uint32_t pluginID, awdbeItem *itemList, int itemCount);
 	
 This function inserts your item list into the Award BIOS Editor's internal item table.
 Pass it the plug-in ID which was given to your plug-in on initialization, as well as
@@ -92,14 +92,14 @@ than once, if you wish to register multiple sets of items -- however, items whic
 have already been registered should not be added again.
 
 
-	fileEntry *awdbeSearchForID(ulong pluginID, ushort ID);
+	fileEntry *awdbeSearchForID(uint32_t pluginID, uint16_t ID);
 	
 This function searches for a particular type ID inside the currently loaded BIOS.  If
 it is found, the returned fileEntry pointer points to a valid entry, otherwise it
 returns NULL.
 
 
-	void awdbeUpdateSelf(ulong pluginID);
+	void awdbeUpdateSelf(uint32_t pluginID);
 	
 This function tells the Editor to call your internal update function to commit changes
 to the data.  This is used in the wavedit plugin when the "Play" button is pressed,
@@ -110,26 +110,26 @@ the WAVE is played.  If this function is not called, pressing the "Play" button 
 only play the sample at 22050 because the data has not been updated.
 
 	
-	void awdbeRefreshSelf(ulong pluginID);
+	void awdbeRefreshSelf(uint32_t pluginID);
 	
 This function tells the Editor to call your internal refresh function to update your
 controls with new data.  This function is useful when one control's data has changed
 which can affect the data of another control.
 
 
-	void awdbeGetDialogSize(ulong pluginID, SIZE *sz);
+	void awdbeGetDialogSize(uint32_t pluginID, SIZE *sz);
 	
 This function returns the size of your client dialog in window units.
 
 
-	void awdbeResizeDialog(ulong pluginID, SIZE sz);
+	void awdbeResizeDialog(uint32_t pluginID, SIZE sz);
 	
 This function tells the Editor to resize your dialog to the specified window units.
 The built-ins plugin uses this in the EPA and fullscreen bitmap viewer to ensure that
 the entire bitmap can be shown on screen.
 
 	
-	void awdbeSetModified(ulong pluginID);
+	void awdbeSetModified(uint32_t pluginID);
 	
 This function sets the modified flag in the Editor, causing a '*' mark to appear next
 to the filename in the title bar.
@@ -144,7 +144,7 @@ value will be the item which the user has selected, or 0 if the menu was closed 
 the user clicked outside the menu area).
 
 
-	awdbeBIOSVersion awdbeGetBIOSVersion(ulong pluginID);
+	awdbeBIOSVersion awdbeGetBIOSVersion(uint32_t pluginID);
 	
 This function returns the version of the currently loaded BIOS image.  This can be any
 of "awdbeBIOSVerUnknown" (an unknown version), "awdbeBIOSVer451PG" (v4.51PG), 
@@ -213,7 +213,7 @@ handle is a handle to a window you can use as a parent window.
 The init function
 -----------------
 
-	void waveditInit(ulong pluginID);
+	void waveditInit(uint32_t pluginID);
 	
 This function is called when your plug-in is to be initialized.  The pluginID parameter
 is a unique ID which is used to identify your plug-in.  It is also required when

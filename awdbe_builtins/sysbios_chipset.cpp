@@ -35,7 +35,7 @@
 
 static sysbiosChipRegEntry *modifyChipsetPtr;
 
-void sysbiosChipsetBuildMap(char *buf, uchar mask, uchar value)
+void sysbiosChipsetBuildMap(char *buf, uint8_t mask, uint8_t value)
 {
 	char *ptr = buf;
 	int t;
@@ -69,7 +69,7 @@ INT_PTR CALLBACK ModifyChipsetFunc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 {
 	char buf[256];
 	HWND hwnd;
-	ulong mask, val;
+	uint32_t mask, val;
 
 	switch (message)
 	{
@@ -113,7 +113,7 @@ INT_PTR CALLBACK ModifyChipsetFunc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 					GetDlgItemText(hdlg, IDC_MODIFY_VALUE, buf, 256);
 					sscanf(buf, "%x", &val);
 
-					sysbiosChipsetBuildMap(buf, (uchar)mask, (uchar)val);
+					sysbiosChipsetBuildMap(buf, (uint8_t)mask, (uint8_t)val);
 					SetDlgItemText(hdlg, IDC_MODIFY_MAP, buf);
 				}
 			}
@@ -125,27 +125,27 @@ INT_PTR CALLBACK ModifyChipsetFunc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 						val = 0;
 						GetDlgItemText(hdlg, IDC_MODIFY_INDEX, buf, 256);
 						sscanf(buf, "%x", &val);
-						modifyChipsetPtr->index = (uchar)val;
+						modifyChipsetPtr->index = (uint8_t)val;
 
 						val = 0;
 						GetDlgItemText(hdlg, IDC_MODIFY_DEVICE, buf, 256);
 						sscanf(buf, "%x", &val);
-						modifyChipsetPtr->device = (uchar)val;
+						modifyChipsetPtr->device = (uint8_t)val;
 
 						val = 0;
 						GetDlgItemText(hdlg, IDC_MODIFY_FUNC, buf, 256);
 						sscanf(buf, "%x", &val);
-						modifyChipsetPtr->function = (uchar)val;
+						modifyChipsetPtr->function = (uint8_t)val;
 
 						val = 0;
 						GetDlgItemText(hdlg, IDC_MODIFY_MASK, buf, 256);
 						sscanf(buf, "%x", &val);
-						modifyChipsetPtr->mask = (uchar)val;
+						modifyChipsetPtr->mask = (uint8_t)val;
 
 						val = 0;
 						GetDlgItemText(hdlg, IDC_MODIFY_VALUE, buf, 256);
 						sscanf(buf, "%x", &val);
-						modifyChipsetPtr->value = (uchar)val;
+						modifyChipsetPtr->value = (uint8_t)val;
 
 					case IDCANCEL:
 						EndDialog(hdlg, TRUE);
@@ -167,7 +167,7 @@ INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, 
 	HWND hlist;
 	int t, val;
 	sysbiosChipRegEntry *chipRegPtr, tempchipset;
-	ushort *ptr16;
+	uint16_t *ptr16;
 
 	LVCOLUMN colList[] = {
 		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 70, "Register Index",	0, 0, 0, 0 },
@@ -217,7 +217,7 @@ INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, 
 					if (val != 0)
 					{
 						// get pointer to pointer to the reg list
-						ptr16 = (ushort *)(sysbiosBasePtr + 0x1F85F);
+						ptr16 = (uint16_t *)(sysbiosBasePtr + 0x1F85F);
 
 						// make register entry pointer to this pointer
 						chipRegPtr = (sysbiosChipRegEntry *)((sysbiosBasePtr + 0x10000) + *ptr16);
@@ -259,11 +259,11 @@ INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, 
 	return FALSE;
 }
 
-void sysbiosRefreshChipsetRegs(uchar *ptr)
+void sysbiosRefreshChipsetRegs(uint8_t *ptr)
 {
 	HWND hlist;
 	sysbiosChipRegEntry *chipRegPtr;
-	ushort *ptr16;
+	uint16_t *ptr16;
 	LVITEM lvi;
 	char buf[256];
 
@@ -277,7 +277,7 @@ void sysbiosRefreshChipsetRegs(uchar *ptr)
 	if (sysbiosVersion != awdbeBIOSVer60)
 	{
 		// get pointer to pointer to the reg list
-		ptr16 = (ushort *)(ptr + 0x1F85F);
+		ptr16 = (uint16_t *)(ptr + 0x1F85F);
 
 		// make register entry pointer to this pointer
 		chipRegPtr = (sysbiosChipRegEntry *)((ptr + 0x10000) + *ptr16);

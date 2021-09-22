@@ -30,17 +30,17 @@
 typedef struct
 {
 	char	*name;					// name of this file (incl NULL terminator)
-	ulong	 nameLen;				// length of filename (minus NULL terminator)
+	uint32_t	 nameLen;				// length of filename (minus NULL terminator)
 
-	ulong	 size;					// size of this file
-	ulong	 compSize;				// the compressed size this file had
-	ushort	 type;					// type ID/magic of this file
-	ushort	 crc;					// the crc this file had
+	uint32_t	 size;					// size of this file
+	uint32_t	 compSize;				// the compressed size this file had
+	uint16_t	 type;					// type ID/magic of this file
+	uint16_t	 crc;					// the crc this file had
 	bool	 crcOK;					// TRUE if the file passed CRC on decompression, FALSE if not
 
 	void	*data;					// the decompressed data of this file
-	ulong	 offset;				// special/fixed offset of this file in the image, or 0 if none.
-	ulong	 flags;					// special flags for this file (used to identify boot & decompression blocks)
+	uint32_t	 offset;				// special/fixed offset of this file in the image, or 0 if none.
+	uint32_t	 flags;					// special flags for this file (used to identify boot & decompression blocks)
 } fileEntry;
 
 #define FEFLAGS_DECOMP_BLOCK	0x00000001
@@ -49,12 +49,12 @@ typedef struct
 
 typedef struct
 {
-	ulong		 hash;				// the unique 32-bit hash value of this item
+	uint32_t		 hash;				// the unique 32-bit hash value of this item
 
-	ulong		 flags;				// any of the AWDBE_* flags below
-	ushort		 biosTypeID;		// the 16-bit type ID of the component to be recognized
+	uint32_t		 flags;				// any of the AWDBE_* flags below
+	uint16_t		 biosTypeID;		// the 16-bit type ID of the component to be recognized
 	char		*itemName;			// a descriptive name of this item
-	ulong		 userData;			// any 32-bit user storable data
+	uint32_t		 userData;			// any 32-bit user storable data
 } awdbeItem;
 
 #define AWDBE_ITEM			0x00000001

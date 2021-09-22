@@ -127,9 +127,9 @@ INT_PTR CALLBACK VerDiffProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 }
 
 
-void sysbiosRefreshMain(uchar *ptr)
+void sysbiosRefreshMain(uint8_t *ptr)
 {
-	uchar *sptr, csum;
+	uint8_t *sptr, csum;
 	int len;
 	char buf[256];
 
@@ -206,9 +206,9 @@ void sysbiosRefreshMain(uchar *ptr)
 	}
 }
 
-bool sysbiosUpdateMain(uchar *ptr, bool *modified, awdbeBIOSVersion *vers)
+bool sysbiosUpdateMain(uint8_t *ptr, bool *modified, awdbeBIOSVersion *vers)
 {
-	uchar *sptr;
+	uint8_t *sptr;
 	int len, res;
 	char buf[256], tempbuf[256];
 
@@ -222,7 +222,7 @@ bool sysbiosUpdateMain(uchar *ptr, bool *modified, awdbeBIOSVersion *vers)
 	if (strcmp(buf, tempbuf))
 	{
 		// have to be careful about changes to the bios version...
-		sysbiosNowVer = sysbiosGetVersion((uchar *)buf, strlen(buf));
+		sysbiosNowVer = sysbiosGetVersion((uint8_t *)buf, strlen(buf));
 		if (sysbiosNowVer != sysbiosVersion)
 		{
 			res = DialogBox(hinst, MAKEINTRESOURCE(IDD_SYSBIOS_VER_DIFF), sysbiosTabList[0].hwnd, VerDiffProc);

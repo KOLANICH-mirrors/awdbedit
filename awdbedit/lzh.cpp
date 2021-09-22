@@ -29,34 +29,34 @@
 #include "lzh.h"
 #include "lzhEngine/lzhEngine.h"
 
-static uchar buffer[DICSIZ];
+static uint8_t buffer[DICSIZ];
 
 void lzhInit(void)
 {
 	make_crctable();
 }
 
-uchar lzhCalcSum(uchar *ptr, ulong len)
+uint8_t lzhCalcSum(uint8_t *ptr, uint32_t len)
 {
-	uchar val = 0;
+	uint8_t val = 0;
 
 	while (len--)
 	{
-		val = (uchar) (val + *ptr);
+		val = (uint8_t) (val + *ptr);
 		ptr++;
 	}
 
 	return val;
 }
 
-lzhErr lzhCompress(void *fname, ulong fnamelen, void *inbuf, ulong inbufsize, void *outbuf, ulong outbufsize, ulong *usedsize)
+lzhErr lzhCompress(void *fname, uint32_t fnamelen, void *inbuf, uint32_t inbufsize, void *outbuf, uint32_t outbufsize, uint32_t *usedsize)
 {
 	lzhHeader *lzhhdr = (lzhHeader *)outbuf;
 	lzhHeaderAfterFilename *lzhhdra;
-	uchar *dataptr;
+	uint8_t *dataptr;
 
 	memset(lzhhdr, 0, sizeof(lzhHeader));
-	lzhhdr->filenameLen = (uchar)fnamelen;
+	lzhhdr->filenameLen = (uint8_t)fnamelen;
 	lzhhdr->headerSize  = 25 + lzhhdr->filenameLen;
 	memcpy(lzhhdr->method, "-lh5-", 5);
 	memcpy(lzhhdr->filename, fname, lzhhdr->filenameLen);
@@ -68,7 +68,7 @@ lzhErr lzhCompress(void *fname, ulong fnamelen, void *inbuf, ulong inbufsize, vo
 	memset(lzhhdra, 0, sizeof(lzhHeaderAfterFilename));
 	lzhhdra->_0x20 = 0x20;
 
-	dataptr = (uchar *) ((lzhhdra->extendedHeader) + lzhhdra->extendedHeaderSize);
+	dataptr = (uint8_t *) ((lzhhdra->extendedHeader) + lzhhdra->extendedHeaderSize);
 	ioInit(inbuf, inbufsize, dataptr, outbufsize);
 
 	encode();
@@ -84,7 +84,7 @@ lzhErr lzhCompress(void *fname, ulong fnamelen, void *inbuf, ulong inbufsize, vo
 	lzhhdr->compressedSize = ioGetOutSizeUsed();
 	lzhhdra->crc = ioGetCRC();
 
-	*usedsize = (ulong) ((dataptr + lzhhdr->compressedSize) - (uchar *)outbuf);
+	*usedsize = (uint32_t) ((dataptr + lzhhdr->compressedSize) - (uint8_t *)outbuf);
 
 //	r = ratio(compsize, origsize);
 //	printf(" %d.%d%%\n", r / 10, r % 10);
@@ -92,19 +92,19 @@ lzhErr lzhCompress(void *fname, ulong fnamelen, void *inbuf, ulong inbufsize, vo
 	return LZHERR_OK;
 }
 
-lzhErr lzhExpand(lzhHeader *lzhptr, void *outbuf, ulong outbufsize, ushort *retcrc)
+lzhErr lzhExpand(lzhHeader *lzhptr, void *outbuf, uint32_t outbufsize, uint16_t *retcrc)
 {
 	lzhHeaderAfterFilename *lzhptra;
 	int n, method;
-	ushort ext_headersize;
-	uchar header[5], *dataptr;
-	ulong origsize, compsize;
+	uint16_t ext_headersize;
+	uint8_t header[5], *dataptr;
+	uint32_t origsize, compsize;
 
 	lzhptra = (lzhHeaderAfterFilename *) ((lzhptr->filename) + lzhptr->filenameLen);
 	origsize = lzhptr->originalSize;
 	compsize = lzhptr->compressedSize;
 
-	dataptr = (uchar *) ((lzhptra->extendedHeader) + lzhptra->extendedHeaderSize);
+	dataptr = (uint8_t *) ((lzhptra->extendedHeader) + lzhptra->extendedHeaderSize);
 
 	ioInit(dataptr, compsize, outbuf, outbufsize);
 
@@ -123,7 +123,7 @@ lzhErr lzhExpand(lzhHeader *lzhptr, void *outbuf, ulong outbufsize, ushort *retc
 			if (fseek(arcfile, ext_headersize - 2, SEEK_CUR))
 				error("Can't read");
 			ext_headersize = fgetc(arcfile);
-			ext_headersize += (ushort)fgetc(arcfile) << 8;
+			ext_headersize += (uint16_t)fgetc(arcfile) << 8;
 */
 		}
 
@@ -132,7 +132,7 @@ lzhErr lzhExpand(lzhHeader *lzhptr, void *outbuf, ulong outbufsize, ushort *retc
 
 		while (origsize != 0)
 		{
-			n = (ushort)((origsize > DICSIZ) ? DICSIZ : origsize);
+			n = (uint16_t)((origsize > DICSIZ) ? DICSIZ : origsize);
 
 			if (method != '0')
 				decode(n, buffer);

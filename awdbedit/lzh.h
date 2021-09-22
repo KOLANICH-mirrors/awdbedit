@@ -34,26 +34,26 @@
 #pragma pack(push, 1)
 typedef struct
 {
-	uchar	headerSize;
-	uchar	headerSum;
+	uint8_t	headerSize;
+	uint8_t	headerSum;
 
-	uchar	method[5];
-	ulong	compressedSize;
-	ulong	originalSize;
-	ushort	_unknown;
-	ushort	fileType;
-	uchar	_0x20;
-	uchar	_0x01;
-	uchar	filenameLen;
-	uchar	filename[0];
+	uint8_t	method[5];
+	uint32_t	compressedSize;
+	uint32_t	originalSize;
+	uint16_t	_unknown;
+	uint16_t	fileType;
+	uint8_t	_0x20;
+	uint8_t	_0x01;
+	uint8_t	filenameLen;
+	uint8_t	filename[0];
 } lzhHeader;
 
 typedef struct
 {
-	ushort	crc;
-	uchar	_0x20;
-	ushort	extendedHeaderSize;
-	uchar	extendedHeader[0];
+	uint16_t	crc;
+	uint8_t	_0x20;
+	uint16_t	extendedHeaderSize;
+	uint8_t	extendedHeader[0];
 } lzhHeaderAfterFilename;
 #pragma pack(pop)
 
@@ -66,8 +66,8 @@ typedef enum
 
 
 void	lzhInit(void);
-uchar	lzhCalcSum(uchar *ptr, ulong len);
-lzhErr	lzhCompress(void *fname, ulong fnamelen, void *inbuf, ulong inbufsize, void *outbuf, ulong outbufsize, ulong *usedsize);
-lzhErr	lzhExpand(lzhHeader *lzhptr, void *outbuf, ulong outbufsize, ushort *crc);
+uint8_t	lzhCalcSum(uint8_t *ptr, uint32_t len);
+lzhErr	lzhCompress(void *fname, uint32_t fnamelen, void *inbuf, uint32_t inbufsize, void *outbuf, uint32_t outbufsize, uint32_t *usedsize);
+lzhErr	lzhExpand(lzhHeader *lzhptr, void *outbuf, uint32_t outbufsize, uint16_t *crc);
 
 #endif

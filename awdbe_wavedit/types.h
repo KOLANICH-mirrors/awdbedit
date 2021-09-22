@@ -27,11 +27,11 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-typedef unsigned char		uchar;
-typedef unsigned short		ushort;
+typedef unsigned char		uint8_t;
+typedef unsigned short		uint16_t;
 typedef unsigned int		uint;
-typedef unsigned long		ulong;
+typedef unsigned long		uint32_t;
 
-#define OFFSETOF(a, b)		( (ulong) &( ((a *)0)->b) )
+#define OFFSETOF(a, b)		( (uint32_t) &( ((a *)0)->b) )
 
 #endif

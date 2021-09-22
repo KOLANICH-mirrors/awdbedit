@@ -48,10 +48,10 @@ static HANDLE hMenuThread = NULL;
 static HANDLE hCon = NULL;
 static bool   gExitMenu = FALSE;
 
-static uchar cmosTable[0x80];
+static uint8_t cmosTable[0x80];
 
 
-int sysbiosMenuStrParse(uchar *ptr)
+int sysbiosMenuStrParse(uint8_t *ptr)
 {
 	int len = 0;
 
@@ -129,7 +129,7 @@ int sysbiosMenuStrParse(uchar *ptr)
 	return len;
 }
 
-int sysbiosMenuStrFindLen(uchar *ptr)
+int sysbiosMenuStrFindLen(uint8_t *ptr)
 {
 	int len = 0, res;
 
@@ -142,11 +142,11 @@ int sysbiosMenuStrFindLen(uchar *ptr)
 	return len;
 }
 
-menuEntry *sysbiosAddToMenuEntryList(sysbiosMenuStruct *pMenu, uchar *biosPtr, ulong biosBaseOffset)
+menuEntry *sysbiosAddToMenuEntryList(sysbiosMenuStruct *pMenu, uint8_t *biosPtr, uint32_t biosBaseOffset)
 {
 	menuEntry *me, *mz;
-	ushort *ptr16;
-	uchar *ptr;
+	uint16_t *ptr16;
+	uint8_t *ptr;
 
 	// create new menu entry
 	me = new menuEntry;
@@ -154,16 +154,16 @@ menuEntry *sysbiosAddToMenuEntryList(sysbiosMenuStruct *pMenu, uchar *biosPtr, u
 	me->menuPtr = pMenu;
 
 	// allocate/copy strings
-	ptr16 = (ushort *)&pMenu->pointerToHeader;
-	ptr   = (uchar *)((biosPtr + biosBaseOffset) + *ptr16);
+	ptr16 = (uint16_t *)&pMenu->pointerToHeader;
+	ptr   = (uint8_t *)((biosPtr + biosBaseOffset) + *ptr16);
 
 	me->headerMaxLen = sysbiosMenuStrFindLen(ptr);
 	me->headerText   = new char[me->headerMaxLen + 1];
 	memset(me->headerText,   0, me->headerMaxLen + 1);
 	memcpy(me->headerText, ptr, me->headerMaxLen);
 
-	ptr16 = (ushort *)&pMenu->pointerToHelp;
-	ptr   = (uchar *)((biosPtr + biosBaseOffset) + *ptr16);
+	ptr16 = (uint16_t *)&pMenu->pointerToHelp;
+	ptr   = (uint8_t *)((biosPtr + biosBaseOffset) + *ptr16);
 
 	me->helpMaxLen = sysbiosMenuStrFindLen(ptr);
 	me->helpText   = new char[me->helpMaxLen + 1];
@@ -226,7 +226,7 @@ menuItem *sysbiosAddToMenuItemList(sysbiosMenuStruct *pMenu)
 	return mi;
 }
 
-menuItem *sysbiosFindMenuItem(ushort pointerToItem)
+menuItem *sysbiosFindMenuItem(uint16_t pointerToItem)
 {
 	menuItem *mi = menuItemList;
 	
@@ -241,12 +241,12 @@ menuItem *sysbiosFindMenuItem(ushort pointerToItem)
 	return NULL;
 }
 
-void sysbiosCreateMenuItems(uchar *biosPtr, ulong biosBaseOffset)
+void sysbiosCreateMenuItems(uint8_t *biosPtr, uint32_t biosBaseOffset)
 {
 	menuEntry *me = menuEntryList;
 	menuItem *mi;
-	ushort *ptr16;
-	uchar *ptr, *baseptr;
+	uint16_t *ptr16;
+	uint8_t *ptr, *baseptr;
 	int t;
 
 	while (me != NULL)
@@ -289,8 +289,8 @@ void sysbiosCreateMenuItems(uchar *biosPtr, ulong biosBaseOffset)
 			mi->selectable  = new bool[mi->itemCount];
 
 			// lookup item pointer
-			ptr16 = (ushort *)&mi->pointerIntoBios;
-			ptr   = (uchar *)((biosPtr + biosBaseOffset) + *ptr16);
+			ptr16 = (uint16_t *)&mi->pointerIntoBios;
+			ptr   = (uint8_t *)((biosPtr + biosBaseOffset) + *ptr16);
 
 			for (t = 0; t < mi->itemCount; t++)
 			{
@@ -410,9 +410,9 @@ void sysbiosReleaseMenuItems(void)
 	menuHeaderCount = 0;
 }
 
-void sysbiosMenuDrawHorizLine(uchar *borderPtr, int x1, int x2, int y1, int y2)
+void sysbiosMenuDrawHorizLine(uint8_t *borderPtr, int x1, int x2, int y1, int y2)
 {
-	uchar borderBuf[1024], *bptr;
+	uint8_t borderBuf[1024], *bptr;
 	int len, tlen;
 
 	// make top and bottom lines of border
@@ -435,7 +435,7 @@ void sysbiosMenuDrawHorizLine(uchar *borderPtr, int x1, int x2, int y1, int y2)
 	}
 }
 
-void sysbiosMenuDrawVertLine(uchar *borderPtr, int x1, int x2, int y1, int y2)
+void sysbiosMenuDrawVertLine(uint8_t *borderPtr, int x1, int x2, int y1, int y2)
 {
 	int y;
 
@@ -453,9 +453,9 @@ void sysbiosMenuStrDrawBorder(int x1, int y1, int x2, int y2, int type)
 {
 	//						  +     -     +     |     +     +	
 	//                        UL   Hstr   UR   Vstr   BL    BR
-	uchar borderType1[6] = { 0xDA, 0xC4, 0xBF, 0xB3, 0xC0, 0xD9 };
-	uchar borderType2[6] = { 0xC9, 0xCD, 0xBB, 0xBA, 0xC8, 0xBC };
-	uchar *borderPtr;
+	uint8_t borderType1[6] = { 0xDA, 0xC4, 0xBF, 0xB3, 0xC0, 0xD9 };
+	uint8_t borderType2[6] = { 0xC9, 0xCD, 0xBB, 0xBA, 0xC8, 0xBC };
+	uint8_t *borderPtr;
 
 	// setup border type
 	if (type == 0)
@@ -504,11 +504,11 @@ void sysbiosMenuStrDrawBorder(int x1, int y1, int x2, int y2, int type)
 	gotoxy(x2, y2);
 }
 
-void sysbiosMenuStrDraw(uchar *ptr, colorTableStruct *colTbl)
+void sysbiosMenuStrDraw(uint8_t *ptr, colorTableStruct *colTbl)
 {
 	int len, cx, cy;
-	uchar *str;
-	ushort *ptr16;
+	uint8_t *str;
+	uint16_t *ptr16;
 
 	while ((*ptr != MENU_DONE) && (*ptr != MENU_DONE_1))
 	{
@@ -539,8 +539,8 @@ void sysbiosMenuStrDraw(uchar *ptr, colorTableStruct *colTbl)
 				gotoxy(cx, cy);
 
 				// get pointer to string to show
-				ptr16 = (ushort *)(ptr + 3);
-				str   = (uchar *)((sysbiosBasePtr + 0x10000) + (*ptr16));
+				ptr16 = (uint16_t *)(ptr + 3);
+				str   = (uint8_t *)((sysbiosBasePtr + 0x10000) + (*ptr16));
 				
 				// recursively call ourselves to draw the string
 				sysbiosMenuStrDraw(str, colTbl);
@@ -639,7 +639,7 @@ void sysbiosMenuDrawItem(menuHeader *mh, int itemIdx, int attr, colorTableStruct
 	// draw the header text
 	textattr(colTbl->normal);
 	gotoxy(me->menuPtr->xPosition, me->menuPtr->yPosition);
-	sysbiosMenuStrDraw((uchar *)me->headerText, colTbl);
+	sysbiosMenuStrDraw((uint8_t *)me->headerText, colTbl);
 
 	// now draw the item
 	if (!(me->menuPtr->status & STATUS_NOMODBIN))
@@ -654,7 +654,7 @@ void sysbiosMenuDrawItem(menuHeader *mh, int itemIdx, int attr, colorTableStruct
 				if (!(me->menuPtr->status & STATUS_SHOWONLY))
 					textattr(attr);
 
-				sysbiosMenuStrDraw((uchar *)me->itemList->itemText[idx], colTbl);
+				sysbiosMenuStrDraw((uint8_t *)me->itemList->itemText[idx], colTbl);
 			}
 		}
 		else
@@ -671,7 +671,7 @@ void sysbiosMenuDrawItem(menuHeader *mh, int itemIdx, int attr, colorTableStruct
 			if (!(me->menuPtr->status & STATUS_SHOWONLY))
 				textattr(attr);
 
-			sysbiosMenuStrDraw((uchar *)me->itemList->itemText[idx], colTbl);
+			sysbiosMenuStrDraw((uint8_t *)me->itemList->itemText[idx], colTbl);
 		}
 		else
 		{
@@ -705,7 +705,7 @@ void sysbiosMenuDrawItem(menuHeader *mh, int itemIdx, int attr, colorTableStruct
 
 void drawSetupMenuPage(colorTableStruct *colTbl, menuHeader *mh)
 {
-	uchar *ptr;
+	uint8_t *ptr;
 	int cnt;
 
 	// clear screen
@@ -713,7 +713,7 @@ void drawSetupMenuPage(colorTableStruct *colTbl, menuHeader *mh)
 	clrscr();
 
 	// draw startup string
-	ptr = (uchar *)((sysbiosBasePtr + 0x10000) + mh->menuDef->pointerToStartupString);
+	ptr = (uint8_t *)((sysbiosBasePtr + 0x10000) + mh->menuDef->pointerToStartupString);
 	sysbiosMenuStrDraw(ptr, colTbl);
 	flip_to_console();
 
@@ -881,7 +881,7 @@ void runSetupMenuPage(colorTableStruct *colTbl, menuHeader *mh)
 
 DWORD WINAPI runSetupMenu(LPVOID unused)
 {
-	uchar *ptr, monoTbl[8] = { 0x07, 0x0F, 0x70, 0x07, 0x70, 0x78, 0x07, 0x70 };
+	uint8_t *ptr, monoTbl[8] = { 0x07, 0x0F, 0x70, 0x07, 0x70, 0x78, 0x07, 0x70 };
 	colorTableStruct *colTbl;
 	int cnt;
 
@@ -900,7 +900,7 @@ DWORD WINAPI runSetupMenu(LPVOID unused)
 
 	// search for color table
 	colTbl = NULL;
-	ptr    = (uchar *)(sysbiosBasePtr + 0x10000);
+	ptr    = (uint8_t *)(sysbiosBasePtr + 0x10000);
 	cnt    = 0xFFF0;
 
 	while (cnt--)
@@ -929,7 +929,7 @@ INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, L
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	LPNMTREEVIEW lpnmtv;
-	ulong *type;
+	uint32_t *type;
 	menuHeader *mh;
 	menuEntry *me;
 	menuItem *mi;
@@ -954,7 +954,7 @@ INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, L
 						return FALSE;
 
 					// make pointer to newly selected item's handle
-					type = (ulong *)lpnmtv->itemNew.lParam;
+					type = (uint32_t *)lpnmtv->itemNew.lParam;
 
 					// lookup type
 					switch (*type)
@@ -1059,10 +1059,10 @@ INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, L
 }
 
 
-void sysbiosRefreshMenu(uchar *ptr)
+void sysbiosRefreshMenu(uint8_t *ptr)
 {
-	uchar *sptr, *mptr;
-	ushort *ptr16;
+	uint8_t *sptr, *mptr;
+	uint16_t *ptr16;
 	char buf[256];
 	int len, t, count, pg;
 	HWND htree;
@@ -1073,8 +1073,8 @@ void sysbiosRefreshMenu(uchar *ptr)
 	HTREEITEM hitem;
 	sysbiosMenuDef *menuDefPtr;
 	fileEntry *setupFE;
-	uchar *setupPtr, *menuStrPtr;
-	ulong baseOffset;
+	uint8_t *setupPtr, *menuStrPtr;
+	uint32_t baseOffset;
 	bool done;
 
 	// call our own destroy function to kill any leftover threads and free memory
@@ -1086,7 +1086,7 @@ void sysbiosRefreshMenu(uchar *ptr)
 
 	// lookup menu definition struct
 	sptr  = ptr + 0x1F85D;
-	ptr16 = (ushort *)sptr;
+	ptr16 = (uint16_t *)sptr;
 	menuDefPtr = (sysbiosMenuDef *)((ptr + 0x10000) + (*ptr16));
 
 	if (sysbiosVersion == awdbeBIOSVer60)
@@ -1094,7 +1094,7 @@ void sysbiosRefreshMenu(uchar *ptr)
 		setupFE = awdbeSearchForID(myID, 0x6000);
 		if (setupFE != NULL)
 		{
-			setupPtr   = (uchar *)setupFE->data;
+			setupPtr   = (uint8_t *)setupFE->data;
 			baseOffset = 0;
 		}
 		else
@@ -1131,7 +1131,7 @@ void sysbiosRefreshMenu(uchar *ptr)
 			{
 				menuPtr    = (sysbiosMenuStruct *)((ptr + 0x10000) + menuDefPtr->pointerToPageStart);
 				menuEndPtr = (sysbiosMenuStruct *)((ptr + 0x10000) + menuDefPtr->pointerToPageEnd);
-				menuStrPtr = (uchar *)            ((ptr + 0x10000) + menuDefPtr->pointerToStartupString);
+				menuStrPtr = (uint8_t *)            ((ptr + 0x10000) + menuDefPtr->pointerToStartupString);
 
 				count = (int)(menuEndPtr - menuPtr);
 
@@ -1277,7 +1277,7 @@ int sysbiosGetMaskShift(int mask)
 	return count;
 }
 
-int sysbiosCMOSRead(uchar index, ushort mask)
+int sysbiosCMOSRead(uint8_t index, uint16_t mask)
 {
 	int val;
 
@@ -1297,9 +1297,9 @@ int sysbiosCMOSRead(uchar index, ushort mask)
 	return val;
 }
 
-void sysbiosCMOSWrite(uchar index, ushort mask, ushort val)
+void sysbiosCMOSWrite(uint8_t index, uint16_t mask, uint16_t val)
 {
-	uchar mh, ml, vh, vl;
+	uint8_t mh, ml, vh, vl;
 
 	// check for 16-bit writes
 	if (mask & 0xFF00)
@@ -1326,8 +1326,8 @@ void sysbiosCMOSWrite(uchar index, ushort mask, ushort val)
 void sysbiosCMOSLoadDefaults(int type)
 {
 	menuEntry *me = menuEntryList;
-	uchar idx;
-	ushort val;
+	uint8_t idx;
+	uint16_t val;
 
 	// first, zap the table
 	memset(cmosTable, 0, 0x80);

@@ -31,7 +31,7 @@
 
 INT_PTR CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-void sysbiosRefreshMain(uchar *ptr);
-bool sysbiosUpdateMain(uchar *ptr, bool *modified, awdbeBIOSVersion *vers);
+void sysbiosRefreshMain(uint8_t *ptr);
+bool sysbiosUpdateMain(uint8_t *ptr, bool *modified, awdbeBIOSVersion *vers);
 
 #endif

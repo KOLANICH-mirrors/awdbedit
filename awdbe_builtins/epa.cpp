@@ -41,13 +41,13 @@ static BITMAPINFO bmi;
 static VOID *pvBits;
 
 
-ulong egaPalette[16] = {
+uint32_t egaPalette[16] = {
 	MAKERGB(  0,   0,   0), MAKERGB(0, 0, 128), MAKERGB(0, 128, 0), MAKERGB(0, 128, 128), MAKERGB(128, 0, 0), MAKERGB(128, 0, 128), MAKERGB(128, 128, 0), MAKERGB(192, 192, 192),
 	MAKERGB(128, 128, 128), MAKERGB(0, 0, 255), MAKERGB(0, 255, 0), MAKERGB(0, 255, 255), MAKERGB(255, 0, 0), MAKERGB(255, 0, 255), MAKERGB(255, 255, 0), MAKERGB(255, 255, 255)
 };
 
 
-ushort getEPALogoVersion(uchar *data, ulong size)
+uint16_t getEPALogoVersion(uint8_t *data, uint32_t size)
 {
 	int xs, ys;
 
@@ -65,7 +65,7 @@ ushort getEPALogoVersion(uchar *data, ulong size)
 	return 0;
 }
 
-bool isEPALogo(uchar *data, ulong size)
+bool isEPALogo(uint8_t *data, uint32_t size)
 {
 	if (getEPALogoVersion(data, size) != 0)
 		return TRUE;
@@ -82,8 +82,8 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 	FILE *fp;
 	BITMAPFILEHEADER bmfh;
 	BITMAPV4HEADER bh;
-	ulong count;
-	uchar *tempbuf, *sptr, *dptr;
+	uint32_t count;
+	uint8_t *tempbuf, *sptr, *dptr;
 
 	switch (message)
 	{
@@ -152,9 +152,9 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 
 					// downconvert to 24-bit
 					count	= bh.bV4Width * bh.bV4Height;
-					tempbuf	= new uchar[count * 3];
+					tempbuf	= new uint8_t[count * 3];
 					
-					sptr = (uchar *)pvBits;
+					sptr = (uint8_t *)pvBits;
 					dptr = tempbuf;
 
 					while (count--)
@@ -189,8 +189,8 @@ HWND epaCreateDialog(HWND parentWnd)
 
 void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 {
-	uchar *data8 = (uchar *)fe->data;
-	ushort *data16 = (ushort *)fe->data;
+	uint8_t *data8 = (uint8_t *)fe->data;
+	uint16_t *data16 = (uint16_t *)fe->data;
 	int width, height;
 	char buf[256];
 	RECT rc;
@@ -275,20 +275,20 @@ void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 	switch (ver)
 	{
 		case 1:
-			epaMakeV1Bitmap((uchar *)fe->data, (uchar *)pvBits);
+			epaMakeV1Bitmap((uint8_t *)fe->data, (uint8_t *)pvBits);
 			break;
 
 		case 2:
 			// check for VGA format
 			if ((width == 640) && (height == 480))
-				epaMakeV2VGABitmap((uchar *)fe->data, fe->size, (uchar *)pvBits);
+				epaMakeV2VGABitmap((uint8_t *)fe->data, fe->size, (uint8_t *)pvBits);
 			else
-				epaMakeV2Bitmap((uchar *)fe->data, fe->size, (uchar *)pvBits);
+				epaMakeV2Bitmap((uint8_t *)fe->data, fe->size, (uint8_t *)pvBits);
 			break;
 	}
 
 	// flip the bitmap (because Windows is silly)
-	epaFlipBitmap((uchar *)pvBits, width, height);
+	epaFlipBitmap((uint8_t *)pvBits, width, height);
 
 	// setup our blit position
 	blitrc.left   = rc.left + 10;
@@ -336,20 +336,20 @@ void epaOnDestroyDialog(HWND hwnd)
 	}
 }
 
-void epaMakeV1Bitmap(uchar *data, uchar *outmap)
+void epaMakeV1Bitmap(uint8_t *data, uint8_t *outmap)
 {
 	int xs, ys, x, y, span, bc;
-	uchar *bptr, *aptr, b, a;
-	ulong *dptr, **rowptrs;
+	uint8_t *bptr, *aptr, b, a;
+	uint32_t *dptr, **rowptrs;
 
 	// get x/y size
 	xs = data[0];
 	ys = data[1];
 
 	// make row pointers into the output map for easy lookup
-	rowptrs = new ulong *[ys];
+	rowptrs = new uint32_t *[ys];
 	for (y = 0; y < ys; y++)
-		rowptrs[y] = ((ulong *)outmap) + ((14 * y) * (8 * xs));
+		rowptrs[y] = ((uint32_t *)outmap) + ((14 * y) * (8 * xs));
 
 	// setup attribute and bitmap pointers
 	aptr = data + 2;
@@ -389,15 +389,15 @@ void epaMakeV1Bitmap(uchar *data, uchar *outmap)
 	delete []rowptrs;
 }
 
-void epaMakeV2Bitmap(uchar *data, ulong size, uchar *outmap)
+void epaMakeV2Bitmap(uint8_t *data, uint32_t size, uint8_t *outmap)
 {
 	int xs, ys, x, y, bc, ci;
-	uchar *pptr, *blay, *glay, *rlay, *ilay, bbyte, gbyte, rbyte, ibyte;
-	ushort *szptr;
-	ulong customPalette[16], *curPal, *dptr;
+	uint8_t *pptr, *blay, *glay, *rlay, *ilay, bbyte, gbyte, rbyte, ibyte;
+	uint16_t *szptr;
+	uint32_t customPalette[16], *curPal, *dptr;
 
 	// get x/y size
-	szptr = (ushort *)data;
+	szptr = (uint16_t *)data;
 	xs    = szptr[2] / 8;
 	ys    = szptr[3];
 
@@ -424,11 +424,11 @@ void epaMakeV2Bitmap(uchar *data, ulong size, uchar *outmap)
 	}
 
 	// calculate our RGBI layer pointers
-	rlay = (uchar *)data + 8;
+	rlay = (uint8_t *)data + 8;
 	glay = rlay + (xs * 1);
 	blay = rlay + (xs * 2);
 	ilay = rlay + (xs * 3);
-	dptr = (ulong *)outmap;
+	dptr = (uint32_t *)outmap;
 
 	// make the bitmap!
 	for (y = 0; y < ys; y++)
@@ -469,15 +469,15 @@ void epaMakeV2Bitmap(uchar *data, ulong size, uchar *outmap)
 	}
 }
 
-void epaMakeV2VGABitmap(uchar *data, ulong size, uchar *outmap)
+void epaMakeV2VGABitmap(uint8_t *data, uint32_t size, uint8_t *outmap)
 {
 	int xs, ys, x, y, count;
-	uchar *sptr, *pptr;
-	ushort *szptr;
-	ulong customPalette[256], *curPal, *dptr;
+	uint8_t *sptr, *pptr;
+	uint16_t *szptr;
+	uint32_t customPalette[256], *curPal, *dptr;
 
 	// get x/y size
-	szptr = (ushort *)data;
+	szptr = (uint16_t *)data;
 	xs    = szptr[2];
 	ys    = szptr[3];
 
@@ -508,8 +508,8 @@ void epaMakeV2VGABitmap(uchar *data, ulong size, uchar *outmap)
 	}
 
 	// calculate our RGBI layer pointers
-	sptr = (uchar *)data + 8;
-	dptr = (ulong *)outmap;
+	sptr = (uint8_t *)data + 8;
+	dptr = (uint32_t *)outmap;
 
 	// make the bitmap!
 	for (y = 0; y < ys; y++)
@@ -523,16 +523,16 @@ void epaMakeV2VGABitmap(uchar *data, ulong size, uchar *outmap)
 }
 
 
-void epaFlipBitmap(uchar *outmap, int width, int height)
+void epaFlipBitmap(uint8_t *outmap, int width, int height)
 {
-	uchar *strip, *tptr, *bptr;
+	uint8_t *strip, *tptr, *bptr;
 	int y, wx4, hd2;
 
 	wx4 = width * 4;
 	hd2 = height / 2;
 
 	// allocate a strip buffer for flipping
-	strip = new uchar[wx4];
+	strip = new uint8_t[wx4];
 
 	// setup pointers
 	tptr = outmap;

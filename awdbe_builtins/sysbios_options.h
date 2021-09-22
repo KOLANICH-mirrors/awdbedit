@@ -31,7 +31,7 @@
 
 INT_PTR CALLBACK sysbiosBIOSOptionsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-void sysbiosRefreshBIOSOptions(uchar *ptr);
-void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers);
+void sysbiosRefreshBIOSOptions(uint8_t *ptr);
+void sysbiosUpdateBIOSOptions(uint8_t *ptr, bool *modified, awdbeBIOSVersion vers);
 
 #endif
