@@ -45,6 +45,7 @@
 
 
 void biosUpdateCurrentDialog(void);
+void biosItemChanged(LPNMTREEVIEW lpnmtv);
 void biosRefreshCurrentDialog(void);
 bool biosHandleModified(char *text);
 
@@ -75,5 +76,8 @@ void biosSetModified(bool val);
 awdbeBIOSVersion biosGetVersion(void);
 
 void biosResizeCurrentDialog(HWND hwnd, RECT *rc);
+
+void biosGetDialogSize(SIZE *sz);
+void biosResizeDialog(SIZE sz);
 
 #endif
