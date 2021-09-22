@@ -67,7 +67,7 @@ typedef enum
 
 void	lzhInit(void);
 uint8_t	lzhCalcSum(uint8_t *ptr, uint32_t len);
-lzhErr	lzhCompress(void *fname, uint32_t fnamelen, void *inbuf, uint32_t inbufsize, void *outbuf, uint32_t outbufsize, uint32_t *usedsize);
+lzhErr	lzhCompress(const char *fname, uint32_t fnamelen, void *inbuf, uint32_t inbufsize, void *outbuf, uint32_t outbufsize, uint32_t *usedsize);
 lzhErr	lzhExpand(lzhHeader *lzhptr, void *outbuf, uint32_t outbufsize, uint16_t *crc);
 
 #endif

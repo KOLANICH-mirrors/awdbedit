@@ -49,7 +49,7 @@ uint8_t lzhCalcSum(uint8_t *ptr, uint32_t len)
 	return val;
 }
 
-lzhErr lzhCompress(void *fname, uint32_t fnamelen, void *inbuf, uint32_t inbufsize, void *outbuf, uint32_t outbufsize, uint32_t *usedsize)
+lzhErr lzhCompress(const char *fname, uint32_t fnamelen, void *inbuf, uint32_t inbufsize, void *outbuf, uint32_t outbufsize, uint32_t *usedsize)
 {
 	lzhHeader *lzhhdr = (lzhHeader *)outbuf;
 	lzhHeaderAfterFilename *lzhhdra;
