@@ -40,7 +40,7 @@ typedef struct
 	uint16_t	 crc;					// the crc this file had
 	bool	 crcOK;					// TRUE if the file passed CRC on decompression, FALSE if not
 
-	void	*data;					// the decompressed data of this file
+	uint8_t	*data;					// the decompressed data of this file
 	uint32_t	 offset;				// special/fixed offset of this file in the image, or 0 if none.
 	uint32_t	 flags;					// special flags for this file (used to identify boot & decompression blocks)
 } fileEntry;
