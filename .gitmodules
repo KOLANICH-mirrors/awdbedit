@@ -1,0 +1,12 @@
+[submodule "cmake/DoxygenUtils"]
+	path = cmake/DoxygenUtils
+	url = https://github.com/KOLANICH-libs/DoxygenUtils.cmake
+	branch = master
+	shallow = true
+
+[submodule "cmake/Boilerplate"]
+	path = cmake/Boilerplate
+	url = https://github.com/KOLANICH-libs/Boilerplate.cmake
+	branch = master
+	shallow = true
+
