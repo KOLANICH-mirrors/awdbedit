@@ -27,7 +27,7 @@
 #include <windows.h>
 #include <commctrl.h>
 #include "types.h"
-#include "popupdialog.h"
+#include "popupDialog.h"
 
 
 popupDialog::popupDialog(HINSTANCE inst, HWND parentwnd)

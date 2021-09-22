@@ -27,8 +27,8 @@
 #include <windows.h>
 #include <commctrl.h>
 #include "types.h"
-#include "popupmenu.h"
-#include "popupdialog.h"
+#include "popupMenu.h"
+#include "popupDialog.h"
 
 
 popupMenu::popupMenu(HINSTANCE inst, HWND parentwnd, HWND toolbarwnd, HMENU menu)
