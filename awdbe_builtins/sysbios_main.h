@@ -1,3 +1,4 @@
+#pragma once
 //
 // Award BIOS Editor - sysbios_main.h
 // Copyright (C) 2002-2004, Michael Tedder

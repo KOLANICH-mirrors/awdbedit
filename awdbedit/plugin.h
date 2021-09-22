@@ -1,3 +1,4 @@
+#pragma once
 //
 // Award BIOS Editor - plugin.h
 // Copyright (C) 2002-2004, Michael Tedder

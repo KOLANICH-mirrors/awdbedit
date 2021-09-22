@@ -1,3 +1,4 @@
+#pragma once
 //
 // Award BIOS Editor - awdbedit_ids.h
 // Copyright (C) 2002-2004, Michael Tedder

@@ -1,3 +1,4 @@
+#pragma once
 //
 // Award BIOS Editor - awdbe_exports.h
 // Copyright (C) 2002-2004, Michael Tedder
