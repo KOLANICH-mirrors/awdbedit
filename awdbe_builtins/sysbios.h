@@ -44,7 +44,7 @@ extern awdbeBIOSVersion sysbiosVersion, sysbiosNowVer;
 typedef struct
 {
 	uint32_t	 id;
-	char	*name;
+	const char	*name;
 
 	int		 dialogID;
 	DLGPROC	 dialogProc;

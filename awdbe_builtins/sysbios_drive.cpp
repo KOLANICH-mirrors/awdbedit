@@ -113,6 +113,14 @@ INT_PTR CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM 
 	return FALSE;
 }
 
+const char COLUMN_NAME_Register_Type[] = "Type";
+const char COLUMN_NAME_Register_Cylinders[] = "Cylinders";
+const char COLUMN_NAME_Register_Heads[] = "Heads";
+const char COLUMN_NAME_Register_Precomp[] = "Precomp";
+const char COLUMN_NAME_Register_Control[] = "Control";
+const char COLUMN_NAME_Register_Landzone[] = "Landzone";
+const char COLUMN_NAME_Register_Sectors[] = "Sectors";
+
 
 
 INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -125,13 +133,13 @@ INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	uint16_t *ptr16;
 
 	LVCOLUMN colList[] = {
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 48, "Type",		0, 0, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 68, "Cylinders",	0, 1, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 54, "Heads",		0, 2, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 65, "Precomp",		0, 3, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 60, "Control",		0, 4, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 68, "Landzone",	0, 5, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 57, "Sectors",		0, 6, 0, 0 }
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 48, const_cast<char*>(COLUMN_NAME_Register_Type),		0, 0, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 68, const_cast<char*>(COLUMN_NAME_Register_Cylinders),	0, 1, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 54, const_cast<char*>(COLUMN_NAME_Register_Heads),		0, 2, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 65, const_cast<char*>(COLUMN_NAME_Register_Precomp),		0, 3, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 60, const_cast<char*>(COLUMN_NAME_Register_Control),		0, 4, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 68, const_cast<char*>(COLUMN_NAME_Register_Landzone),	0, 5, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 57, const_cast<char*>(COLUMN_NAME_Register_Sectors),		0, 6, 0, 0 }
 	};
 
 	switch (message)
@@ -245,6 +253,8 @@ INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	return FALSE;
 }
 
+const char MESSAGE_NO_ENTRIES[] = "No entries";
+
 void sysbiosRefreshDriveTable(uint8_t *ptr)
 {
 	HWND hlist;
@@ -328,7 +338,7 @@ void sysbiosRefreshDriveTable(uint8_t *ptr)
 		lvi.mask	 = LVIF_TEXT;
 		lvi.iItem	 = 0;
 		lvi.iSubItem = 0;
-		lvi.pszText  = "No entries";
+		lvi.pszText  = const_cast<char*>(MESSAGE_NO_ENTRIES);
 		SendMessage(hlist, LVM_INSERTITEM, 0, (LPARAM)&lvi);
 	}
 }

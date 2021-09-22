@@ -46,7 +46,7 @@ typedef struct
 extern cfgStruct config;
 
 
-void configInit(char *name, char *subname);
+void configInit(const char *name, const char *subname);
 
 void configCreate(void);
 void configLoad(void);

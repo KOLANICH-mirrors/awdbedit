@@ -44,15 +44,22 @@ uint8_t *sysbiosBasePtr = NULL;
 awdbeBIOSVersion sysbiosVersion = awdbeBIOSVerUnknown;
 awdbeBIOSVersion sysbiosNowVer  = awdbeBIOSVerUnknown;
 
+const char SYSBIOS_ENTRY_NAME_BIOS_ID_or_Versions[] = "BIOS ID / Versions";
+const char SYSBIOS_ENTRY_NAME_Drive_Table[] = "Drive Table";
+const char SYSBIOS_ENTRY_NAME_Chipset_Registers[] = "Chipset Registers";
+const char SYSBIOS_ENTRY_NAME_BIOS_Timings[] = "BIOS Timings";
+const char SYSBIOS_ENTRY_NAME_BIOS_Options[] = "BIOS Options";
+const char SYSBIOS_ENTRY_NAME_Setup_Menu[] = "Setup Menu";
+const char SYSBIOS_ENTRY_NAME_IRQ_Routing[] = "IRQ Routing";
 
 sysbiosTabEntry sysbiosTabList[] = {
-	{ 0, "BIOS ID / Versions",	IDD_SYSBIOS_MAIN,				sysbiosMainFunc,				NULL },
-	{ 1, "Drive Table",			IDD_SYSBIOS_DRIVE_TABLE,		sysbiosDriveTableFunc,			NULL },
-	{ 2, "Chipset Registers",	IDD_SYSBIOS_CHIPSET_REGS,		sysbiosChipsetRegsFunc,			NULL },
-	{ 3, "BIOS Timings",		IDD_SYSBIOS_TIMINGS,			sysbiosBIOSTimingFunc,			NULL },
-	{ 4, "BIOS Options",		IDD_SYSBIOS_BIOS_OPTIONS,		sysbiosBIOSOptionsFunc,			NULL },
-	{ 5, "Setup Menu",			IDD_SYSBIOS_CONFIG_MENU,		sysbiosConfigMenuFunc,			NULL },
-	{ 6, "IRQ Routing",			IDD_SYSBIOS_IRQ_ROUTING,		sysbiosIRQRoutingFunc,			NULL }
+	{ 0, SYSBIOS_ENTRY_NAME_BIOS_ID_or_Versions,	IDD_SYSBIOS_MAIN,				sysbiosMainFunc,				NULL },
+	{ 1, SYSBIOS_ENTRY_NAME_Drive_Table,			IDD_SYSBIOS_DRIVE_TABLE,		sysbiosDriveTableFunc,			NULL },
+	{ 2, SYSBIOS_ENTRY_NAME_Chipset_Registers,		IDD_SYSBIOS_CHIPSET_REGS,		sysbiosChipsetRegsFunc,			NULL },
+	{ 3, SYSBIOS_ENTRY_NAME_BIOS_Timings,			IDD_SYSBIOS_TIMINGS,			sysbiosBIOSTimingFunc,			NULL },
+	{ 4, SYSBIOS_ENTRY_NAME_BIOS_Options,			IDD_SYSBIOS_BIOS_OPTIONS,		sysbiosBIOSOptionsFunc,			NULL },
+	{ 5, SYSBIOS_ENTRY_NAME_Setup_Menu,				IDD_SYSBIOS_CONFIG_MENU,		sysbiosConfigMenuFunc,			NULL },
+	{ 6, SYSBIOS_ENTRY_NAME_IRQ_Routing,			IDD_SYSBIOS_IRQ_ROUTING,		sysbiosIRQRoutingFunc,			NULL }
 };
 
 
@@ -219,7 +226,7 @@ HWND sysbiosCreateDialog(HWND parentWnd)
 	{
 		// add the items to it
 		tc.mask    = TCIF_TEXT;
-		tc.pszText = sysbiosTabList[t].name;
+		tc.pszText = const_cast<char *>(sysbiosTabList[t].name);
 		SendMessage(tabwnd, TCM_INSERTITEM, sysbiosTabList[t].id, (LPARAM)&tc);
 
 		// create this dialog box, too

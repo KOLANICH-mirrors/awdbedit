@@ -211,7 +211,7 @@ void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl)
 	fe->functbl->initFunc((uint64_t)fe);
 }
 
-uint32_t pluginMakeBaseHash(uint16_t typeID, char *name)
+uint32_t pluginMakeBaseHash(uint16_t typeID, const char *name)
 {
 	uint32_t hash = 0x12AB3C7F, *lptr;
 	int len = strlen(name);
@@ -266,7 +266,7 @@ bool pluginHashExists(uint32_t hash)
 	return FALSE;
 }
 
-uint32_t pluginMakeHash(uint16_t typeID, char *name)
+uint32_t pluginMakeHash(uint16_t typeID, const char *name)
 {
 	uint32_t hash;
 

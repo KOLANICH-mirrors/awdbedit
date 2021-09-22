@@ -55,7 +55,7 @@ typedef struct
 
 	uint32_t		 flags;				// any of the AWDBE_* flags below
 	uint16_t		 biosTypeID;		// the 16-bit type ID of the component to be recognized
-	char		*itemName;			// a descriptive name of this item
+	const char		*itemName;			// a descriptive name of this item
 	uint32_t		 userData;			// any 32-bit user storable data
 } awdbeItem;
 
