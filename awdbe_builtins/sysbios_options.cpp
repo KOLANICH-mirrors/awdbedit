@@ -39,10 +39,10 @@ INT_PTR CALLBACK sysbiosBIOSOptionsFunc(HWND hdlg, UINT message, WPARAM wParam, 
 	return FALSE;
 }
 
-void sysbiosRefreshBIOSOptions(uchar *ptr)
+void sysbiosRefreshBIOSOptions(uint8_t *ptr)
 {
-	uchar *sptr;
-	ushort *ptr16;
+	uint8_t *sptr;
+	uint16_t *ptr16;
 	char buf[256], tempbuf[16];
 	int t;
 
@@ -65,7 +65,7 @@ void sysbiosRefreshBIOSOptions(uchar *ptr)
 		CheckDlgButton(sysbiosTabList[4].hwnd, IDC_SYSBIOS_BOOTUP_DISPPCICONF, BST_CHECKED);
 	
 	// power on delay count
-	ptr16 = (ushort *)(ptr + 0x1FEA8);
+	ptr16 = (uint16_t *)(ptr + 0x1FEA8);
 	sprintf(buf, "%d", *ptr16);
 	SetDlgItemText(sysbiosTabList[4].hwnd, IDC_SYSBIOS_BOOTUP_POWERONDELAY, buf);
 
@@ -191,12 +191,12 @@ void sysbiosRefreshBIOSOptions(uchar *ptr)
 	}
 }
 
-void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
+void sysbiosUpdateBIOSOptions(uint8_t *ptr, bool *modified, awdbeBIOSVersion vers)
 {
-	uchar *sptr;
-	ushort *ptr16;
+	uint8_t *sptr;
+	uint16_t *ptr16;
 	char buf[256];
-	ulong temp32;
+	uint32_t temp32;
 
 	// numlock state, bit 0 clear to enable
 	sptr = ptr + 0x1FFE2;
@@ -218,14 +218,14 @@ void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
 	
 	// power on delay count
 	temp32 = 0;
-	ptr16  = (ushort *)(ptr + 0x1FEA8);
+	ptr16  = (uint16_t *)(ptr + 0x1FEA8);
 	GetDlgItemText(sysbiosTabList[4].hwnd, IDC_SYSBIOS_BOOTUP_POWERONDELAY, buf, 256);
 	sscanf(buf, "%d", &temp32);
 
 	if (temp32 > 65535)
 		temp32 = 65535;
 
-	*ptr16 = (ushort)temp32;
+	*ptr16 = (uint16_t)temp32;
 
 	// setup default color value, lower 4 bits
 	temp32 = 0;
@@ -236,7 +236,7 @@ void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
 	if (temp32 > 15)
 		temp32 = 15;
 
-	*sptr = ((*sptr) & 0xF0) | ((uchar)temp32 & 0x0F);
+	*sptr = ((*sptr) & 0xF0) | ((uint8_t)temp32 & 0x0F);
 
 	// post default color value, upper 4 bits
 	temp32 = 0;
@@ -247,7 +247,7 @@ void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
 	if (temp32 > 15)
 		temp32 = 15;
 
-	*sptr = ((*sptr) & 0x0F) | (((uchar)temp32 & 0x0F) << 4);
+	*sptr = ((*sptr) & 0x0F) | (((uint8_t)temp32 & 0x0F) << 4);
 	
 	// post color option stored in bit 0
 	sptr = ptr + 0x1FEAB;
@@ -269,7 +269,7 @@ void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
 	if (temp32 > 255)
 		temp32 = 255;
 
-	*sptr = (uchar)temp32;
+	*sptr = (uint8_t)temp32;
 	
 	// floppy speed switching, bit 1 clear to enable
 	sptr = ptr + 0x1FFE8;

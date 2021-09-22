@@ -33,8 +33,8 @@
 #include "sysbios_irqrouting.h"
 #include "resource.h"
 
-static uchar pciSlotID;
-static uchar *modifyPCIIRQPtr;
+static uint8_t pciSlotID;
+static uint8_t *modifyPCIIRQPtr;
 static sysbiosPCIRoutingEntry *modifyPCIRoutePtr;
 
 INT_PTR CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -76,27 +76,27 @@ INT_PTR CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 					val = 0;
 					GetDlgItemText(hdlg, IDC_MODIFY_IRQ, buf, 256);
 					sscanf(buf, "%x", &val);
-					*modifyPCIIRQPtr = (uchar)val;
+					*modifyPCIIRQPtr = (uint8_t)val;
 
 					val = 0;
 					GetDlgItemText(hdlg, IDC_MODIFY_INTA, buf, 256);
 					sscanf(buf, "%d", &val);
-					modifyPCIRoutePtr->inta = (uchar)val;
+					modifyPCIRoutePtr->inta = (uint8_t)val;
 
 					val = 0;
 					GetDlgItemText(hdlg, IDC_MODIFY_INTB, buf, 256);
 					sscanf(buf, "%d", &val);
-					modifyPCIRoutePtr->intb = (uchar)val;
+					modifyPCIRoutePtr->intb = (uint8_t)val;
 
 					val = 0;
 					GetDlgItemText(hdlg, IDC_MODIFY_INTC, buf, 256);
 					sscanf(buf, "%d", &val);
-					modifyPCIRoutePtr->intc = (uchar)val;
+					modifyPCIRoutePtr->intc = (uint8_t)val;
 
 					val = 0;
 					GetDlgItemText(hdlg, IDC_MODIFY_INTD, buf, 256);
 					sscanf(buf, "%d", &val);
-					modifyPCIRoutePtr->intd = (uchar)val;
+					modifyPCIRoutePtr->intd = (uint8_t)val;
 
 				case IDCANCEL:
 					EndDialog(hdlg, TRUE);
@@ -113,10 +113,10 @@ INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	HWND hlist;
 	int t, val;
-	uchar tempirq, *pciIRQPtr;
+	uint8_t tempirq, *pciIRQPtr;
 	sysbiosPCIRoutingEntry temproute, *pciRoutePtr;
 	LPNMLISTVIEW lpnmlv;
-	ushort *ptr16;
+	uint16_t *ptr16;
 
 	LVCOLUMN colList[] = {
 		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 64, "PCI slot",	0, 0, 0, 0 },
@@ -166,11 +166,11 @@ INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, L
 					if (val != 0)
 					{
 						// make pointer to irq routing list
-						ptr16     = (ushort *)(sysbiosBasePtr + 0x1FE91);
-						pciIRQPtr = (uchar *)((sysbiosBasePtr + 0x10000) + *ptr16);
+						ptr16     = (uint16_t *)(sysbiosBasePtr + 0x1FE91);
+						pciIRQPtr = (uint8_t *)((sysbiosBasePtr + 0x10000) + *ptr16);
 
 						// make pointer to INT mapping table
-						ptr16       = (ushort *)(sysbiosBasePtr + 0x1FE99);
+						ptr16       = (uint16_t *)(sysbiosBasePtr + 0x1FE99);
 						pciRoutePtr = (sysbiosPCIRoutingEntry *)((sysbiosBasePtr + 0x10000) + *ptr16);
 
 						switch (val)
@@ -188,14 +188,14 @@ INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, L
 								// stupid global variables
 								modifyPCIIRQPtr   = &tempirq;
 								modifyPCIRoutePtr = &temproute;
-								memcpy(modifyPCIIRQPtr,   pciIRQPtr,   sizeof(uchar));
+								memcpy(modifyPCIIRQPtr,   pciIRQPtr,   sizeof(uint8_t));
 								memcpy(modifyPCIRoutePtr, pciRoutePtr, sizeof(sysbiosPCIRoutingEntry));
 
 								DialogBox(hinst, MAKEINTRESOURCE(IDD_MODIFY_ROUTING), hdlg, ModifyRoutingFunc);
 
-								if (memcmp(modifyPCIIRQPtr, pciIRQPtr, sizeof(uchar)) || memcmp(modifyPCIRoutePtr, pciRoutePtr, sizeof(sysbiosPCIRoutingEntry)))
+								if (memcmp(modifyPCIIRQPtr, pciIRQPtr, sizeof(uint8_t)) || memcmp(modifyPCIRoutePtr, pciRoutePtr, sizeof(sysbiosPCIRoutingEntry)))
 								{
-									memcpy(pciIRQPtr,   modifyPCIIRQPtr,   sizeof(uchar));
+									memcpy(pciIRQPtr,   modifyPCIIRQPtr,   sizeof(uint8_t));
 									memcpy(pciRoutePtr, modifyPCIRoutePtr, sizeof(sysbiosPCIRoutingEntry));
 
 									awdbeSetModified(myID);
@@ -215,11 +215,11 @@ INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	return FALSE;
 }
 
-void sysbiosRefreshIRQRouting(uchar *ptr)
+void sysbiosRefreshIRQRouting(uint8_t *ptr)
 {
 	HWND hlist;
-	ushort *ptr16;
-	uchar *sptr, *mptr;
+	uint16_t *ptr16;
+	uint8_t *sptr, *mptr;
 	LVITEM lvi;
 	char buf[256];
 	
@@ -233,12 +233,12 @@ void sysbiosRefreshIRQRouting(uchar *ptr)
 	if (sysbiosVersion != awdbeBIOSVer60)
 	{
 		// make irq pointer
-		ptr16 = (ushort *)(ptr + 0x1FE91);
-		sptr  = (uchar *)((ptr + 0x10000) + *ptr16);
+		ptr16 = (uint16_t *)(ptr + 0x1FE91);
+		sptr  = (uint8_t *)((ptr + 0x10000) + *ptr16);
 
 		// make mapping pointer
-		ptr16 = (ushort *)(ptr + 0x1FE99);
-		mptr  = (uchar *)((ptr + 0x10000) + *ptr16);
+		ptr16 = (uint16_t *)(ptr + 0x1FE99);
+		mptr  = (uint8_t *)((ptr + 0x10000) + *ptr16);
 
 		// add the irqs and pci slots
 		lvi.mask  = LVIF_TEXT;

@@ -55,14 +55,14 @@ typedef struct
 	char		 fname[256];			// full path/name of image loaded
 	biosLayout	 layout;				// type of layout of the file table
 
-	uchar		*imageData;				// the loaded image
-	ulong		 imageSize;				// size of the loaded image (in bytes)
+	uint8_t		*imageData;				// the loaded image
+	uint32_t		 imageSize;				// size of the loaded image (in bytes)
 
 	fileEntry	*fileTable;				// uncompressed data of all files
 	int			 fileCount;				// number of files in the file table
-	ulong		 tableOffset;			// offset of dynamic file table from start of image
+	uint32_t		 tableOffset;			// offset of dynamic file table from start of image
 
-	ulong		 maxTableSize;			// maximum compressed size allowed in the file table
+	uint32_t		 maxTableSize;			// maximum compressed size allowed in the file table
 } biosStruct;
 
 typedef struct updateEntry
@@ -87,12 +87,12 @@ static HWND hwnd, statusWnd, treeView, hPropDlgListWnd, hModDlgWnd;
 static HTREEITEM recgItem, inclItem, unkItem;
 static RECT *dlgrc;
 static biosStruct biosdata;
-static ulong curHash;
-static ushort insertID;
+static uint32_t curHash;
+static uint16_t insertID;
 static fileEntry *curFileEntry;
 static bool ignoreNotify;
-static char *biosChangedText = "This BIOS image has been changed.  Do you want to save your changes before loading a new one?";
-static ulong biosFreeSpace;
+static char biosChangedText[] = "This BIOS image has been changed.  Do you want to save your changes before loading a new one?";
+static uint32_t biosFreeSpace;
 
 void biosRemoveEntry(fileEntry *toRemove);
 
@@ -114,7 +114,7 @@ void biosTitleUpdate(void)
 {
 	char buf[260];
 	int t;
-	ulong size;
+	uint32_t size;
 	fileEntry *fe;
 
 	sprintf(buf, "%s - [%s%s", APP_VERSION, biosdata.fname, (biosdata.modified == TRUE) ? " *]" : "]");
@@ -140,7 +140,7 @@ void biosTitleUpdate(void)
 
 void biosInit(HINSTANCE hi, HWND hw, HWND statwnd, HWND treewnd, HTREEITEM recgitem, HTREEITEM inclitem, HTREEITEM unkitem, RECT *dlgrect)
 {
-	ulong count;
+	uint32_t count;
 	HWND loaddlg, hwnd_loadtext, hwnd_loadprog;
 
 	hinst		= hi;
@@ -288,9 +288,9 @@ fileEntry *biosExpandTable(void)
 	return tempTable;
 }
 
-void biosWriteEntry(fileEntry *fe, lzhHeader *lzhhdr, ulong offset)
+void biosWriteEntry(fileEntry *fe, lzhHeader *lzhhdr, uint32_t offset)
 {
-	ushort crc;
+	uint16_t crc;
 	lzhHeaderAfterFilename *lzhhdra;
 
 	lzhhdra = (lzhHeaderAfterFilename *) ((lzhhdr->filename) + lzhhdr->filenameLen);
@@ -304,7 +304,7 @@ void biosWriteEntry(fileEntry *fe, lzhHeader *lzhhdr, ulong offset)
 	fe->compSize = lzhhdr->compressedSize;
 	fe->type	 = lzhhdr->fileType;
 	fe->crc		 = lzhhdra->crc;
-	fe->data	 = (void *)new uchar[fe->size];
+	fe->data	 = (void *)new uint8_t[fe->size];
 	fe->offset	 = offset;
 	fe->flags	 = 0;
 
@@ -332,10 +332,10 @@ void biosWriteEntry(fileEntry *fe, lzhHeader *lzhhdr, ulong offset)
 	}
 }
 
-fileEntry *biosScanForID(ushort id)
+fileEntry *biosScanForID(uint16_t id)
 {
 	fileEntry *fe = &biosdata.fileTable[0];
-	ulong count = biosdata.fileCount;
+	uint32_t count = biosdata.fileCount;
 
 	while (count--)
 	{
@@ -356,7 +356,7 @@ void biosUpdateComponents(void)
 	TVINSERTSTRUCT tvis;
 	fileEntry *fe;
 	awdbeItem *item;
-	ulong count;
+	uint32_t count;
 	awdbeItem *subMenuPtr, *lastSubMenuPtr;
 	HTREEITEM subMenuTree;
 	awdbeItemEntry *ilist;
@@ -589,16 +589,16 @@ bool biosHandleModified(char *text)
 bool biosOpenFile(char *fname)
 {
 	FILE *fp;
-	uchar *ptr;
-	uchar _0xEA;
-	ulong count, _MRB;
+	uint8_t *ptr;
+	uint8_t _0xEA;
+	uint32_t count, _MRB;
 	HWND loaddlg, hwnd_loadtext, hwnd_loadprog;
 	lzhHeader *lzhhdr;
 	lzhHeaderAfterFilename *lzhhdra;
 	bool done;
 	int curFile;
-	uchar *nextUpdate, *bootBlockData = NULL, *decompBlockData = NULL;
-	ulong bootBlockSize = 0, decompBlockSize = 0;
+	uint8_t *nextUpdate, *bootBlockData = NULL, *decompBlockData = NULL;
+	uint32_t bootBlockSize = 0, decompBlockSize = 0;
 	fileEntry *fe;
 
 	// warn if the current bios has been modified
@@ -655,7 +655,7 @@ bool biosOpenFile(char *fname)
 	SendMessage(hwnd_loadprog, PBM_SETSTEP, 1, 0);
 
 	// allocate space and load the image into memory
-	biosdata.imageData = new uchar[biosdata.imageSize];
+	biosdata.imageData = new uint8_t[biosdata.imageSize];
 	ptr	= biosdata.imageData;
 
 	fseek(fp, 0, SEEK_SET);
@@ -681,7 +681,7 @@ bool biosOpenFile(char *fname)
 		if (!memicmp(ptr, "Award BootBlock Bios", 20))
 		{
 			bootBlockSize = biosdata.imageSize - (ptr - biosdata.imageData);
-			bootBlockData = new uchar[bootBlockSize];
+			bootBlockData = new uint8_t[bootBlockSize];
 			memcpy(bootBlockData, ptr, bootBlockSize);
 
 			count = 0;
@@ -708,7 +708,7 @@ bool biosOpenFile(char *fname)
 		{
 			// copy the decompression block
 			decompBlockSize = (biosdata.imageSize - (ptr - biosdata.imageData)) - bootBlockSize;
-			decompBlockData = new uchar[decompBlockSize];
+			decompBlockData = new uint8_t[decompBlockSize];
 			memcpy(decompBlockData, ptr, decompBlockSize);
 
 			count = 0;
@@ -748,7 +748,7 @@ bool biosOpenFile(char *fname)
 		}
 		else
 		{
-			if ((ulong)(ptr - biosdata.imageData) >= biosdata.imageSize)
+			if ((uint32_t)(ptr - biosdata.imageData) >= biosdata.imageSize)
 				done = TRUE;
 		}
 
@@ -859,7 +859,7 @@ bool biosOpenFile(char *fname)
 					switch (biosdata.layout)
 					{
 						case LAYOUT_2_2_2:
-//							if ( (*((ulong *) (ptr + 2)) == 0xFFFFFFFF) || (*((ulong *) (ptr + 2)) == 0x00000000) )
+//							if ( (*((uint32_t *) (ptr + 2)) == 0xFFFFFFFF) || (*((uint32_t *) (ptr + 2)) == 0x00000000) )
 							if ( (*(ptr + 2) == 0xFF) || (*(ptr + 2) == 0x00) )
 							{
 								// ok, end of file table.
@@ -874,7 +874,7 @@ bool biosOpenFile(char *fname)
 
 						case LAYOUT_2_1_1:
 						case LAYOUT_1_1_1:
-//							if ( (*((ulong *) (ptr + 1)) == 0xFFFFFFFF) || (*((ulong *) (ptr + 1)) == 0x00000000) )
+//							if ( (*((uint32_t *) (ptr + 1)) == 0xFFFFFFFF) || (*((uint32_t *) (ptr + 1)) == 0x00000000) )
 							if ( (*(ptr + 1) == 0xFF) || (*(ptr + 1) == 0x00) )
 							{
 								// ok, end of file table.
@@ -989,7 +989,7 @@ bool biosOpenFile(char *fname)
 				{
 					// we found something!  add it to our table
 					fe = biosExpandTable();
-					biosWriteEntry(fe, lzhhdr, (ulong)(ptr - biosdata.imageData));
+					biosWriteEntry(fe, lzhhdr, (uint32_t)(ptr - biosdata.imageData));
 
 					// if this offset is less than our maximum table size, then adjust the size appropriately...
 					// (note: the dynamic file table cannot exceed the space occupied by any fixed components)
@@ -1024,7 +1024,7 @@ bool biosOpenFile(char *fname)
 		fe->type	 = TYPEID_DECOMPBLOCK;
 		fe->crc		 = 0;
 		fe->crcOK	 = TRUE;
-		fe->data	 = (void *)new uchar[fe->size];
+		fe->data	 = (void *)new char[fe->size];
 		fe->offset	 = 0;
 		fe->flags	 = FEFLAGS_DECOMP_BLOCK;
 
@@ -1044,7 +1044,7 @@ bool biosOpenFile(char *fname)
 		fe->type	 = TYPEID_BOOTBLOCK;
 		fe->crc		 = 0;
 		fe->crcOK	 = TRUE;
-		fe->data	 = (void *)new uchar[fe->size];
+		fe->data	 = (void *)new uint8_t[fe->size];
 		fe->offset	 = 0;
 		fe->flags	 = FEFLAGS_BOOT_BLOCK;
 
@@ -1141,16 +1141,16 @@ void biosRevert(void)
 
 void biosWriteComponent(fileEntry *fe, FILE *fp, int fileIdx)
 {
-	uchar *tempbuf;
-	ulong tempbufsize, usedsize;
+	uint8_t *tempbuf;
+	uint32_t tempbufsize, usedsize;
 	lzhErr err;
 	lzhHeader *lzhhdr;
-	uchar csum, *cptr, ebcount;
-	ulong clen;
+	uint8_t csum, *cptr, ebcount;
+	uint32_t clen;
 
 	// alloc a temp buffer for compression (assume file can't be compressed at all)
 	tempbufsize	= fe->size;
-	tempbuf		= new uchar[tempbufsize + sizeof(lzhHeader) + sizeof(lzhHeaderAfterFilename) + 256];
+	tempbuf		= new uint8_t[tempbufsize + sizeof(lzhHeader) + sizeof(lzhHeaderAfterFilename) + 256];
 
 	// compress this file
 	err = lzhCompress(fe->name, fe->nameLen, fe->data, fe->size, tempbuf, tempbufsize, &usedsize);
@@ -1215,9 +1215,9 @@ bool biosSaveFile(char *fname)
 	FILE *fp;
 	int t, pos, count;
 	fileEntry *fe;
-	ulong decompSize, bootSize;
-	uchar ch, csum1, csum2, rcs1, rcs2;
-	char buf[256];
+	uint32_t decompSize, bootSize;
+	uint8_t ch, csum1, csum2, rcs1, rcs2;
+	int8_t buf[256];
 
 	// open the file
 	fp = fopen(fname, "wb");
@@ -1476,7 +1476,7 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 	LVITEM lvi;
 	int t, imgid = 0, boxsize, bytesperpixel, curX, heightOffset;
 	fileEntry *fe, *fe2;
-	ulong bootSize, decompSize;
+	uint32_t bootSize, decompSize;
 	PAINTSTRUCT ps;
 	HDC hdc;
 	HIMAGELIST himl;
@@ -1901,8 +1901,8 @@ void biosUpdateCurrentDialog(void)
 {
 	HWND hedit;
 	char buf[256];
-	ulong len, data;
-	ushort data16;
+	uint32_t len, data;
+	uint16_t data16;
 	awdbeItem *item;
 
 	// first, update the data from our shared controls
@@ -1931,7 +1931,7 @@ void biosUpdateCurrentDialog(void)
 		if (IsWindow(hedit))
 		{
 			GetWindowText(hedit, buf, 256);
-			sscanf(buf, "%04X", &data16);
+			sscanf(buf, "%04hX", &data16);
 
 			// compare data
 			if (data16 != curFileEntry->type)
@@ -2177,16 +2177,16 @@ void biosItemChanged(LPNMTREEVIEW lpnmtv)
 	}
 }
 
-void biosTempCompressData(void *fname, ulong fnameLen, void *data, ulong size, ulong *compSize, ushort *crc)
+void biosTempCompressData(const char *fname, uint32_t fnameLen, void *data, uint32_t size, uint32_t *compSize, uint16_t *crc)
 {
-	uchar *tempbuf;
-	ulong tempbufsize, usedsize;
+	uint8_t *tempbuf;
+	uint32_t tempbufsize, usedsize;
 	lzhHeader *lzhhdr;
 	lzhHeaderAfterFilename *lzhhdra;
 
 	// do a temporary compression on this file to determine its compressed size and other stuff
 	tempbufsize	= size;
-	tempbuf		= new uchar[tempbufsize + sizeof(lzhHeader) + sizeof(lzhHeaderAfterFilename) + 256];
+	tempbuf		= new uint8_t[tempbufsize + sizeof(lzhHeader) + sizeof(lzhHeaderAfterFilename) + 256];
 	lzhhdr		= (lzhHeader *)tempbuf;
 	lzhhdra		= (lzhHeaderAfterFilename *) ((lzhhdr->filename) + lzhhdr->filenameLen);
 
@@ -2198,11 +2198,11 @@ void biosTempCompressData(void *fname, ulong fnameLen, void *data, ulong size, u
 	delete []tempbuf;
 }
 
-bool biosAddComponent(char *fname, ushort id, ulong offset)
+bool biosAddComponent(char *fname, uint16_t id, uint32_t offset)
 {
 	char name[256], ext[256];
 	FILE *fp;
-	ulong size;
+	uint32_t size;
 	fileEntry *fe;
 	bool failedFit;
 
@@ -2242,7 +2242,7 @@ bool biosAddComponent(char *fname, ushort id, ulong offset)
 	fe->type	 = id;
 	fe->crc		 = 0;
 	fe->crcOK	 = TRUE;
-	fe->data	 = (void *)new uchar[fe->size];
+	fe->data	 = (void *)new uint8_t[fe->size];
 	fe->offset	 = offset;
 	fe->flags	 = 0;
 
@@ -2282,8 +2282,8 @@ INT_PTR APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPara
 {
 	char buf[256];
 	OPENFILENAME ofn;
-	ulong offset;
-	ushort id;
+	uint32_t offset;
+	uint16_t id;
 	fileEntry *fe;
 	int t;
 
@@ -2342,7 +2342,7 @@ INT_PTR APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPara
 				case IDOK:
 					// first, get our ID and check it
 					GetDlgItemText(hdlg, IDC_INSERT_ID, buf, 256);
-					sscanf(buf, "%04X", &id);
+					sscanf(buf, "%04hX", &id);
 
 					if ((buf[0] == 0) || (id == 0))
 					{
@@ -2412,7 +2412,7 @@ INT_PTR APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPara
 	return FALSE;
 }
 
-void biosInsert(ushort typeID)
+void biosInsert(uint16_t typeID)
 {
 	insertID = typeID;	
 	DialogBox(hinst, MAKEINTRESOURCE(IDD_INSERT_FILE), hwnd, InsertProc);
@@ -2422,10 +2422,10 @@ void biosReplaceFile(char *fname)
 {
 	char name[256], ext[256];
 	FILE *fp;
-	ulong size, compSize, adjFreeSpace;
-	ushort crc;
+	uint32_t size, compSize, adjFreeSpace;
+	uint16_t crc;
 	bool failedFit;
-	uchar *tempbuf;
+	uint8_t *tempbuf;
 	HWND hedit;
 	awdbeItem *item;
 
@@ -2454,7 +2454,7 @@ void biosReplaceFile(char *fname)
 	}
 
 	// allocate a temp buffer and read the file in
-	tempbuf = new uchar[size];
+	tempbuf = new uint8_t[size];
 	fread(tempbuf, 1, size, fp);
 	fclose(fp);
 
@@ -3083,7 +3083,7 @@ awdbeBIOSVersion biosGetVersion(void)
 {
 	awdbeBIOSVersion vers = awdbeBIOSVerUnknown;
 	fileEntry *fe;
-	uchar *sptr;
+	uint8_t *sptr;
 	int len;
 
 	fe = biosScanForID(0x5000);
@@ -3091,7 +3091,7 @@ awdbeBIOSVersion biosGetVersion(void)
 		return vers;
 
 	// get the bios's version
-	sptr = ((uchar *)fe->data) + 0x1E060;
+	sptr = ((uint8_t *)fe->data) + 0x1E060;
 	len  = (*sptr++) - 1;
 
 	while (len--)

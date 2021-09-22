@@ -35,8 +35,8 @@
 HANDLE hCon = (HANDLE)-1;
 bool madeConsole = FALSE;
 WORD   attrib = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
-uchar  cursor_x, cursor_y, size_x, size_y;
-ushort *screen = NULL, *scrptr;
+uint8_t  cursor_x, cursor_y, size_x, size_y;
+uint16_t *screen = NULL, *scrptr;
 
 HANDLE getConsoleHandle(void)
 {
@@ -141,7 +141,7 @@ void change_size(int xs, int ys)
 	size_y = ys;
 
 	if (screen) delete []screen;
-	screen = new ushort[size_x * size_y * 2];
+	screen = new uint16_t[size_x * size_y * 2];
 	scrptr = screen;
 
 	size.X   = size_x;
@@ -183,7 +183,7 @@ void update_console_position(void)
 	SetConsoleCursorPosition(hCon, pos);
 }
 
-ushort *get_screen_ptr(void)
+uint16_t *get_screen_ptr(void)
 {
 	return screen;
 }
@@ -191,7 +191,7 @@ ushort *get_screen_ptr(void)
 void clrscr(void)
 {
 	int t;
-	ushort *ptr;
+	uint16_t *ptr;
 
 	ptr = screen;
 	t = size_x * size_y;
@@ -295,7 +295,7 @@ void window(int l, int t, int r, int b)
 void scroll(void)
 {
 	int t, xsize;
-	ushort *sptr, *dptr;
+	uint16_t *sptr, *dptr;
 
 	xsize = size_x << 1;
 	sptr = screen + xsize;

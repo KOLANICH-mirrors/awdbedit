@@ -226,7 +226,7 @@ HWND builtinsCreateDialog(awdbeItem *item, fileEntry *fe, HWND parentWnd, RECT *
 	{
 		case 0x4000:				// fullscreen bitmap
 		case 0x4002:				// epa logo
-			if (isEPALogo((uchar *)fe->data, fe->size))
+			if (isEPALogo((uint8_t *)fe->data, fe->size))
 			{
 				hwnd = epaCreateDialog(parentWnd);
 				epaRefreshDialog(hwnd, fe);

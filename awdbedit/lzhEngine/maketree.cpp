@@ -14,10 +14,10 @@
 
 static int	  n, heapsize;
 static short  heap[NC + 1];
-static ushort *freq, *sortptr, len_cnt[17];
-static uchar  *len;
+static uint16_t *freq, *sortptr, len_cnt[17];
+static uint8_t  *len;
 
-static void count_len(ushort i)  /* call with i = root */
+static void count_len(uint16_t i)  /* call with i = root */
 {
 	static int depth = 0;
 
@@ -30,10 +30,10 @@ static void count_len(ushort i)  /* call with i = root */
 	}
 }
 
-static void make_len(ushort root)
+static void make_len(uint16_t root)
 {
 	int i, k;
-	ulong cum;
+	uint32_t cum;
 
 	for (i = 0; i <= 16; i++) len_cnt[i] = 0;
 	count_len(root);
@@ -56,10 +56,10 @@ static void make_len(ushort root)
 	}
 }
 
-static void downheap(ushort i)
+static void downheap(uint16_t i)
 	/* priority queue; send i-th entry down heap */
 {
-	ushort j, k;
+	uint16_t j, k;
 
 	k = heap[i];
 	while ((j = 2 * i) <= heapsize) {
@@ -71,10 +71,10 @@ static void downheap(ushort i)
 	heap[i] = k;
 }
 
-static void make_code(ushort n, uchar len[], ushort code[])
+static void make_code(uint16_t n, uint8_t len[], uint16_t code[])
 {
-	ushort i;
-	ushort start[18];
+	uint16_t i;
+	uint16_t start[18];
 
 	start[1] = 0;
 	for (i = 1; i <= 16; i++)
@@ -82,11 +82,11 @@ static void make_code(ushort n, uchar len[], ushort code[])
 	for (i = 0; i < n; i++) code[i] = start[len[i]]++;
 }
 
-ushort make_tree(ushort nparm, ushort freqparm[],
-				uchar lenparm[], ushort codeparm[])
+uint16_t make_tree(uint16_t nparm, uint16_t freqparm[],
+				uint8_t lenparm[], uint16_t codeparm[])
 	/* make tree, calculate len[], return root */
 {
-	ushort i, j, k, avail;
+	uint16_t i, j, k, avail;
 
 	n = nparm;  freq = freqparm;  len = lenparm;
 	avail = n;  heapsize = 0;  heap[1] = 0;

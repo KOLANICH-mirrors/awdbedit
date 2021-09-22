@@ -27,16 +27,16 @@
 #ifndef EPA_H
 #define EPA_H
 
-bool isEPALogo(uchar *data, ulong size);
+bool isEPALogo(uint8_t *data, uint32_t size);
 
 HWND epaCreateDialog(HWND parentWnd);
 void epaRefreshDialog(HWND hwnd, fileEntry *fe);
 void epaOnDestroyDialog(HWND hwnd);
 
-void epaMakeV1Bitmap(uchar *data, uchar *outmap);
-void epaMakeV2Bitmap(uchar *data, ulong size, uchar *outmap);
-void epaMakeV2VGABitmap(uchar *data, ulong size, uchar *outmap);
-void epaFlipBitmap(uchar *outmap, int width, int height);
+void epaMakeV1Bitmap(uint8_t *data, uint8_t *outmap);
+void epaMakeV2Bitmap(uint8_t *data, uint32_t size, uint8_t *outmap);
+void epaMakeV2VGABitmap(uint8_t *data, uint32_t size, uint8_t *outmap);
+void epaFlipBitmap(uint8_t *outmap, int width, int height);
 void epaBlitBitmap(HDC blitToDC);
 
 #endif

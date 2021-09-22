@@ -50,14 +50,14 @@ void pluginInit(void);
 void pluginShutdown(void);
 
 void pluginInitScan(HWND text, HWND prog);
-ulong pluginScan(char *dir, bool doLoad);
+uint32_t pluginScan(char *dir, bool doLoad);
 
 void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl);
 
 awdbeItemEntry *pluginGetItemList(void);
 awdbeItem *pluginFindResponder(fileEntry *fe);
 awdbeItem *pluginFindSubMenu(awdbeItem *item);
-awdbeItem *pluginFindHash(ulong hash);
+awdbeItem *pluginFindHash(uint32_t hash);
 
 void pluginCallOnLoad(fileEntry *fe, int count);
 HWND pluginCallCreateDialog(awdbeItem *item, fileEntry *curFileEntry, HWND parentWnd, RECT *dlgrc);
@@ -66,7 +66,7 @@ bool pluginCallRefreshDialog(awdbeItem *item, fileEntry *fe, HWND hwnd);
 void pluginCallOnDestroyDialog(awdbeItem *item, HWND hwnd);
 void pluginCallOnResizeDialog(awdbeItem *item, HWND hwnd, RECT *rc);
 
-void pluginAddToMenu(HMENU menu, ulong fromID);
-void pluginShowAboutBox(ulong index, HWND parentWnd);
+void pluginAddToMenu(HMENU menu, uint32_t fromID);
+void pluginShowAboutBox(uint32_t index, HWND parentWnd);
 
 #endif

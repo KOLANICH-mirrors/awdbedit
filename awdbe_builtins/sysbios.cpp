@@ -40,7 +40,7 @@
 #include "resource.h"
 
 
-uchar *sysbiosBasePtr = NULL;
+uint8_t *sysbiosBasePtr = NULL;
 awdbeBIOSVersion sysbiosVersion = awdbeBIOSVerUnknown;
 awdbeBIOSVersion sysbiosNowVer  = awdbeBIOSVerUnknown;
 
@@ -59,13 +59,13 @@ sysbiosTabEntry sysbiosTabList[] = {
 
 static bool ignoreUpdate = FALSE;
 
-int  sysbiosFindLimit(uchar *ptr);
+int  sysbiosFindLimit(uint8_t *ptr);
 void sysbiosUpdateLimit(HWND hdlg, int id, int curlen, int maxlen);
 
 
-uchar sysbiosCalcBiosChecksum(uchar *ptr, ulong start, ulong end, int method)
+uint8_t sysbiosCalcBiosChecksum(uint8_t *ptr, uint32_t start, uint32_t end, int method)
 {
-	uchar csum = 0x00;
+	uint8_t csum = 0x00;
 	int count;
 
 	ptr  += start;
@@ -87,8 +87,8 @@ uchar sysbiosCalcBiosChecksum(uchar *ptr, ulong start, ulong end, int method)
 
 void sysbiosRecalcChecksum(bool showErr)
 {
-	ulong from, to;
-	uchar csum, *sptr;
+	uint32_t from, to;
+	uint8_t csum, *sptr;
 	char buf[256];
 
 	// can't do anything without a window...
@@ -300,9 +300,9 @@ void sysbiosOnDestroyDialog(HWND dialogWnd)
 }
 
 
-int sysbiosFindLimit(uchar *base)
+int sysbiosFindLimit(uint8_t *base)
 {
-	uchar *ptr = base;
+	uint8_t *ptr = base;
 	int len;
 
 	// first, skip all bytes that are not NULLs
@@ -350,7 +350,7 @@ void sysbiosOnLoad(fileEntry *fe)
 
 void sysbiosRefreshDialog(HWND hwnd, fileEntry *fe)
 {
-	uchar *ptr = (uchar *)fe->data;
+	uint8_t *ptr = (uint8_t *)fe->data;
 	char buf[256];
 
 	// get the bios's version
@@ -363,7 +363,7 @@ void sysbiosRefreshDialog(HWND hwnd, fileEntry *fe)
 	}
 
 	// store base pointer
-	sysbiosBasePtr = (uchar *)fe->data;
+	sysbiosBasePtr = (uint8_t *)fe->data;
 
 	// check to make sure we have a valid window handle (only the first is sufficient)
 	if (sysbiosTabList[0].hwnd == NULL)
@@ -405,7 +405,7 @@ void sysbiosRefreshDialog(HWND hwnd, fileEntry *fe)
 
 bool sysbiosUpdateDialog(HWND hwnd, fileEntry *fe)
 {
-	uchar *ptr = (uchar *)fe->data;
+	uint8_t *ptr = (uint8_t *)fe->data;
 	bool modified = FALSE;
 	awdbeBIOSVersion vers;
 
@@ -432,7 +432,7 @@ bool sysbiosUpdateDialog(HWND hwnd, fileEntry *fe)
 	return modified;
 }
 
-awdbeBIOSVersion sysbiosGetVersion(uchar *sptr, int len)
+awdbeBIOSVersion sysbiosGetVersion(uint8_t *sptr, int len)
 {
 	awdbeBIOSVersion vers = awdbeBIOSVerUnknown;
 

@@ -29,6 +29,6 @@
 
 #include <stdint.h>
 
-#define OFFSETOF(a, b)		( (ulong) &( ((a *)0)->b) )
+#define OFFSETOF(a, b)		( (uint32_t) &( ((a *)0)->b) )
 
 #endif

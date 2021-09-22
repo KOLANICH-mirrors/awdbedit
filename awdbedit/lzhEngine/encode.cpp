@@ -20,23 +20,23 @@
 
 typedef short node;
 
-static uchar *text, *childcount;
+static uint8_t *text, *childcount;
 static node pos, matchpos, avail,
 	*position, *parent, *prev, *next = NULL;
-static ushort remainder, matchlen;
+static uint16_t remainder, matchlen;
 
 #if MAXMATCH <= (UCHAR_MAX + 1)
-	static uchar *level;
+	static uint8_t *level;
 #else
-	static ushort *level;
+	static uint16_t *level;
 #endif
 
 static void allocate_memory(void)
 {
 	if (next != NULL) return;
-	text = (uchar *)malloc(DICSIZ * 2 + MAXMATCH);
-	level      = (uchar *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*level));
-	childcount = (uchar *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*childcount));
+	text = (uint8_t *)malloc(DICSIZ * 2 + MAXMATCH);
+	level      = (uint8_t *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*level));
+	childcount = (uint8_t *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*childcount));
 	#if PERCOLATE
 	position = (short *)malloc((DICSIZ + UCHAR_MAX + 1) * sizeof(*position));
 	#else
@@ -68,7 +68,7 @@ static void init_slide(void)
 
 #define HASH(p, c) ((p) + ((c) << (DICBIT - 9)) + DICSIZ * 2)
 
-static node child(node q, uchar c)
+static node child(node q, uint8_t c)
 	/* q's child for character c (NIL if not found) */
 {
 	node r;
@@ -79,7 +79,7 @@ static node child(node q, uchar c)
 	return r;
 }
 
-static void makechild(node q, uchar c, node r)
+static void makechild(node q, uint8_t c, node r)
 	/* Let r be q's child for character c. */
 {
 	node h, t;
@@ -98,7 +98,7 @@ void split(node old)
 	t = prev[old];  prev[newnode] = t;  next[t] = newnode;
 	t = next[old];  next[newnode] = t;  prev[t] = newnode;
 	parent[newnode] = parent[old];
-	level[newnode] = (uchar)matchlen;
+	level[newnode] = (uint8_t)matchlen;
 	position[newnode] = pos;
 	makechild(newnode, text[matchpos + matchlen], old);
 	makechild(newnode, text[pos + matchlen], pos);
@@ -107,7 +107,7 @@ void split(node old)
 static void insert_node(void)
 {
 	node q, r, j, t;
-	uchar c, *t1, *t2;
+	uint8_t c, *t1, *t2;
 
 	if (matchlen >= 4) {
 		matchlen--;
@@ -219,7 +219,7 @@ static void get_next_match(void)
 
 void encode(void)
 {
-	ushort lastmatchlen;
+	uint16_t lastmatchlen;
 	node lastmatchpos;
 
 	allocate_memory();  init_slide();  huf_encode_start();

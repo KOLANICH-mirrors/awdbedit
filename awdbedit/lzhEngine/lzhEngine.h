@@ -35,37 +35,37 @@
 #include "../types.h"
 
 //--------- io.cpp ----------
-extern ushort bitbuf;
+extern uint16_t bitbuf;
 extern bool unpackable;
 
 #define INIT_CRC  0  // CCITT: 0xFFFF
 #define BITBUFSIZ (CHAR_BIT * sizeof(bitbuf))
 
-void ioInit(void *instream, ulong instreamsize, void *outstream, ulong outstreamsize);
-ushort ioGetCRC(void);
-ulong ioGetInSizeUsed(void);
-ulong ioGetOutSizeUsed(void);
+void ioInit(void *instream, uint32_t instreamsize, void *outstream, uint32_t outstreamsize);
+uint16_t ioGetCRC(void);
+uint32_t ioGetInSizeUsed(void);
+uint32_t ioGetOutSizeUsed(void);
 
 void make_crctable(void);
 void fillbuf(int n);
-ushort getbits(int n);
-void putbits(int n, ushort x);
-int memread_crc(uchar *dest, int n);
-void memwrite_crc(uchar *src, int n);
+uint16_t getbits(int n);
+void putbits(int n, uint16_t x);
+int memread_crc(uint8_t *dest, int n);
+void memwrite_crc(uint8_t *src, int n);
 void init_getbits(void);
 void init_putbits(void);
 
 
 //--------- encode.cpp / decode.cpp -----------
 #define DICBIT		13    // 12(-lh4-) or 13(-lh5-)
-#define DICSIZ		(ushort)(1U << DICBIT)
+#define DICSIZ		(uint16_t)(1U << DICBIT)
 #define MAXMATCH	256    // formerly F (not more than UCHAR_MAX + 1)
 #define THRESHOLD	3    // choose optimal value
 #define PERC_FLAG	0x8000U
 
 void encode(void);
 void decode_start(void);
-void decode(ushort count, uchar *buffer);
+void decode(uint16_t count, uint8_t *buffer);
 
 //--------- huf.cpp ----------
 #define NC (UCHAR_MAX + MAXMATCH + 2 - THRESHOLD)
@@ -73,21 +73,21 @@ void decode(ushort count, uchar *buffer);
 #define CBIT 9  // $\lfloor \log_2 NC \rfloor + 1$
 #define CODE_BIT  16  // codeword length
 
-extern ushort left[], right[];
+extern uint16_t left[], right[];
 
 void huf_encode_start(void);
 void huf_decode_start(void);
-ushort decode_c(void);
-ushort decode_p(void);
-void output(ushort c, ushort p);
+uint16_t decode_c(void);
+uint16_t decode_p(void);
+void output(uint16_t c, uint16_t p);
 void huf_encode_end(void);
 
 //--------- maketbl.cpp ----------
-void make_table(ushort nchar, uchar bitlen[],
-				ushort tablebits, ushort table[]);
+void make_table(uint16_t nchar, uint8_t bitlen[],
+				uint16_t tablebits, uint16_t table[]);
 
 //--------- maketree.cpp ----------
-ushort make_tree(ushort nparm, ushort freqparm[],
-				uchar lenparm[], ushort codeparm[]);
+uint16_t make_tree(uint16_t nparm, uint16_t freqparm[],
+				uint8_t lenparm[], uint16_t codeparm[]);
 
 #endif

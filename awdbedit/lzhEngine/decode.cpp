@@ -19,7 +19,7 @@ void decode_start(void)
 	j = 0;
 }
 
-void decode(ushort count, uchar *buffer)
+void decode(uint16_t count, uint8_t *buffer)
 	/* The calling function must keep the number of
 	bytes to be processed.  This function decodes
 	either 'count' bytes or 'DICSIZ' bytes, whichever
@@ -28,8 +28,8 @@ void decode(ushort count, uchar *buffer)
 	Call decode_start() once for each new file
 	before calling this function. */
 {
-	static ushort i;
-	ushort r, c;
+	static uint16_t i;
+	uint16_t r, c;
 
 	r = 0;
 	while (--j >= 0) {
@@ -40,7 +40,7 @@ void decode(ushort count, uchar *buffer)
 	for ( ; ; ) {
 		c = decode_c();
 		if (c <= UCHAR_MAX) {
-			buffer[r] = (uchar)c;
+			buffer[r] = (uint8_t)c;
 			if (++r == count) return;
 		} else {
 			j = c - (UCHAR_MAX + 1 - THRESHOLD);

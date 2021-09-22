@@ -112,7 +112,7 @@ INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	HWND hlist;
 	int t, val;
 	sysbiosDrvTblEntry *drvTblPtr, tempdrive;
-	ushort *ptr16;
+	uint16_t *ptr16;
 
 	LVCOLUMN colList[] = {
 		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 48, "Type",		0, 0, 0, 0 },
@@ -163,7 +163,7 @@ INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, L
 					if (val != 0)
 					{
 						// get pointer to pointer to the drive table
-						ptr16 = (ushort *)(sysbiosBasePtr + 0x1E6F0);
+						ptr16 = (uint16_t *)(sysbiosBasePtr + 0x1E6F0);
 
 						// make drive table pointer to this pointer
 						drvTblPtr = (sysbiosDrvTblEntry *)((sysbiosBasePtr + 0x10000) + *ptr16);
@@ -235,10 +235,10 @@ INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	return FALSE;
 }
 
-void sysbiosRefreshDriveTable(uchar *ptr)
+void sysbiosRefreshDriveTable(uint8_t *ptr)
 {
 	HWND hlist;
-	ushort *ptr16;
+	uint16_t *ptr16;
 	sysbiosDrvTblEntry *drvTblPtr;
 	LVITEM lvi;
 	int t;
@@ -254,7 +254,7 @@ void sysbiosRefreshDriveTable(uchar *ptr)
 	if (sysbiosVersion != awdbeBIOSVer600PG)
 	{
 		// get pointer to pointer to the drive table
-		ptr16 = (ushort *)(ptr + 0x1E6F0);
+		ptr16 = (uint16_t *)(ptr + 0x1E6F0);
 
 		// make drive table pointer to this pointer
 		drvTblPtr = (sysbiosDrvTblEntry *)((ptr + 0x10000) + *ptr16);

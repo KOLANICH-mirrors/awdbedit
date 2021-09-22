@@ -1,3 +1,4 @@
+#pragma once
 //
 // Award BIOS Editor - types.h
 // Copyright (C) 2002-2004, Michael Tedder
@@ -26,10 +27,11 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-typedef unsigned char		uchar;
-typedef unsigned short		ushort;
-typedef unsigned int		uint;
-typedef unsigned long		ulong;
+#include <cstdint>
+
+typedef uint8_t		uint8_t;
+typedef uint16_t		uint16_t;
+typedef uint32_t		uint;
 
 #ifndef I_IMAGENONE
 #define I_IMAGENONE -2
@@ -39,6 +41,6 @@ typedef unsigned long		ulong;
 #define AWDBEDIT_POPUP_CLASSNAME		"AwardEditPopupClass"
 #define AWDBEDIT_SPLITTER_CLASSNAME		"AwardEditSplitterClass"
 
-#define OFFSETOF(a, b)		( (ulong) &( ((a *)0)->b) )
+#define OFFSETOF(a, b)		( (uint32_t) &( ((a *)0)->b) )
 
 #endif

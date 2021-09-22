@@ -27,23 +27,23 @@
 #ifndef SYSBIOS_H
 #define SYSBIOS_H
 
-typedef uchar	u24[3];
+typedef uint8_t	u24[3];
 
 #define U24_TO_ULONG(x)			((x[2] << 16) | (x[1] << 8) | (x[0]))
 #define U24_TO_STRING(u2, str)	(sprintf(str, "%02X%02X%02X", u2[2], u2[1], u2[0]))
-#define ULONG_TO_U24(ul, u2)	(memcpy(&u2[0], ((uchar *)&ul), 3))
-#define STRING_TO_U24(str, u2)	{ ulong __temp__ = 0; sscanf(str, "%x", &__temp__); ULONG_TO_U24(__temp__, u2); }
+#define ULONG_TO_U24(ul, u2)	(memcpy(&u2[0], ((uint8_t *)&ul), 3))
+#define STRING_TO_U24(str, u2)	{ uint32_t __temp__ = 0; sscanf(str, "%x", &__temp__); ULONG_TO_U24(__temp__, u2); }
 
 
 #define METHOD_ADD				1
 #define METHOD_SUB				2
 
-extern uchar *sysbiosBasePtr;
+extern uint8_t *sysbiosBasePtr;
 extern awdbeBIOSVersion sysbiosVersion, sysbiosNowVer;
 
 typedef struct
 {
-	ulong	 id;
+	uint32_t	 id;
 	char	*name;
 
 	int		 dialogID;
@@ -65,11 +65,11 @@ bool sysbiosUpdateDialog(HWND hwnd, fileEntry *fe);
 void sysbiosOnResizeDialog(HWND dialogWnd, RECT *rc);
 
 
-awdbeBIOSVersion sysbiosGetVersion(uchar *sptr, int len);
+awdbeBIOSVersion sysbiosGetVersion(uint8_t *sptr, int len);
 
-int   sysbiosFindLimit(uchar *base);
+int   sysbiosFindLimit(uint8_t *base);
 void  sysbiosUpdateLimit(HWND hdlg, int id, int curlen, int maxlen);
-uchar sysbiosCalcBiosChecksum(uchar *ptr, ulong start, ulong end, int method);
+uint8_t sysbiosCalcBiosChecksum(uint8_t *ptr, uint32_t start, uint32_t end, int method);
 void  sysbiosRecalcChecksum(bool showErr);
 
 #endif

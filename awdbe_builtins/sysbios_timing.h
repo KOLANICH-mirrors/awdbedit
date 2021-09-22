@@ -32,10 +32,10 @@
 #pragma pack(push, 1)
 typedef struct
 {
-	ulong	refreshRate;
-	ushort	fddMotorSpinUp;
-	uchar	fddHeadSettle;
-	ulong	lptInitialize;
+	uint32_t	refreshRate;
+	uint16_t	fddMotorSpinUp;
+	uint8_t	fddHeadSettle;
+	uint32_t	lptInitialize;
 	u24		keyboardCheck;
 	u24		fdcIRQ6Completion;
 	u24		fdcStatusByteRead;
@@ -50,7 +50,7 @@ typedef struct
 
 INT_PTR CALLBACK sysbiosBIOSTimingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-void sysbiosRefreshBIOSTiming(uchar *ptr);
-void sysbiosUpdateBIOSTiming(uchar *ptr, bool *modified, awdbeBIOSVersion vers);
+void sysbiosRefreshBIOSTiming(uint8_t *ptr);
+void sysbiosUpdateBIOSTiming(uint8_t *ptr, bool *modified, awdbeBIOSVersion vers);
 
 #endif

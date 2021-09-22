@@ -39,39 +39,39 @@
 #pragma pack(push, 1)
 typedef struct
 {
-	ushort	status;
-	ushort	pointerToHeader;
-	ushort	chipRegIndex;
-	ushort	chipRegMask;
-	uchar	cmosIndex;
-	ushort	cmosMask;
-	ushort	pointerToItemTable;
-	ushort	itemMinIndex;
-	ushort	itemMaxIndex;
-	uchar	xPosition;
-	uchar	yPosition;
-	ushort	biosDefaultIdx;
-	ushort	setupDefaultIdx;
-	ushort	pointerToHelp;
+	uint16_t	status;
+	uint16_t	pointerToHeader;
+	uint16_t	chipRegIndex;
+	uint16_t	chipRegMask;
+	uint8_t	cmosIndex;
+	uint16_t	cmosMask;
+	uint16_t	pointerToItemTable;
+	uint16_t	itemMinIndex;
+	uint16_t	itemMaxIndex;
+	uint8_t	xPosition;
+	uint8_t	yPosition;
+	uint16_t	biosDefaultIdx;
+	uint16_t	setupDefaultIdx;
+	uint16_t	pointerToHelp;
 } sysbiosMenuStruct;
 
 typedef struct
 {
-	ushort	pointerToPageStart;
-	ushort	pointerToPageEnd;
-	ushort	pointerToStartupString;
+	uint16_t	pointerToPageStart;
+	uint16_t	pointerToPageEnd;
+	uint16_t	pointerToStartupString;
 } sysbiosMenuDef;
 #pragma pack(pop)
 
 
 typedef struct menuItem
 {
-	ulong	  type;
+	uint32_t	  type;
 
-	ushort	  pointerIntoBios;
-	ushort	  bestMinIdx;
-	ushort	  bestMaxIdx;
-	ushort	  itemCount;
+	uint16_t	  pointerIntoBios;
+	uint16_t	  bestMinIdx;
+	uint16_t	  bestMaxIdx;
+	uint16_t	  itemCount;
 
 	char	**itemText;
 	int		 *maxLen;
@@ -82,7 +82,7 @@ typedef struct menuItem
 
 typedef struct menuEntry
 {
-	ulong		 type;
+	uint32_t		 type;
 
 	sysbiosMenuStruct *menuPtr;
 
@@ -99,7 +99,7 @@ typedef struct menuEntry
 
 typedef struct menuHeader
 {
-	ulong			 type;
+	uint32_t			 type;
 
 	char			*headerText;
 	int				 headerMaxLen;
@@ -119,22 +119,22 @@ typedef struct menuDefinition
 
 typedef struct
 {
-	uchar normal;
-	uchar hilite;
-	uchar reverse;
-	uchar warn;
+	uint8_t normal;
+	uint8_t hilite;
+	uint8_t reverse;
+	uint8_t warn;
 } colorTableStruct;
 
 
 INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-void sysbiosRefreshMenu(uchar *ptr);
+void sysbiosRefreshMenu(uint8_t *ptr);
 void sysbiosDestroyMenu(void);
 
 void sysbiosReleaseMenuItems(void);
 
-int  sysbiosCMOSRead(uchar index, ushort mask);
-void sysbiosCMOSWrite(uchar index, ushort mask, ushort val);
+int  sysbiosCMOSRead(uint8_t index, uint16_t mask);
+void sysbiosCMOSWrite(uint8_t index, uint16_t mask, uint16_t val);
 void sysbiosCMOSLoadDefaults(int type);
 
 #endif

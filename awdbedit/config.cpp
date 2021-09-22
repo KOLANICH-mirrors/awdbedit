@@ -78,7 +78,7 @@ void configLoad(void)
 
 	// Key found, so read configuration data.
 	len = sizeof(cfgStruct);
-	if (RegQueryValueEx(curr, "Config", NULL, &foo, (uchar *)&config, &len) != ERROR_SUCCESS)
+	if (RegQueryValueEx(curr, "Config", NULL, &foo, (uint8_t *)&config, &len) != ERROR_SUCCESS)
 		configCreate();
 
 	RegCloseKey(curr);
@@ -95,7 +95,7 @@ void configSave(void)
 	RegOpenKeyEx(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &soft);
 	RegCreateKeyEx(soft, progName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &awbedit, &foo);
 	RegCreateKeyEx(awbedit, progSubName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &curr, &foo);
-	RegSetValueEx(curr, "Config", 0, REG_BINARY, (const uchar *)&config, sizeof(cfgStruct));
+	RegSetValueEx(curr, "Config", 0, REG_BINARY, (const uint8_t *)&config, sizeof(cfgStruct));
 	RegCloseKey(curr);
 	RegCloseKey(awbedit);
 	RegCloseKey(soft);

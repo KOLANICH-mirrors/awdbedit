@@ -39,14 +39,14 @@ INT_PTR CALLBACK sysbiosBIOSTimingFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	return FALSE;
 }
 
-void sysbiosRefreshBIOSTiming(uchar *ptr)
+void sysbiosRefreshBIOSTiming(uint8_t *ptr)
 {
-	ushort *ptr16;
+	uint16_t *ptr16;
 	sysbiosTimingStruct *timingPtr;
 	char buf[256];
 
 	// get pointer to pointer to the bios timings
-	ptr16 = (ushort *)(ptr + 0x1FFE3);
+	ptr16 = (uint16_t *)(ptr + 0x1FFE3);
 
 	// make timing struct pointer to this pointer
 	timingPtr = (sysbiosTimingStruct *)((ptr + 0x10000) + *ptr16);
@@ -105,16 +105,16 @@ void sysbiosRefreshBIOSTiming(uchar *ptr)
 	SetDlgItemText(sysbiosTabList[3].hwnd, IDC_SYSBIOS_LPTBUSYCHECK, buf);
 }
 
-void sysbiosUpdateBIOSTiming(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
+void sysbiosUpdateBIOSTiming(uint8_t *ptr, bool *modified, awdbeBIOSVersion vers)
 {
-	ushort *ptr16, temp16;
+	uint16_t *ptr16, temp16;
 	sysbiosTimingStruct *timingPtr;
-	ulong temp32;
-	uchar temp8;
+	uint32_t temp32;
+	uint8_t temp8;
 	char buf[256];
 
 	// get pointer to pointer to the bios timings
-	ptr16 = (ushort *)(ptr + 0x1FFE3);
+	ptr16 = (uint16_t *)(ptr + 0x1FFE3);
 
 	// make timing struct pointer to this pointer
 	timingPtr = (sysbiosTimingStruct *)((ptr + 0x10000) + *ptr16);
@@ -127,12 +127,12 @@ void sysbiosUpdateBIOSTiming(uchar *ptr, bool *modified, awdbeBIOSVersion vers)
 
 	temp16 = 0;
 	GetDlgItemText(sysbiosTabList[3].hwnd, IDC_SYSBIOS_FDDMOTORSPINUP, buf, 256);
-	sscanf(buf, "%x", &temp16);
+	sscanf(buf, "%hx", &temp16);
 	timingPtr->fddMotorSpinUp = temp16;
 
 	temp8 = 0;
 	GetDlgItemText(sysbiosTabList[3].hwnd, IDC_SYSBIOS_FDDHEADSETTLE, buf, 256);
-	sscanf(buf, "%x", &temp8);
+	sscanf(buf, "%hhx", &temp8);
 	timingPtr->fddHeadSettle = temp8;
 
 	temp32 = 0;

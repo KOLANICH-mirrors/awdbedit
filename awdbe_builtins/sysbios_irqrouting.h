@@ -32,15 +32,15 @@
 #pragma pack(push, 1)
 typedef struct
 {
-	uchar inta;
-	uchar intb;
-	uchar intc;
-	uchar intd;
+	uint8_t inta;
+	uint8_t intb;
+	uint8_t intc;
+	uint8_t intd;
 } sysbiosPCIRoutingEntry;
 #pragma pack(pop)
 
 INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-void sysbiosRefreshIRQRouting(uchar *ptr);
+void sysbiosRefreshIRQRouting(uint8_t *ptr);
 
 #endif

@@ -31,7 +31,7 @@
 #include "resource.h"
 
 // plugin necessities
-static ulong myID, timerID;
+static uint32_t myID, timerID;
 static HINSTANCE hinst;
 
 // structures required to playback the wave data
@@ -139,8 +139,8 @@ void waveditOnLoad(fileEntry *fe, int count)
 
 bool waveditDetect(fileEntry *fe)
 {
-	uchar *dptr = (uchar *)fe->data;
-	ulong size;
+	uint8_t *dptr = (uint8_t *)fe->data;
+	uint32_t size;
 
 	// check first for a RIFF tag
 	if ((dptr[0] != 'R') || (dptr[1] != 'I') || (dptr[2] != 'F') || (dptr[3] != 'F'))
@@ -161,7 +161,7 @@ bool waveditDetect(fileEntry *fe)
 	dptr += 4;
 
 	// get the size of the format subchunk and advance
-	size  = *(ulong *)dptr;
+	size  = *(uint32_t *)dptr;
 	dptr += (size + 4);
 
 	// lastly, check for a 'data' subchunk
@@ -190,7 +190,7 @@ HWND waveditCreateDialog(awdbeItem *item, fileEntry *fe, HWND parentWnd, RECT *r
 bool waveditUpdateDialog(awdbeItem *item, fileEntry *fe, HWND dialogWnd)
 {
 	char buf[256];
-	ulong temp;
+	uint32_t temp;
 	bool modified;
 
 	// assume no components have been modified...
@@ -199,9 +199,9 @@ bool waveditUpdateDialog(awdbeItem *item, fileEntry *fe, HWND dialogWnd)
 	// get the data from our controls and update them in our file's data
 	GetDlgItemText(dialogWnd, IDC_WAVE_FORMAT, buf, 256);
 	sscanf(buf, "%04X", &temp);
-	if ((ushort)temp != wfex->wFormatTag)
+	if ((uint16_t)temp != wfex->wFormatTag)
 	{
-		wfex->wFormatTag = (ushort)temp;
+		wfex->wFormatTag = (uint16_t)temp;
 		modified = TRUE;
 	}
 
@@ -215,17 +215,17 @@ bool waveditUpdateDialog(awdbeItem *item, fileEntry *fe, HWND dialogWnd)
 	
 	GetDlgItemText(dialogWnd, IDC_WAVE_CHANNELS, buf, 256);
 	sscanf(buf, "%d", &temp);
-	if ((ushort)temp != wfex->nChannels)
+	if ((uint16_t)temp != wfex->nChannels)
 	{
-		wfex->nChannels = (ushort)temp;
+		wfex->nChannels = (uint16_t)temp;
 		modified = TRUE;
 	}
 
 	GetDlgItemText(dialogWnd, IDC_WAVE_BITSPERSAMPLE, buf, 256);
 	sscanf(buf, "%d", &temp);
-	if ((ushort)temp != wfex->wBitsPerSample)
+	if ((uint16_t)temp != wfex->wBitsPerSample)
 	{
-		wfex->wBitsPerSample = (ushort)temp;
+		wfex->wBitsPerSample = (uint16_t)temp;
 		modified = TRUE;
 	}
 
@@ -371,9 +371,9 @@ INT_PTR CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 
 void updateControls(HWND hdlg, fileEntry *fe)
 {
-	uchar *dptr = (uchar *)fe->data;
+	uint8_t *dptr = (uint8_t *)fe->data;
 	char buf[256];
-	ulong fmtSize;
+	uint32_t fmtSize;
 	size_t wavSize;
 	void *wavData;
 	HDC dc;
@@ -382,13 +382,13 @@ void updateControls(HWND hdlg, fileEntry *fe)
 	wfex = (WAVEFORMATEX *)(dptr + 20);
 
 	// make a pointer to the actual wave data and get its size
-	fmtSize = *(ulong *)(dptr + 16);
-	wavSize = *(ulong *)(dptr + 20 + fmtSize + 4);
+	fmtSize = *(uint32_t *)(dptr + 16);
+	wavSize = *(uint32_t *)(dptr + 20 + fmtSize + 4);
 	wavData = dptr + (20 + fmtSize + 8);
 
 	// make sure wavSize isn't too big
-	if (((uchar *)wavData + wavSize) > ((uchar *)fe->data + fe->size))
-		wavSize = ((uchar *)fe->data + fe->size) - (dptr + 20 + fmtSize + 8);
+	if (((uint8_t *)wavData + wavSize) > ((uint8_t *)fe->data + fe->size))
+		wavSize = ((uint8_t *)fe->data + fe->size) - (dptr + 20 + fmtSize + 8);
 
 	// store this data in a WAVEHDR, which we'll use to playback the data
 	ZeroMemory(&wh, sizeof(WAVEHDR));
@@ -467,7 +467,7 @@ void buildWaveBitmap(bool showPosMarker)
 	POINT pt[5];
 	TEXTMETRIC tm;
 	int heightOffset, samplesPerPixel, count, yOffset, heightScale, pos;
-	uchar *ptr8;
+	uint8_t *ptr8;
 	signed char s8;
 	signed short *ptr16;
 	MMTIME mmt;
@@ -541,7 +541,7 @@ void buildWaveBitmap(bool showPosMarker)
 			heightScale = (256 / ((area.bottom - area.top) - 2)) + 1;
 
 			// setup initial pointer and position
-			ptr8  = (uchar *)wh.lpData;
+			ptr8  = (uint8_t *)wh.lpData;
 			s8    = (signed char)((*ptr8) - 128);
 			ptr8 += samplesPerPixel;
 

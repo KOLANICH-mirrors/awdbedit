@@ -52,7 +52,7 @@ HANDLE getConsoleHandle(void);
 void init_console(bool useExistConsole, int mode, PHANDLER_ROUTINE ctrlHandler);
 void free_console(void);
 void flip_to_console(void);
-ushort *get_screen_ptr(void);
+uint16_t *get_screen_ptr(void);
 void update_console_position(void);
 
 void go_25(void);
