@@ -52,7 +52,7 @@ struct
 globalsStruct globals;
 char exePath[256], fullTempPath[256];
 
-static char *mainChangedText = "This BIOS image has been changed.  Do you want to save your changes before exiting?";
+static char mainChangedText[] = "This BIOS image has been changed.  Do you want to save your changes before exiting?";
 
 #define SPLITTER_WINDOW_SIZE		3
 
@@ -123,6 +123,10 @@ INT_PTR APIENTRY ConfigBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 
 	return FALSE;
 }
+
+const char APP_NAME[] = "Award BIOS Editor";
+const char APP_REV[] = "1.0";
+const char APP_VERSION[] = "Award BIOS Editor 1.0";
 
 INT_PTR APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -393,6 +397,10 @@ void resizeTreeView(int newWidth)
 	resizeControlsFromRoot(sz);
 }
 
+const char SOME_NAME_Recognized_Items[] = "Recognized Items";
+const char SOME_NAME_Unknown_Items[] = "Unknown Items";
+const char SOME_NAME_Includable_Items[] = "Includable Items";
+
 void createControls(HWND hwnd)
 {
 	REBARINFO rbi;
@@ -521,21 +529,21 @@ void createControls(HWND hwnd)
 	tvis.hParent			= TVI_ROOT;
 	tvis.hInsertAfter		= TVI_LAST;
 	tvis.itemex.mask		= TVIF_TEXT | TVIF_PARAM;
-	tvis.itemex.pszText		= "Recognized Items";
+	tvis.itemex.pszText		= const_cast<char *>(SOME_NAME_Recognized_Items);
 	tvis.itemex.lParam		= HASH_RECOGNIZED_ROOT;
 	globals.hTreeRecgItem	= (HTREEITEM)SendMessage(globals.hTreeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 
 	tvis.hParent			= TVI_ROOT;
 	tvis.hInsertAfter		= TVI_LAST;
 	tvis.itemex.mask		= TVIF_TEXT | TVIF_PARAM;
-	tvis.itemex.pszText		= "Unknown Items";
+	tvis.itemex.pszText		= const_cast<char *>(SOME_NAME_Unknown_Items);
 	tvis.itemex.lParam		= HASH_UNKNOWN_ROOT;
 	globals.hTreeUnkItem	= (HTREEITEM)SendMessage(globals.hTreeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 
 	tvis.hParent			= TVI_ROOT;
 	tvis.hInsertAfter		= TVI_LAST;
 	tvis.itemex.mask		= TVIF_TEXT | TVIF_PARAM;
-	tvis.itemex.pszText		= "Includable Items";
+	tvis.itemex.pszText		= const_cast<char *>(SOME_NAME_Includable_Items);
 	tvis.itemex.lParam		= HASH_INCLUDABLE_ROOT;
 	globals.hTreeInclItem	= (HTREEITEM)SendMessage(globals.hTreeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 
@@ -1367,7 +1375,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR cmdline, int nCmdShow)
 	globals.MainhMenu = LoadMenu(globals.MainhInst, MAKEINTRESOURCE(IDR_MENU));
 
 	// next, create the main window...
-	globals.MainhWnd = CreateMainWindow(config.rootXSize, config.rootYSize, globals.MainhInst, nCmdShow, APP_VERSION);
+	globals.MainhWnd = CreateMainWindow(config.rootXSize, config.rootYSize, globals.MainhInst, nCmdShow, const_cast<char*>(APP_VERSION));
 	if (globals.MainhWnd == NULL)
 	{
 		MessageBox(NULL, "Unable to create main window!", "Error", MB_OK);

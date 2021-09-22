@@ -158,6 +158,13 @@ INT_PTR CALLBACK ModifyChipsetFunc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 	return FALSE;
 }
 
+const char COLUMN_NAME_Register_Index[] = "Register Index";
+const char COLUMN_NAME_Device[] = "Device";
+const char COLUMN_NAME_Function[] = "Function";
+const char COLUMN_NAME_Mask[] = "Mask";
+const char COLUMN_NAME_Value[] = "Value";
+const char COLUMN_NAME_Binary_Map[] = "Binary Map";
+
 
 
 INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -170,12 +177,12 @@ INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, 
 	uint16_t *ptr16;
 
 	LVCOLUMN colList[] = {
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 70, "Register Index",	0, 0, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 65, "Device",			0, 1, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 65, "Function",		0, 2, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 72, "Mask",			0, 3, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 72, "Value",			0, 4, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 76, "Binary Map",		0, 5, 0, 0 }
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 70, const_cast<char*>(COLUMN_NAME_Register_Index),	0, 0, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 65, const_cast<char*>(COLUMN_NAME_Device),			0, 1, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 65, const_cast<char*>(COLUMN_NAME_Function),		0, 2, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 72, const_cast<char*>(COLUMN_NAME_Mask),			0, 3, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 72, const_cast<char*>(COLUMN_NAME_Value),			0, 4, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 76, const_cast<char*>(COLUMN_NAME_Binary_Map),		0, 5, 0, 0 }
 	};
 
 	switch (message)
@@ -259,6 +266,8 @@ INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, 
 	return FALSE;
 }
 
+const char MESSAGE_Unknown[] = "Unknown";
+
 void sysbiosRefreshChipsetRegs(uint8_t *ptr)
 {
 	HWND hlist;
@@ -336,7 +345,7 @@ void sysbiosRefreshChipsetRegs(uint8_t *ptr)
 		lvi.mask	 = LVIF_TEXT;
 		lvi.iItem	 = 0;
 		lvi.iSubItem = 0;
-		lvi.pszText  = "Unknown";
+		lvi.pszText  = const_cast<char *>(MESSAGE_Unknown);
 		SendMessage(hlist, LVM_INSERTITEM, 0, (LPARAM)&lvi);
 	}
 }

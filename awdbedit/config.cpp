@@ -33,7 +33,7 @@ cfgStruct config;
 static char progName[256], progSubName[256];
 
 
-void configInit(char *name, char *subname)
+void configInit(const char *name, const char *subname)
 {
 	strncpy(progName, name, 256);
 	strncpy(progSubName, subname, 256);
@@ -86,16 +86,20 @@ void configLoad(void)
 	RegCloseKey(soft);
 }
 
+const char REGISTRY_KEY_NAME_Software[] = "Software";
+const char REGISTRY_KEY_NAME_Config[] = "Config";
+static const char EMPTY_STRING[] = "";
+
 void configSave(void)
 {
 	HKEY soft, awbedit, curr;
 	DWORD foo;
 
 	// Create config block for HKEY_CURRENT_USER.
-	RegOpenKeyEx(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &soft);
-	RegCreateKeyEx(soft, progName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &awbedit, &foo);
-	RegCreateKeyEx(awbedit, progSubName, 0, "", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &curr, &foo);
-	RegSetValueEx(curr, "Config", 0, REG_BINARY, (const uint8_t *)&config, sizeof(cfgStruct));
+	RegOpenKeyEx(HKEY_CURRENT_USER, const_cast<char *>(REGISTRY_KEY_NAME_Software), 0, KEY_ALL_ACCESS, &soft);
+	RegCreateKeyEx(soft, progName, 0, const_cast<char *>(EMPTY_STRING), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &awbedit, &foo);
+	RegCreateKeyEx(awbedit, progSubName, 0, const_cast<char *>(EMPTY_STRING), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &curr, &foo);
+	RegSetValueEx(curr, REGISTRY_KEY_NAME_Config, 0, REG_BINARY, (const uint8_t *)&config, sizeof(cfgStruct));
 	RegCloseKey(curr);
 	RegCloseKey(awbedit);
 	RegCloseKey(soft);

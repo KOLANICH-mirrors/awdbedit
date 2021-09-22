@@ -108,6 +108,13 @@ INT_PTR CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 	return FALSE;
 }
 
+const char COLUMN_NAME_PCI_slot[]="PCI slot";
+const char COLUMN_NAME_IRQ_No[]="IRQ#";
+const char COLUMN_NAME_INTA[]="INTA";
+const char COLUMN_NAME_INTB[]="INTB";
+const char COLUMN_NAME_INTC[]="INTC";
+const char COLUMN_NAME_INTD[]="INTD";
+
 INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
@@ -119,12 +126,12 @@ INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	uint16_t *ptr16;
 
 	LVCOLUMN colList[] = {
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 64, "PCI slot",	0, 0, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, "IRQ#",		0, 1, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, "INTA",		0, 2, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, "INTB",		0, 3, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, "INTC",		0, 4, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, "INTD",		0, 5, 0, 0 }
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 64, const_cast<char*>(COLUMN_NAME_PCI_slot),	0, 0, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, const_cast<char*>(COLUMN_NAME_IRQ_No),		0, 1, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, const_cast<char*>(COLUMN_NAME_INTA),		0, 2, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, const_cast<char*>(COLUMN_NAME_INTB),		0, 3, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, const_cast<char*>(COLUMN_NAME_INTC),		0, 4, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 50, const_cast<char*>(COLUMN_NAME_INTD),		0, 5, 0, 0 }
 	};
 
 	switch (message)

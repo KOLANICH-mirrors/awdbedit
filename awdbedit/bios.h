@@ -29,10 +29,9 @@
 
 #include <stdint.h>
 
-#define APP_NAME				"Award BIOS Editor"
-#define APP_REV					"1.0"
-#define APP_VERSION				APP_NAME " " APP_REV
-
+extern const char APP_NAME[];
+extern const char APP_REV[];
+extern const char APP_VERSION[];
 
 #define HASH_UNKNOWN_ITEM_MAX		0x000000F8
 

@@ -1060,6 +1060,7 @@ INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, L
 	return FALSE;
 }
 
+const char SYSBIOS_MENU_NAME_ALL_ITEMS[] = "All Items";
 
 void sysbiosRefreshMenu(uint8_t *ptr)
 {
@@ -1118,7 +1119,7 @@ void sysbiosRefreshMenu(uint8_t *ptr)
 			menuPtr++;
 		}
 
-		sysbiosAddToMenuHeaderList("All Items", count, keepentry, menuDefPtr);
+		sysbiosAddToMenuHeaderList(const_cast<char*>(SYSBIOS_MENU_NAME_ALL_ITEMS), count, keepentry, menuDefPtr);
 	}
 	else
 	{

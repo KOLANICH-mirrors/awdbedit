@@ -411,7 +411,7 @@ void biosUpdateComponents(void)
 						tvis.hParent		= recgItem;
 						tvis.hInsertAfter	= TVI_LAST;
 						tvis.itemex.mask	= TVIF_TEXT | TVIF_PARAM;
-						tvis.itemex.pszText	= subMenuPtr->itemName;
+						tvis.itemex.pszText	= const_cast<char*>(subMenuPtr->itemName);
 						tvis.itemex.lParam	= HASH_SUBMENU_ITEM;
 						subMenuTree = (HTREEITEM)SendMessage(treeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 
@@ -422,7 +422,7 @@ void biosUpdateComponents(void)
 					tvis.hParent		= subMenuTree;
 					tvis.hInsertAfter	= TVI_LAST;
 					tvis.itemex.mask	= TVIF_TEXT | TVIF_PARAM;
-					tvis.itemex.pszText	= item->itemName;
+					tvis.itemex.pszText	= const_cast<char*>(item->itemName);
 					tvis.itemex.lParam	= item->hash;
 					SendMessage(treeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 				}
@@ -433,7 +433,7 @@ void biosUpdateComponents(void)
 				tvis.hParent		= recgItem;
 				tvis.hInsertAfter	= TVI_LAST;
 				tvis.itemex.mask	= TVIF_TEXT | TVIF_PARAM;
-				tvis.itemex.pszText	= item->itemName;
+				tvis.itemex.pszText	= const_cast<char*>(item->itemName);
 				tvis.itemex.lParam	= item->hash;
 				SendMessage(treeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 			}
@@ -504,7 +504,7 @@ void biosUpdateComponents(void)
 								tvis.hParent		= inclItem;
 								tvis.hInsertAfter	= TVI_LAST;
 								tvis.itemex.mask	= TVIF_TEXT | TVIF_PARAM;
-								tvis.itemex.pszText	= subMenuPtr->itemName;
+								tvis.itemex.pszText	= const_cast<char*>(subMenuPtr->itemName);
 								tvis.itemex.lParam	= HASH_SUBMENU_ITEM;
 								subMenuTree = (HTREEITEM)SendMessage(treeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 
@@ -515,7 +515,7 @@ void biosUpdateComponents(void)
 							tvis.hParent		= subMenuTree;
 							tvis.hInsertAfter	= TVI_LAST;
 							tvis.itemex.mask	= TVIF_TEXT | TVIF_PARAM;
-							tvis.itemex.pszText	= item->itemName;
+							tvis.itemex.pszText	= const_cast<char*>(item->itemName);
 							tvis.itemex.lParam	= item->hash;
 							SendMessage(treeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 						}
@@ -526,7 +526,7 @@ void biosUpdateComponents(void)
 						tvis.hParent		= inclItem;
 						tvis.hInsertAfter	= TVI_LAST;
 						tvis.itemex.mask	= TVIF_TEXT | TVIF_PARAM;
-						tvis.itemex.pszText	= item->itemName;
+						tvis.itemex.pszText	= const_cast<char*>(item->itemName);
 						tvis.itemex.lParam	= item->hash;
 						SendMessage(treeView, TVM_INSERTITEM, 0, (LPARAM)&tvis);
 					}
@@ -1469,6 +1469,16 @@ INT_PTR APIENTRY LayoutProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPara
 	return FALSE;
 }
 
+const char COLUMN_NAME_FileName[] = "Filename";
+const char COLUMN_NAME_Size[] = "Size";
+const char COLUMN_NAME_Compressed[] = "Compressed";
+const char COLUMN_NAME_ID[] = "ID";
+const char COLUMN_NAME_CRC[] = "CRC";
+const char COLUMN_NAME_Check[] = "Check";
+
+const char CRC_CHECK_MESSAGE_Pass[] = "Pass";
+const char CRC_CHECK_MESSAGE_Fail[] = "Fail";
+
 INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	RECT rc, rc2;
@@ -1500,12 +1510,12 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 	};
 
 	LVCOLUMN colList[] = {
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 110, "Filename",	0, 0, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  50, "Size",		0, 1, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  72, "Compressed",	0, 2, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  65, "ID",			0, 3, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  45, "CRC",		0, 4, 0, 0 },
-		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  54, "Check",		0, 5, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT, 110, const_cast<char*>(COLUMN_NAME_FileName),	0, 0, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  50, const_cast<char*>(COLUMN_NAME_Size),		0, 1, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  72, const_cast<char*>(COLUMN_NAME_Compressed),	0, 2, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  65, const_cast<char*>(COLUMN_NAME_ID),			0, 3, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  45, const_cast<char*>(COLUMN_NAME_CRC),		0, 4, 0, 0 },
+		{ LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM, LVCFMT_LEFT,  54, const_cast<char*>(COLUMN_NAME_Check),		0, 5, 0, 0 },
 	};
 
 	switch (message)
@@ -1793,9 +1803,9 @@ INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 
 				// CRC pass/fail...
 				if (fe->crcOK == TRUE)
-					lvi.pszText = "Pass";
+					lvi.pszText = const_cast<char *>(CRC_CHECK_MESSAGE_Pass);
 				else
-					lvi.pszText = "Fail";
+					lvi.pszText = const_cast<char *>(CRC_CHECK_MESSAGE_Fail);
 
 				lvi.iSubItem = 5;
 				SendMessage(hPropDlgListWnd, LVM_SETITEM, 0, (LPARAM)&lvi);
