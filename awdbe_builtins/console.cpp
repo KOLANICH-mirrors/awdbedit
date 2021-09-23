@@ -169,7 +169,7 @@ void go_50(void)
 void flip_to_console(void)
 {
 	COORD size = { size_x, size_y }, pos = { 0, 0 };
-	SMALL_RECT r = { 0, 0, size_x - 1, size_y - 1 };
+	SMALL_RECT r = { 0, 0, static_cast<SHORT>(size_x - 1), static_cast<SHORT>(size_y - 1) };
 
 	WriteConsoleOutput(hCon, (CHAR_INFO *)screen, size, pos, &r);
 }
@@ -243,16 +243,16 @@ SHORT wherey(void)
 
 void gettext(int x1, int y1, int x2, int y2, char *buf)
 {
-	COORD size = { (x2 - x1) + 1, (y2 - y1) + 1 }, pos = { 0, 0 };
-	SMALL_RECT r = { x1, y1, x2, y2 };
+	COORD size = { static_cast<SHORT>((x2 - x1) + 1), static_cast<SHORT>((y2 - y1) + 1) }, pos = { 0, 0 };
+	SMALL_RECT r = { static_cast<SHORT>(x1), static_cast<SHORT>(y1), static_cast<SHORT>(x2), static_cast<SHORT>(y2) };
 
 //    ReadConsoleOutput(hCon, (CHAR_INFO *)buf, size, pos, &r);
 }
 
 void puttext(int x1, int y1, int x2, int y2, char *buf)
 {
-	COORD size = { (x2 - x1) + 1, (y2 - y1) + 1 }, pos = { 0, 0 };
-	SMALL_RECT r = { x1, y1, x2, y2 };
+	COORD size = { static_cast<SHORT>((x2 - x1) + 1), static_cast<SHORT>((y2 - y1) + 1) }, pos = { 0, 0 };
+	SMALL_RECT r = { static_cast<SHORT>(x1), static_cast<SHORT>(y1), static_cast<SHORT>(x2), static_cast<SHORT>(y2) };
 
 //    WriteConsoleOutput(hCon, (CHAR_INFO *)buf, size, pos, &r);
 }
