@@ -37,7 +37,7 @@ static uint8_t pciSlotID;
 static uint8_t *modifyPCIIRQPtr;
 static sysbiosPCIRoutingEntry *modifyPCIRoutePtr;
 
-INT_PTR CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, [[maybe_unused]] WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	char buf[256];
 	int val;
@@ -115,7 +115,7 @@ const char COLUMN_NAME_INTB[]="INTB";
 const char COLUMN_NAME_INTC[]="INTC";
 const char COLUMN_NAME_INTD[]="INTD";
 
-INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, [[maybe_unused]] WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	HWND hlist;

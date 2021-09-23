@@ -84,7 +84,7 @@ INT_PTR CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM 
 	return FALSE;
 }
 
-INT_PTR CALLBACK VerDiffProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK VerDiffProc(HWND hdlg, UINT message, WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	char buf[256];
 

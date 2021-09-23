@@ -260,7 +260,7 @@ awdbeItem builtinsItemList[] = {
 };
 
 
-BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpvReserved)
+BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, [[maybe_unused]] LPVOID lpvReserved)
 {
 	switch (fdwReason)
 	{
@@ -320,7 +320,7 @@ bool builtinsDetect(fileEntry *fe)
 	return TRUE;
 }
 
-INT_PTR CALLBACK unknownFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK unknownFunc([[maybe_unused]] HWND hdlg, UINT message, [[maybe_unused]] WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	switch (message)
 	{
@@ -455,7 +455,7 @@ void builtinsOnResizeDialog(awdbeItem *item, HWND dialogWnd, RECT *rc)
 	}
 }
 
-INT_PTR CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK aboutBoxProc(HWND hDlg, UINT message, [[maybe_unused]] WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	char buf[256];
 

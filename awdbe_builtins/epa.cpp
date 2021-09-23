@@ -73,7 +73,7 @@ bool isEPALogo(uint8_t *data, uint32_t size)
 	return FALSE;
 }
 
-INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	HDC dc;
 	PAINTSTRUCT ps;
@@ -314,7 +314,7 @@ void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 	ReleaseDC(hwnd, hdc);
 }
 
-void epaOnDestroyDialog(HWND hwnd)
+void epaOnDestroyDialog([[maybe_unused]] HWND hwnd)
 {
 	// release all of our objects
 	if (hGroupBox != nullptr)

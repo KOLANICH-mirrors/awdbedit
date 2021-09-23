@@ -46,7 +46,7 @@ NumT aton(char * buf){
 	return static_cast<NumT>(res);
 };
 
-INT_PTR CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	char buf[256];
 
@@ -122,8 +122,7 @@ const char COLUMN_NAME_Register_Landzone[] = "Landzone";
 const char COLUMN_NAME_Register_Sectors[] = "Sectors";
 
 
-
-INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, [[maybe_unused]] WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	LPNMLISTVIEW lpnmlv;
