@@ -71,7 +71,7 @@ void pluginCallOnResizeDialog(awdbeItem *item, HWND hwnd, RECT *rc);
 void pluginAddToMenu(HMENU menu, uint32_t fromID);
 void pluginShowAboutBox(uint32_t index, HWND parentWnd);
 
-EXPORT void awdbeResizeDialog(uint32_t pluginID, SIZE sz);
+AWDBEDIT_API void awdbeResizeDialog(uint32_t pluginID, SIZE sz);
 
 
 #endif
