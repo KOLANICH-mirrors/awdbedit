@@ -724,7 +724,7 @@ int handleMenuPopup(HMENU menu)
 				#endif
 
 				// add it to the menu
-				if (!stricmp(config.lastSkin, skinList[t].fname))
+				if (!strncasecmp((const char *)config.lastSkin, skinList[t].fname, sizeof(config.lastSkin) / sizeof(config.lastSkin[0])))
 					AppendMenu(menu, MF_ENABLED | MF_CHECKED, skinList[t].id, skinList[t].fname);
 				else
 					AppendMenu(menu, MF_ENABLED, skinList[t].id, skinList[t].fname);
@@ -834,7 +834,7 @@ bool selectSkin(char *fname)
 	HBITMAP hbmp;
 
 	// save off the current dir
-	_getcwd(cwd, 256);
+	getcwd(cwd, 256);
 
 	// change to the "Skins" subdirectory
 	sprintf(skindir, "%sSkins", exePath);
@@ -955,7 +955,7 @@ void updateMRU(void)
 	// first, see if the currently opened bios is in the mru list
 	for (t = 0; t < 4; t++)
 	{
-		if (!stricmp(biosGetFilename(), config.recentFile[t]))
+		if (!strcasecmp(biosGetFilename(), config.recentFile[t]))
 		{
 			// it is, so move the remaining items up the list
 			for (x = t; x < 3; x++)

@@ -601,7 +601,7 @@ bool biosHandleModified(char *text)
 	return TRUE;
 }
 
-bool biosOpenFile(char *fname)
+bool biosOpenFile(const char *fname)
 {
 	FILE *fp;
 	uint8_t *ptr;
@@ -693,7 +693,7 @@ bool biosOpenFile(char *fname)
 	count = biosdata.imageSize;
 	while (count--)
 	{
-		if (!memicmp(ptr, "Award BootBlock Bios", 20))
+		if (!strncasecmp((const char *)ptr, "Award BootBlock Bios", 20))
 		{
 			bootBlockSize = biosdata.imageSize - (ptr - biosdata.imageData);
 			bootBlockData = new uint8_t[bootBlockSize];
@@ -719,7 +719,7 @@ bool biosOpenFile(char *fname)
 	count = biosdata.imageSize;
 	while (count--)
 	{
-		if (!memicmp(ptr, "= Award Decompression Bios =", 28))
+		if (!strncasecmp((const char *)ptr, "= Award Decompression Bios =", 28))
 		{
 			// copy the decompression block
 			decompBlockSize = (biosdata.imageSize - (ptr - biosdata.imageData)) - bootBlockSize;
@@ -3014,7 +3014,7 @@ void biosAddToUpdateList(char *fname)
 	ue = updateList;
 	while (ue != nullptr)
 	{
-		if (!stricmp(ue->path, path) && !stricmp(ue->fname, fullname))
+		if (!strncasecmp((const char *)ue->path, path, sizeof(path)/sizeof(path[0])) && !strncasecmp((const char *)ue->fname, fullname, sizeof(fullname)/sizeof(fullname)))
 			return;
 
 		ue = ue->next;
@@ -3159,17 +3159,17 @@ awdbeBIOSVersion biosGetVersion(void)
 
 	while (len--)
 	{
-		if (!memicmp(sptr, "v4.51PG", 7))
+		if (!strncasecmp((const char *)sptr, "v4.51PG", 7))
 		{
 			vers = awdbeBIOSVer451PG;
 			len  = 0;
 		}
-		else if (!memicmp(sptr, "v6.00PG", 7))
+		else if (!strncasecmp((const char *)sptr, "v6.00PG", 7))
 		{
 			vers = awdbeBIOSVer600PG;
 			len  = 0;
 		}
-		else if (!memicmp(sptr, "v6.0", 4))
+		else if (!strncasecmp((const char *)sptr, "v6.0", 4))
 		{
 			vers = awdbeBIOSVer60;
 			len  = 0;

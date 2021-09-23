@@ -182,7 +182,7 @@ uint32_t pluginScan(char *dir, bool doLoad)
 				#else
 				ptr = fd->d_name + (strlen(fd->d_name) - 4);
 				#endif
-				if (!memicmp(ptr, ".dll", 4))
+				if (!strncasecmp(ptr, ".dll", 4))
 				{
 					// if we're only checking for DLLs, don't bother load it.
 					if (doLoad == TRUE)

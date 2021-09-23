@@ -55,7 +55,7 @@ void biosTitleUpdate(void);
 char *biosGetFilename(void);
 HWND biosGetDialog(void);
 
-bool biosOpenFile(char *fname);
+bool biosOpenFile(const char *fname);
 bool biosOpen(void);
 bool biosSave(void);
 bool biosSaveAs(void);

@@ -442,17 +442,17 @@ awdbeBIOSVersion sysbiosGetVersion(uint8_t *sptr, uint16_t len)
 
 	while (len--)
 	{
-		if (!memicmp(sptr, "v4.51PG", 7))
+		if (!strncasecmp(reinterpret_cast<char*>(sptr), "v4.51PG", 7))
 		{
 			vers = awdbeBIOSVer451PG;
 			len  = 0;
 		}
-		else if (!memicmp(sptr, "v6.00PG", 7))
+		else if (!strncasecmp(reinterpret_cast<char*>(sptr), "v6.00PG", 7))
 		{
 			vers = awdbeBIOSVer600PG;
 			len  = 0;
 		}
-		else if (!memicmp(sptr, "v6.0", 4))
+		else if (!strncasecmp(reinterpret_cast<char*>(sptr), "v6.0", 4))
 		{
 			vers = awdbeBIOSVer60;
 			len  = 0;
