@@ -31,7 +31,7 @@
 #include "epa.h"
 #include "resource.h"
 
-#define MAKERGB(r, g, b)		((r << 16) | (g << 8) | (b))
+#define MAKERGB(r, g, b)		(static_cast<DWORD>((r << 16) | (g << 8) | (b)))
 
 static HWND hGroupBox = NULL;
 static HBITMAP hBitmap = NULL;
@@ -49,7 +49,7 @@ uint32_t egaPalette[16] = {
 
 uint16_t getEPALogoVersion(uint8_t *data, uint32_t size)
 {
-	int xs, ys;
+	uint8_t xs, ys;
 
 	// check first for version 1 type formats...
 	xs = data[0];
@@ -82,7 +82,7 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 	FILE *fp;
 	BITMAPFILEHEADER bmfh;
 	BITMAPV4HEADER bh;
-	uint32_t count;
+	DWORD count;
 	uint8_t *tempbuf, *sptr, *dptr;
 
 	switch (message)
@@ -135,7 +135,7 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 
 					// make some structures
 					bmfh.bfType		 = 0x4D42;
-					bmfh.bfSize		 = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPV4HEADER) + (bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 3);
+					bmfh.bfSize		 = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPV4HEADER) + static_cast<DWORD>(bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 3);
 					bmfh.bfReserved1 = 0;
 					bmfh.bfReserved2 = 0;
 					bmfh.bfOffBits	 = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPV4HEADER);
@@ -147,11 +147,11 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 					bh.bV4Planes		= 1;
 					bh.bV4BitCount		= 24;
 					bh.bV4V4Compression	= bmi.bmiHeader.biCompression;
-					bh.bV4SizeImage		= bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 3;
+					bh.bV4SizeImage		= static_cast<DWORD>(bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 3);
 					bh.bV4CSType		= LCS_sRGB;
 
 					// downconvert to 24-bit
-					count	= bh.bV4Width * bh.bV4Height;
+					count	= static_cast<DWORD>(bh.bV4Width * bh.bV4Height);
 					tempbuf	= new uint8_t[count * 3];
 					
 					sptr = (uint8_t *)pvBits;
@@ -169,7 +169,7 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 					fp = fopen(fname, "wb");
 					fwrite(&bmfh, 1, sizeof(BITMAPFILEHEADER), fp);
 					fwrite(&bh, 1, sizeof(BITMAPV4HEADER), fp);
-					fwrite(tempbuf, bh.bV4Width * 3, bh.bV4Height, fp);
+					fwrite(tempbuf, static_cast<size_t>(bh.bV4Width * 3), static_cast<size_t>(bh.bV4Height), fp);
 					fclose(fp);
 
 					// free our downconverted buffer
@@ -191,7 +191,7 @@ void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 {
 	uint8_t *data8 = (uint8_t *)fe->data;
 	uint16_t *data16 = (uint16_t *)fe->data;
-	int width, height;
+	uint16_t width, height;
 	char buf[256];
 	RECT rc;
 	HDC hdc;
@@ -266,7 +266,7 @@ void epaRefreshDialog(HWND hwnd, fileEntry *fe)
 	bmi.bmiHeader.biPlanes		= 1;
 	bmi.bmiHeader.biBitCount	= 32;
 	bmi.bmiHeader.biCompression = BI_RGB;
-	bmi.bmiHeader.biSizeImage	= bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 4;
+	bmi.bmiHeader.biSizeImage	= static_cast<DWORD>(bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight * 4);
 
 	hBitmap = CreateDIBSection(hBitmapDC, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
 	SelectObject(hBitmapDC, hBitmap);
@@ -338,7 +338,8 @@ void epaOnDestroyDialog(HWND hwnd)
 
 void epaMakeV1Bitmap(uint8_t *data, uint8_t *outmap)
 {
-	int xs, ys, x, y, span, bc;
+	uint8_t xs, ys;
+	int x, y, span, bc;
 	uint8_t *bptr, *aptr, b, a;
 	uint32_t *dptr, **rowptrs;
 
@@ -471,7 +472,7 @@ void epaMakeV2Bitmap(uint8_t *data, uint32_t size, uint8_t *outmap)
 
 void epaMakeV2VGABitmap(uint8_t *data, uint32_t size, uint8_t *outmap)
 {
-	int xs, ys, x, y, count;
+	uint32_t count, x, xs, ys, y;
 	uint8_t *sptr, *pptr;
 	uint16_t *szptr;
 	uint32_t customPalette[256], *curPal, *dptr;
@@ -494,7 +495,7 @@ void epaMakeV2VGABitmap(uint8_t *data, uint32_t size, uint8_t *outmap)
 			pptr += 4;
 
 			// calculate count of RGB entries
-			count = (size - (pptr - data)) / 3;
+			count = (size - static_cast<uint32_t>(pptr - data)) / 3;
 			if (count > 256)
 				count = 256;
 
@@ -523,10 +524,12 @@ void epaMakeV2VGABitmap(uint8_t *data, uint32_t size, uint8_t *outmap)
 }
 
 
-void epaFlipBitmap(uint8_t *outmap, int width, int height)
+void epaFlipBitmap(uint8_t *outmap, uint16_t width, uint16_t height)
 {
 	uint8_t *strip, *tptr, *bptr;
-	int y, wx4, hd2;
+	int y;
+	uint32_t wx4;
+	uint16_t hd2;
 
 	wx4 = width * 4;
 	hd2 = height / 2;

@@ -36,7 +36,7 @@ void epaOnDestroyDialog(HWND hwnd);
 void epaMakeV1Bitmap(uint8_t *data, uint8_t *outmap);
 void epaMakeV2Bitmap(uint8_t *data, uint32_t size, uint8_t *outmap);
 void epaMakeV2VGABitmap(uint8_t *data, uint32_t size, uint8_t *outmap);
-void epaFlipBitmap(uint8_t *outmap, int width, int height);
+void epaFlipBitmap(uint8_t *outmap, uint16_t width, uint16_t height);
 void epaBlitBitmap(HDC blitToDC);
 
 #endif

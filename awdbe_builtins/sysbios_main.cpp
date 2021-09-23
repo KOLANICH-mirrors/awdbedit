@@ -24,6 +24,7 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
+#include <string.h>
 #include <windows.h>
 #include <commctrl.h>
 #include "types.h"
@@ -37,7 +38,7 @@
 INT_PTR CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HWND hwnd;
-	int len, maxlen;
+	uint32_t len, maxlen;
 	char buf[256];
 
 	switch (message)
@@ -55,7 +56,7 @@ INT_PTR CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM 
 				hwnd = (HWND)lParam;
 
 				// get the limit of this control we previously set
-				maxlen = SendMessage(hwnd, EM_GETLIMITTEXT, 0, 0);
+				maxlen = static_cast<decltype(maxlen)>(SendMessage(hwnd, EM_GETLIMITTEXT, 0, 0));
 
 				// clear our buffer, and set it's length
 				memset(buf, 0, 256);
@@ -130,7 +131,7 @@ INT_PTR CALLBACK VerDiffProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPar
 void sysbiosRefreshMain(uint8_t *ptr)
 {
 	uint8_t *sptr, csum;
-	int len;
+	unsigned int len;
 	char buf[256];
 
 	// get bios version
@@ -209,7 +210,8 @@ void sysbiosRefreshMain(uint8_t *ptr)
 bool sysbiosUpdateMain(uint8_t *ptr, bool *modified, awdbeBIOSVersion *vers)
 {
 	uint8_t *sptr;
-	int len, res;
+	uint8_t len;
+	int res;
 	char buf[256], tempbuf[256];
 
 	// update bios version
@@ -222,7 +224,7 @@ bool sysbiosUpdateMain(uint8_t *ptr, bool *modified, awdbeBIOSVersion *vers)
 	if (strcmp(buf, tempbuf))
 	{
 		// have to be careful about changes to the bios version...
-		sysbiosNowVer = sysbiosGetVersion((uint8_t *)buf, strlen(buf));
+		sysbiosNowVer = sysbiosGetVersion((uint8_t *)buf, strnlen(buf, sizeof(buf) / sizeof(buf[0])));
 		if (sysbiosNowVer != sysbiosVersion)
 		{
 			res = DialogBox(hinst, MAKEINTRESOURCE(IDD_SYSBIOS_VER_DIFF), sysbiosTabList[0].hwnd, VerDiffProc);

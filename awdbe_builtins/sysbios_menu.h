@@ -27,6 +27,7 @@
 #ifndef SYSBIOS_MENU_H
 #define SYSBIOS_MENU_H
 
+#include <stdint.h>
 #include <windows.h>
 
 #define TYPE_MENUITEM		0
@@ -74,7 +75,7 @@ typedef struct menuItem
 	uint16_t	  itemCount;
 
 	char	**itemText;
-	int		 *maxLen;
+	uint32_t *maxLen;
 	bool	 *selectable;
 
 	menuItem *next;
@@ -87,10 +88,10 @@ typedef struct menuEntry
 	sysbiosMenuStruct *menuPtr;
 
 	char		*headerText;
-	int			 headerMaxLen;
+	uint32_t			 headerMaxLen;
 
 	char		*helpText;
-	int			 helpMaxLen;
+	uint32_t			 helpMaxLen;
 
 	menuItem	*itemList;
 
@@ -102,7 +103,7 @@ typedef struct menuHeader
 	uint32_t			 type;
 
 	char			*headerText;
-	int				 headerMaxLen;
+	uint32_t		 headerMaxLen;
 
 	int				 entryCount;
 	menuEntry		*firstEntry;
@@ -133,7 +134,7 @@ void sysbiosDestroyMenu(void);
 
 void sysbiosReleaseMenuItems(void);
 
-int  sysbiosCMOSRead(uint8_t index, uint16_t mask);
+uint16_t sysbiosCMOSRead(uint8_t index, uint16_t mask);
 void sysbiosCMOSWrite(uint8_t index, uint16_t mask, uint16_t val);
 void sysbiosCMOSLoadDefaults(int type);
 

@@ -51,9 +51,9 @@ static bool   gExitMenu = FALSE;
 static uint8_t cmosTable[0x80];
 
 
-int sysbiosMenuStrParse(uint8_t *ptr)
+uint8_t sysbiosMenuStrParse(uint8_t *ptr)
 {
-	int len = 0;
+	uint8_t len = 0;
 
 	switch (*ptr)
 	{
@@ -129,9 +129,9 @@ int sysbiosMenuStrParse(uint8_t *ptr)
 	return len;
 }
 
-int sysbiosMenuStrFindLen(uint8_t *ptr)
+uint32_t sysbiosMenuStrFindLen(uint8_t *ptr)
 {
-	int len = 0, res;
+	uint32_t len = 0, res;
 
 	while ( (res = sysbiosMenuStrParse(ptr)) != 0 )
 	{
@@ -285,7 +285,7 @@ void sysbiosCreateMenuItems(uint8_t *biosPtr, uint32_t biosBaseOffset)
 			mi->itemCount   = mi->bestMaxIdx + 1;
 
 			mi->itemText	= new char *[mi->itemCount];
-			mi->maxLen		= new int[mi->itemCount];
+			mi->maxLen		= new uint32_t[mi->itemCount];
 			mi->selectable  = new bool[mi->itemCount];
 
 			// lookup item pointer
@@ -302,7 +302,7 @@ void sysbiosCreateMenuItems(uint8_t *biosPtr, uint32_t biosBaseOffset)
 					ptr++;
 
 				// this is the maximum length of this item
-				mi->maxLen[t] = (ptr - baseptr);
+				mi->maxLen[t] = static_cast<uint32_t>(ptr - baseptr);
 
 				// allocate/copy the data
 				mi->itemText[t] = new char[mi->maxLen[t] + 1];
@@ -410,9 +410,9 @@ void sysbiosReleaseMenuItems(void)
 	menuHeaderCount = 0;
 }
 
-void sysbiosMenuDrawHorizLine(uint8_t *borderPtr, int x1, int x2, int y1, int y2)
+void sysbiosMenuDrawHorizLine(uint8_t *borderPtr, SHORT x1, SHORT x2, SHORT y1, SHORT y2)
 {
-	uint8_t borderBuf[1024], *bptr;
+	char borderBuf[1024], *bptr;
 	int len, tlen;
 
 	// make top and bottom lines of border
@@ -435,9 +435,9 @@ void sysbiosMenuDrawHorizLine(uint8_t *borderPtr, int x1, int x2, int y1, int y2
 	}
 }
 
-void sysbiosMenuDrawVertLine(uint8_t *borderPtr, int x1, int x2, int y1, int y2)
+void sysbiosMenuDrawVertLine(uint8_t *borderPtr, SHORT x1, SHORT x2, SHORT y1, SHORT y2)
 {
-	int y;
+	SHORT y;
 
 	for (y = y1; y <= y2; y++)
 	{
@@ -506,7 +506,8 @@ void sysbiosMenuStrDrawBorder(int x1, int y1, int x2, int y2, int type)
 
 void sysbiosMenuStrDraw(uint8_t *ptr, colorTableStruct *colTbl)
 {
-	int len, cx, cy;
+	uint32_t len;
+	SHORT cx, cy;
 	uint8_t *str;
 	uint16_t *ptr16;
 
@@ -727,7 +728,8 @@ void drawSetupMenuPage(colorTableStruct *colTbl, menuHeader *mh)
 void runSetupMenuPage(colorTableStruct *colTbl, menuHeader *mh)
 {
 	bool done;
-	int val, itemIdx, newIdx;
+	uint32_t val;
+	uint32_t itemIdx, newIdx;
 	bool needUpd;
 	menuEntry *me;
 	menuHeader *mhx;
@@ -760,7 +762,7 @@ void runSetupMenuPage(colorTableStruct *colTbl, menuHeader *mh)
 							newIdx--;
 
 							if (newIdx < 0)
-								newIdx = (mh->entryCount) - 1;
+								newIdx = static_cast<uint32_t>((mh->entryCount) - 1);
 
 							me = sysbiosMenuLookupEntry(mh, newIdx);
 						} while ((me->menuPtr->status & STATUS_SHOWONLY) || (me->menuPtr->status & STATUS_HIDDEN) || (me->menuPtr->status & STATUS_ITEMDISABLE));
@@ -1277,9 +1279,9 @@ int sysbiosGetMaskShift(int mask)
 	return count;
 }
 
-int sysbiosCMOSRead(uint8_t index, uint16_t mask)
+uint16_t sysbiosCMOSRead(uint8_t index, uint16_t mask)
 {
-	int val;
+	uint16_t val;
 
 	// check for 16-bit reads
 	if (mask & 0xFF00)

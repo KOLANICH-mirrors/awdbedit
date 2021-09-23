@@ -247,7 +247,7 @@ void sysbiosUpdateBIOSOptions(uint8_t *ptr, bool *modified, awdbeBIOSVersion ver
 	if (temp32 > 15)
 		temp32 = 15;
 
-	*sptr = ((*sptr) & 0x0F) | (((uint8_t)temp32 & 0x0F) << 4);
+	*sptr = static_cast<uint8_t>(((*sptr) & 0x0F) | (((uint8_t)temp32 & 0x0F) << 4));
 	
 	// post color option stored in bit 0
 	sptr = ptr + 0x1FEAB;
