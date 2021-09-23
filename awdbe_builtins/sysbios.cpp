@@ -143,13 +143,13 @@ void sysbiosRecalcChecksum(bool showErr)
 	}
 }
 
-INT_PTR CALLBACK sysbiosTabCtrlFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosTabCtrlFunc(HWND hdlg, UINT message, [[maybe_unused]] WPARAM wParam, LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	int curtab;
 	RECT rc;
 //--- START BETA CODE ---
-	static bool setupMsgShown = FALSE;
+	 [[maybe_unused]] static bool setupMsgShown = FALSE;
 //--- END BETA CODE ---
 
 	switch (message)
@@ -343,7 +343,7 @@ void sysbiosUpdateLimit(HWND hdlg, int id, uint32_t curlen, uint32_t maxlen)
 	}
 }
 
-void sysbiosOnLoad(fileEntry *fe)
+void sysbiosOnLoad([[maybe_unused]] fileEntry *fe)
 {
 	// zap some pointers/vars, free memory
 	sysbiosBasePtr = nullptr;
@@ -352,7 +352,7 @@ void sysbiosOnLoad(fileEntry *fe)
 	sysbiosReleaseMenuItems();
 }
 
-void sysbiosRefreshDialog(HWND hwnd, fileEntry *fe)
+void sysbiosRefreshDialog([[maybe_unused]] HWND hwnd, fileEntry *fe)
 {
 	uint8_t *ptr = (uint8_t *)fe->data;
 	char buf[256];

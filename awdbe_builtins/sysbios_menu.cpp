@@ -879,7 +879,7 @@ void runSetupMenuPage(colorTableStruct *colTbl, menuHeader *mh)
 	}
 }
 
-DWORD WINAPI runSetupMenu(LPVOID unused)
+DWORD WINAPI runSetupMenu([[maybe_unused]] LPVOID unused)
 {
 	uint8_t *ptr, monoTbl[8] = { 0x07, 0x0F, 0x70, 0x07, 0x70, 0x78, 0x07, 0x70 };
 	colorTableStruct *colTbl;

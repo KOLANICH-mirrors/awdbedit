@@ -166,8 +166,7 @@ const char COLUMN_NAME_Value[] = "Value";
 const char COLUMN_NAME_Binary_Map[] = "Binary Map";
 
 
-
-INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, [[maybe_unused]] WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	LPNMLISTVIEW lpnmlv;
