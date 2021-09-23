@@ -410,28 +410,28 @@ void createControls(HWND hwnd)
 	SIZE sz;
 
 	TBBUTTON menuList[] = {
-		{ I_IMAGENONE, ID_MENU_FILE,	TBSTATE_ENABLED, TBSTYLE_AUTOSIZE | TBSTYLE_DROPDOWN, 0, 0 },
-		{ I_IMAGENONE, ID_MENU_ACTIONS,	TBSTATE_ENABLED, TBSTYLE_AUTOSIZE | TBSTYLE_DROPDOWN, 0, 0 },
-		{ I_IMAGENONE, ID_MENU_OPTIONS,	TBSTATE_ENABLED, TBSTYLE_AUTOSIZE | TBSTYLE_DROPDOWN, 0, 0 },
+		{ .iBitmap=I_IMAGENONE, .idCommand=ID_MENU_FILE,	.fsState=TBSTATE_ENABLED, .fsStyle=TBSTYLE_AUTOSIZE | TBSTYLE_DROPDOWN, .dwData=0, .iString=0 },
+		{ .iBitmap=I_IMAGENONE, .idCommand=ID_MENU_ACTIONS,	.fsState=TBSTATE_ENABLED, .fsStyle=TBSTYLE_AUTOSIZE | TBSTYLE_DROPDOWN, .dwData=0, .iString=0 },
+		{ .iBitmap=I_IMAGENONE, .idCommand=ID_MENU_OPTIONS,	.fsState=TBSTATE_ENABLED, .fsStyle=TBSTYLE_AUTOSIZE | TBSTYLE_DROPDOWN, .dwData=0, .iString=0 },
 		{ I_IMAGENONE, ID_MENU_HELP,	TBSTATE_ENABLED, TBSTYLE_AUTOSIZE | TBSTYLE_DROPDOWN, 0, 0 }
 	};
 	
 	TBBUTTON toolList[] = {
-		{ 0, ID_ACTION_OPEN,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, 0 },
-		{ 0, ID_ACTION_SAVE,			0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, ID_FILE_PROPERTIES,	0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_ACTION_INSERT,		0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, ID_ACTION_REPLACE,		0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, ID_ACTION_EXTRACT,		0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, ID_ACTION_EXTRACT_ALL,	0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, ID_ACTION_REMOVE,		0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_ACTION_HEXEDIT,		0,					TBSTYLE_BUTTON,	0, 0 },
-		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_OPTION_CONFIG,		TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, 0 },
-		{ 0, 0,						TBSTATE_ENABLED,	TBSTYLE_SEP,	0, -1 },
-		{ 0, ID_FILE_EXIT,			TBSTATE_ENABLED,	TBSTYLE_BUTTON,	0, 0 }
+		{ .iBitmap=0, .idCommand=ID_ACTION_OPEN,		.fsState=TBSTATE_ENABLED,	.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=ID_ACTION_SAVE,		.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=ID_FILE_PROPERTIES,	.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=0,						.fsState=TBSTATE_ENABLED,	.fsStyle=TBSTYLE_SEP,	.dwData=0, .iString=-1 },
+		{ .iBitmap=0, .idCommand=ID_ACTION_INSERT,		.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=ID_ACTION_REPLACE,		.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=ID_ACTION_EXTRACT,		.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=ID_ACTION_EXTRACT_ALL,	.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=ID_ACTION_REMOVE,		.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=0,						.fsState=TBSTATE_ENABLED,	.fsStyle=TBSTYLE_SEP,	.dwData=0, .iString=-1 },
+		{ .iBitmap=0, .idCommand=ID_ACTION_HEXEDIT,		.fsState=0,					.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=0,						.fsState=TBSTATE_ENABLED,	.fsStyle=TBSTYLE_SEP,	.dwData=0, .iString=-1 },
+		{ .iBitmap=0, .idCommand=ID_OPTION_CONFIG,		.fsState=TBSTATE_ENABLED,	.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 },
+		{ .iBitmap=0, .idCommand=0,						.fsState=TBSTATE_ENABLED,	.fsStyle=TBSTYLE_SEP,	.dwData=0, .iString=-1 },
+		{ .iBitmap=0, .idCommand=ID_FILE_EXIT,			.fsState=TBSTATE_ENABLED,	.fsStyle=TBSTYLE_BUTTON,.dwData=0, .iString=0 }
 	};
 
 	// create a rebar
