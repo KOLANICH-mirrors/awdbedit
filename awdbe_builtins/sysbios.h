@@ -65,10 +65,10 @@ bool sysbiosUpdateDialog(HWND hwnd, fileEntry *fe);
 void sysbiosOnResizeDialog(HWND dialogWnd, RECT *rc);
 
 
-awdbeBIOSVersion sysbiosGetVersion(uint8_t *sptr, int len);
+awdbeBIOSVersion sysbiosGetVersion(uint8_t *sptr, uint16_t len);
 
-int   sysbiosFindLimit(uint8_t *base);
-void  sysbiosUpdateLimit(HWND hdlg, int id, int curlen, int maxlen);
+uint8_t  sysbiosFindLimit(uint8_t *ptr);
+void  sysbiosUpdateLimit(HWND hdlg, int id, uint32_t curlen, uint32_t maxlen);
 uint8_t sysbiosCalcBiosChecksum(uint8_t *ptr, uint32_t start, uint32_t end, int method);
 void  sysbiosRecalcChecksum(bool showErr);
 

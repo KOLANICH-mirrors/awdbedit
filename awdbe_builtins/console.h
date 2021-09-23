@@ -52,18 +52,18 @@ HANDLE getConsoleHandle(void);
 void init_console(bool useExistConsole, int mode, PHANDLER_ROUTINE ctrlHandler);
 void free_console(void);
 void flip_to_console(void);
-uint16_t *get_screen_ptr(void);
+SHORT *get_screen_ptr(void);
 void update_console_position(void);
 
 void go_25(void);
 void go_50(void);
 void clrscr(void);
-void textattr(int c);
+void textattr(WORD c);
 void textcolor(int c);
-void textbackground(int c);
-void gotoxy(uint x, uint y);
-int  wherex(void);
-int  wherey(void);
+void textbackground(WORD c);
+void gotoxy(SHORT x, SHORT y);
+SHORT wherex(void);
+SHORT wherey(void);
 void gettext(int x1, int y1, int x2, int y2, char *buf);
 void puttext(int x1, int y1, int x2, int y2, char *buf);
 /*
@@ -84,11 +84,11 @@ void c_rawputs(char *s);
 void c_rawputblk(char *s, int len);
 void c_rawprintf(char *format, ...);
 
-void zap_line(int y, char ch);
+void zap_line(SHORT y, char ch);
 void center_text(char *str, int y);
 void draw_window(int x1, int y1, int x2, int y2, int fg, int bg);
 
-void cursor_on(int pct);
+void cursor_on(DWORD pct);
 void cursor_off(void);
 
 bool c_kbhit(void);

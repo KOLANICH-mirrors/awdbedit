@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <windows.h>
 #include <commctrl.h>
+#include <assert.h>
+#include <numeric>
 #include "types.h"
 #include "../awdbedit/awdbe_exports.h"
 #include "builtins.h"
@@ -35,6 +37,14 @@
 
 static int modifyDriveType;
 static sysbiosDrvTblEntry *modifyDrivePtr;
+
+template <typename NumT>
+NumT aton(char * buf){
+	char *end;
+	auto res = strtoul(buf, &end, 10);
+	assert(res < std::numeric_limits<NumT>::max());
+	return static_cast<NumT>(res);
+};
 
 INT_PTR CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -76,22 +86,22 @@ INT_PTR CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM 
 			{
 				case IDOK:
 					GetDlgItemText(hdlg, IDC_MODIFY_CYL, buf, 256);
-					modifyDrivePtr->cylinders = atoi(buf);
+					modifyDrivePtr->cylinders = aton<decltype(modifyDrivePtr->cylinders)>(buf);
 
 					GetDlgItemText(hdlg, IDC_MODIFY_HEADS, buf, 256);
-					modifyDrivePtr->heads = atoi(buf);
+					modifyDrivePtr->heads = aton<decltype(modifyDrivePtr->heads)>(buf);
 
 					GetDlgItemText(hdlg, IDC_MODIFY_PRECOMP, buf, 256);
-					modifyDrivePtr->precomp = atoi(buf);
+					modifyDrivePtr->precomp = aton<decltype(modifyDrivePtr->precomp)>(buf);
 
 					GetDlgItemText(hdlg, IDC_MODIFY_CONTROL, buf, 256);
-					modifyDrivePtr->control = atoi(buf);
+					modifyDrivePtr->control = aton<decltype(modifyDrivePtr->control)>(buf);
 
 					GetDlgItemText(hdlg, IDC_MODIFY_LZONE, buf, 256);
-					modifyDrivePtr->landzone = atoi(buf);
+					modifyDrivePtr->landzone = aton<decltype(modifyDrivePtr->landzone)>(buf);
 
 					GetDlgItemText(hdlg, IDC_MODIFY_SECTORS, buf, 256);
-					modifyDrivePtr->sectors = atoi(buf);
+					modifyDrivePtr->sectors = aton<decltype(modifyDrivePtr->sectors)>(buf);
 
 				case IDCANCEL:
 					EndDialog(hdlg, TRUE);

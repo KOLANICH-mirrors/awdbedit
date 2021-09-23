@@ -35,8 +35,8 @@
 HANDLE hCon = (HANDLE)-1;
 bool madeConsole = FALSE;
 WORD   attrib = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
-uint8_t  cursor_x, cursor_y, size_x, size_y;
-uint16_t *screen = NULL, *scrptr;
+SHORT  cursor_x, cursor_y, size_x, size_y;
+SHORT *screen = NULL, *scrptr;
 
 HANDLE getConsoleHandle(void)
 {
@@ -106,7 +106,7 @@ void free_console(void)
 	hCon = (HANDLE)-1;
 }
 
-void change_size(int xs, int ys)
+void change_size(SHORT xs, SHORT ys)
 {
 	COORD size, pos;
 	SMALL_RECT r;
@@ -141,7 +141,7 @@ void change_size(int xs, int ys)
 	size_y = ys;
 
 	if (screen) delete []screen;
-	screen = new uint16_t[size_x * size_y * 2];
+	screen = new SHORT[static_cast<unsigned int>(size_x * size_y) * 2u];
 	scrptr = screen;
 
 	size.X   = size_x;
@@ -183,7 +183,7 @@ void update_console_position(void)
 	SetConsoleCursorPosition(hCon, pos);
 }
 
-uint16_t *get_screen_ptr(void)
+SHORT *get_screen_ptr(void)
 {
 	return screen;
 }
@@ -191,7 +191,7 @@ uint16_t *get_screen_ptr(void)
 void clrscr(void)
 {
 	int t;
-	uint16_t *ptr;
+	SHORT *ptr;
 
 	ptr = screen;
 	t = size_x * size_y;
@@ -204,7 +204,7 @@ void clrscr(void)
 	gotoxy(1, 1);
 }
 
-void textattr(int c)
+void textattr(WORD c)
 {
 	attrib = c;
 }
@@ -214,12 +214,12 @@ void textcolor(int c)
 	attrib = (attrib & 0xF0) | (c & 0x0F);
 }
 
-void textbackground(int c)
+void textbackground(WORD c)
 {
 	attrib = (attrib & 0x0F) | (c << 4);
 }
 
-void gotoxy(uint x, uint y)
+void gotoxy(SHORT x, SHORT y)
 {
 	if (x > size_x) x = size_x;
 	if (y > size_y) y = size_y;
@@ -231,12 +231,12 @@ void gotoxy(uint x, uint y)
 	scrptr = screen + ((size_x * y) << 1) + (x << 1);
 }
 
-int wherex(void)
+SHORT wherex(void)
 {
 	return cursor_x;
 }
 
-int wherey(void)
+SHORT wherey(void)
 {
 	return cursor_y;
 }
@@ -294,17 +294,18 @@ void window(int l, int t, int r, int b)
 
 void scroll(void)
 {
-	int t, xsize;
-	uint16_t *sptr, *dptr;
+	int t;
+	USHORT xsize;
+	SHORT *sptr, *dptr;
 
-	xsize = size_x << 1;
+	xsize = static_cast<USHORT>(size_x << 1u);
 	sptr = screen + xsize;
 	dptr = screen;
 
 	t = (size_y - 1);
 	while (t--)
 	{
-		memcpy(dptr, sptr, xsize << 1);
+		memcpy(dptr, sptr, static_cast<size_t>(xsize << 1));
 		dptr += xsize;
 		sptr += xsize;
 	}
@@ -472,7 +473,7 @@ WORD c_getkeycode(void)
 
 // ----------------------------------------------------------------------------
 
-void zap_line(int y, char ch)
+void zap_line(SHORT y, char ch)
 {
 	int t;
 
@@ -481,18 +482,19 @@ void zap_line(int y, char ch)
 		c_rawputch(ch);
 }
 
-void center_text(char *str, int y)
+void center_text(char *str, SHORT y)
 {
 	int x;
 
 	x = 40 - (strlen(str) >> 1);
-	gotoxy(x, y);
+	C_ASSERT(x >= 0 && x < 0xFFFF);
+	gotoxy(static_cast<SHORT>(x), y);
 	c_puts(str);
 }
 
-void draw_window(int x1, int y1, int x2, int y2, int fg, int bg)
+void draw_window(SHORT x1, SHORT y1, SHORT x2, SHORT y2, int fg, int bg)
 {
-	int t;
+	SHORT t;
 	char hbuf[80], *ptr;
 
 	textcolor(fg);
@@ -525,7 +527,7 @@ void draw_window(int x1, int y1, int x2, int y2, int fg, int bg)
 	gotoxy(x1 + 1, y1 + 1);
 }
 
-void cursor_on(int pct)
+void cursor_on(DWORD pct)
 {
 	CONSOLE_CURSOR_INFO ci;
 

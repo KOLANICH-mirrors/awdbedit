@@ -59,14 +59,11 @@ sysbiosTabEntry sysbiosTabList[] = {
 
 static bool ignoreUpdate = FALSE;
 
-int  sysbiosFindLimit(uint8_t *ptr);
-void sysbiosUpdateLimit(HWND hdlg, int id, int curlen, int maxlen);
-
 
 uint8_t sysbiosCalcBiosChecksum(uint8_t *ptr, uint32_t start, uint32_t end, int method)
 {
 	uint8_t csum = 0x00;
-	int count;
+	uint32_t count;
 
 	ptr  += start;
 	count = (end - start) + 1;
@@ -300,10 +297,10 @@ void sysbiosOnDestroyDialog(HWND dialogWnd)
 }
 
 
-int sysbiosFindLimit(uint8_t *base)
+uint8_t sysbiosFindLimit(uint8_t *base)
 {
 	uint8_t *ptr = base;
-	int len;
+	uint32_t len;
 
 	// first, skip all bytes that are not NULLs
 	while (*ptr != 0)
@@ -317,14 +314,14 @@ int sysbiosFindLimit(uint8_t *base)
 	ptr--;
 
 	// this is the maximum length allowed
-	len = (ptr - base);
+	len = static_cast<uint32_t>(ptr - base);
 	if (len > 255)
 		len = 255;
 
-	return len;
+	return static_cast<uint8_t>(len);
 }
 
-void sysbiosUpdateLimit(HWND hdlg, int id, int curlen, int maxlen)
+void sysbiosUpdateLimit(HWND hdlg, int id, uint32_t curlen, uint32_t maxlen)
 {
 	char buf[32];
 
@@ -432,7 +429,7 @@ bool sysbiosUpdateDialog(HWND hwnd, fileEntry *fe)
 	return modified;
 }
 
-awdbeBIOSVersion sysbiosGetVersion(uint8_t *sptr, int len)
+awdbeBIOSVersion sysbiosGetVersion(uint8_t *sptr, uint16_t len)
 {
 	awdbeBIOSVersion vers = awdbeBIOSVerUnknown;
 
