@@ -37,7 +37,11 @@
 #define TYPE_BIOS			0
 #define TYPE_SETUP			1
 
+#if defined(__WINE__)
+#include <pshpack1.h>
+#else
 #pragma pack(push, 1)
+#endif
 typedef struct
 {
 	uint16_t	status;
@@ -62,7 +66,11 @@ typedef struct
 	uint16_t	pointerToPageEnd;
 	uint16_t	pointerToStartupString;
 } sysbiosMenuDef;
+#if defined(__WINE__)
+#include <poppack.h>
+#else
 #pragma pack(pop)
+#endif
 
 
 typedef struct menuItem

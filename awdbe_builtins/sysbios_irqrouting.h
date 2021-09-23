@@ -29,7 +29,11 @@
 
 #include <windows.h>
 
+#if defined(__WINE__)
+#include <pshpack1.h>
+#else
 #pragma pack(push, 1)
+#endif
 typedef struct
 {
 	uint8_t inta;
@@ -37,7 +41,11 @@ typedef struct
 	uint8_t intc;
 	uint8_t intd;
 } sysbiosPCIRoutingEntry;
+#if defined(__WINE__)
+#include <poppack.h>
+#else
 #pragma pack(pop)
+#endif
 
 INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 

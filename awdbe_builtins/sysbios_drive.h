@@ -27,7 +27,11 @@
 #ifndef SYSBIOS_DRIVE_H
 #define SYSBIOS_DRIVE_H
 
+#if defined(__WINE__)
+#include <pshpack1.h>
+#else
 #pragma pack(push, 1)
+#endif
 typedef struct
 {
 	uint16_t	cylinders;
@@ -40,7 +44,11 @@ typedef struct
 	uint16_t	landzone;
 	uint16_t	sectors;
 } sysbiosDrvTblEntry;
+#if defined(__WINE__)
+#include <poppack.h>
+#else
 #pragma pack(pop)
+#endif
 
 INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 

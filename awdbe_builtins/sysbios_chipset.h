@@ -27,7 +27,11 @@
 #ifndef SYSBIOS_CHIPSET_H
 #define SYSBIOS_CHIPSET_H
 
+#if defined(__WINE__)
+#include <pshpack1.h>
+#else
 #pragma pack(push, 1)
+#endif
 typedef struct
 {
 	uint8_t	type;
@@ -39,7 +43,11 @@ typedef struct
 	uint8_t	value;
 	uint8_t	_0x00_3;
 } sysbiosChipRegEntry;
+#if defined(__WINE__)
+#include <poppack.h>
+#else
 #pragma pack(pop)
+#endif
 
 INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
