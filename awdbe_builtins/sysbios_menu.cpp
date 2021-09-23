@@ -408,7 +408,16 @@ void sysbiosReleaseMenuItems(void)
 	menuHeaderCount = 0;
 }
 
-void sysbiosMenuDrawHorizLine(uint8_t *borderPtr, SHORT x1, SHORT x2, SHORT y1, SHORT y2)
+struct Border {
+	char UL;
+	char Hstr;
+	char UR;
+	char Vstr;  // Char from extended range! Latin-1 encoding
+	char BL;
+	char BR;
+};
+
+void sysbiosMenuDrawHorizLine(Border *borderPtr, SHORT x1, SHORT x2, SHORT y1, SHORT y2)
 {
 	char borderBuf[1024], *bptr;
 	int len, tlen;
@@ -422,7 +431,7 @@ void sysbiosMenuDrawHorizLine(uint8_t *borderPtr, SHORT x1, SHORT x2, SHORT y1, 
 		tlen = len;
 
 		while (tlen--)
-			*bptr++ = borderPtr[1];
+			*bptr++ = borderPtr->Hstr;
 
 		// draw them
 		gotoxy(x1, y1);
@@ -433,33 +442,33 @@ void sysbiosMenuDrawHorizLine(uint8_t *borderPtr, SHORT x1, SHORT x2, SHORT y1, 
 	}
 }
 
-void sysbiosMenuDrawVertLine(uint8_t *borderPtr, SHORT x1, SHORT x2, SHORT y1, SHORT y2)
+void sysbiosMenuDrawVertLine(Border *borderPtr, SHORT x1, SHORT x2, SHORT y1, SHORT y2)
 {
 	SHORT y;
 
 	for (y = y1; y <= y2; y++)
 	{
 		gotoxy(x1, y);
-		c_rawputch(borderPtr[3]);
+		c_rawputch(borderPtr->Vstr);
 
 		gotoxy(x2, y);
-		c_rawputch(borderPtr[3]);
+		c_rawputch(borderPtr->Vstr);
 	}
 }
 
-void sysbiosMenuStrDrawBorder(int x1, int y1, int x2, int y2, int type)
+void sysbiosMenuStrDrawBorder(SHORT x1, SHORT y1, SHORT x2, SHORT y2, int type)
 {
-	//						  +     -     +     |     +     +	
-	//                        UL   Hstr   UR   Vstr   BL    BR
-	uint8_t borderType1[6] = { 0xDA, 0xC4, 0xBF, 0xB3, 0xC0, 0xD9 };
-	uint8_t borderType2[6] = { 0xC9, 0xCD, 0xBB, 0xBA, 0xC8, 0xBC };
-	uint8_t *borderPtr;
+	//                     +               -               +               |               +               +
+	//                     UL             Hstr             UR             Vstr             BL              BR
+	Border borderType1 { '\xDA' /*'Ú'*/, '\xC4' /*'Ä'*/, '\xBF' /*'¿'*/, '\xB3'/*'³'*/, '\xC0' /*'À'*/, '\xD9' /*'Ù'*/};
+	Border borderType2 { '\xC9' /*'É'*/, '\xCD' /*'Í'*/, '\xBB' /*'»'*/, '\xBA'/*'º'*/, '\xC8' /*'È'*/, '\xBC' /*'¼'*/};
+	Border *borderPtr;
 
 	// setup border type
 	if (type == 0)
-		borderPtr = borderType1;
+		borderPtr = &borderType1;
 	else
-		borderPtr = borderType2;
+		borderPtr = &borderType2;
 
 	// draw horizontal portion
 	if (y1 != y2)
@@ -487,16 +496,16 @@ void sysbiosMenuStrDrawBorder(int x1, int y1, int x2, int y2, int type)
 
 	// draw corners
 	gotoxy(x1, y1);
-	c_rawputch(borderPtr[0]);
+	c_rawputch(borderPtr->UL);
 
 	gotoxy(x2, y1);
-	c_rawputch(borderPtr[2]);
+	c_rawputch(borderPtr->UR);
 
 	gotoxy(x1, y2);
-	c_rawputch(borderPtr[4]);
+	c_rawputch(borderPtr->BL);
 
 	gotoxy(x2, y2);
-	c_rawputch(borderPtr[5]);
+	c_rawputch(borderPtr->BR);
 
 	// set cursor position to bottom-right corner of border window
 	gotoxy(x2, y2);
