@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
+#include <cassert>
 #include "types.h"
 #include "console.h"
 
@@ -486,7 +487,7 @@ void center_text(char *str, SHORT y)
 	int x;
 
 	x = 40 - (strlen(str) >> 1);
-	C_ASSERT(x >= 0 && x < 0xFFFF);
+	assert(x >= 0 && x < 0xFFFF);
 	gotoxy(static_cast<SHORT>(x), y);
 	c_puts(str);
 }
