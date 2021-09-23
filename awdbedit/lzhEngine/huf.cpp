@@ -53,7 +53,7 @@ static void count_t_freq(void)
 	}
 }
 
-static void write_pt_len(int n, int nbit, int i_special)
+static void write_pt_len(uint8_t n, uint8_t nbit, int i_special)
 {
 	uint16_t i, k;
 
@@ -63,7 +63,7 @@ static void write_pt_len(int n, int nbit, int i_special)
 	while (i < n) {
 		k = pt_len[i++];
 		if (k <= 6) putbits(3, k);
-		else putbits(k - 3, (1U << (k - 3)) - 2);
+		else putbits(k - 3, static_cast<uint16_t>((1U << (k - 3)) - 2));
 		if (i == i_special) {
 			while (i < 6 && pt_len[i] == 0) i++;
 			putbits(2, (i - 3) & 3);
@@ -146,7 +146,7 @@ static void send_block(void)
 		if (i % CHAR_BIT == 0) flags = buf[pos++];  else flags <<= 1;
 		if (flags & (1U << (CHAR_BIT - 1))) {
 			encode_c(buf[pos++] + (1U << CHAR_BIT));
-			k = buf[pos++] << CHAR_BIT;  k += buf[pos++];
+			k = static_cast<uint16_t>(buf[pos++] << CHAR_BIT);  k += buf[pos++];
 			encode_p(k);
 		} else encode_c(buf[pos++]);
 		if (unpackable) return;
@@ -213,9 +213,9 @@ void huf_encode_end(void)
 
 /***** decoding *****/
 
-static void read_pt_len(int nn, int nbit, int i_special)
+static void read_pt_len(uint8_t nn, uint8_t nbit, uint16_t i_special)
 {
-	int i, c, n;
+	uint16_t i, c, n;
 	uint16_t mask;
 
 	n = getbits(nbit);
@@ -232,7 +232,7 @@ static void read_pt_len(int nn, int nbit, int i_special)
 				while (mask & bitbuf) {  mask >>= 1;  c++;  }
 			}
 			fillbuf((c < 7) ? 3 : c - 3);
-			pt_len[i++] = c;
+			pt_len[i++] = static_cast<uint8_t>(c);
 			if (i == i_special) {
 				c = getbits(2);
 				while (--c >= 0) pt_len[i++] = 0;
@@ -245,8 +245,7 @@ static void read_pt_len(int nn, int nbit, int i_special)
 
 static void read_c_len(void)
 {
-	int i, c, n;
-	uint16_t mask;
+	uint16_t i, c, n, mask;
 
 	n = getbits(CBIT);
 	if (n == 0) {
@@ -271,7 +270,7 @@ static void read_c_len(void)
 				else if (c == 1) c = getbits(4) + 3;
 				else             c = getbits(CBIT) + 20;
 				while (--c >= 0) c_len[i++] = 0;
-			} else c_len[i++] = c - 2;
+			} else c_len[i++] = static_cast<uint8_t>(c - 2);
 		}
 		while (i < NC) c_len[i++] = 0;
 		make_table(NC, c_len, 12, c_table);
@@ -286,7 +285,7 @@ uint16_t decode_c(void)
 		blocksize = getbits(16);
 		read_pt_len(NT, TBIT, 3);
 		read_c_len();
-		read_pt_len(NP, PBIT, -1);
+		read_pt_len(NP, PBIT, 0xFF);
 	}
 	blocksize--;
 	j = c_table[bitbuf >> (BITBUFSIZ - 12)];
@@ -316,7 +315,7 @@ uint16_t decode_p(void)
 		} while (j >= NP);
 	}
 	fillbuf(pt_len[j]);
-	if (j != 0) j = (1U << (j - 1)) + getbits(j - 1);
+	if (j != 0) j = static_cast<uint16_t>((1U << (j - 1)) + getbits(j - 1));
 	return j;
 }
 

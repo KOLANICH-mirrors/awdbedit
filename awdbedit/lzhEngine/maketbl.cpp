@@ -22,7 +22,7 @@ void make_table(uint16_t nchar, uint8_t bitlen[], uint16_t tablebits, uint16_t t
 
 	start[1] = 0;
 	for (i = 1; i <= 16; i++)
-		start[i + 1] = start[i] + (count[i] << (16 - i));
+		start[i + 1] = start[i] + static_cast<uint16_t>(count[i] << (16 - i));
 	if (start[17] != (uint16_t)(1U << 16))
 	{
 //		error("Bad table");
@@ -32,18 +32,18 @@ void make_table(uint16_t nchar, uint8_t bitlen[], uint16_t tablebits, uint16_t t
 	jutbits = 16 - tablebits;
 	for (i = 1; i <= tablebits; i++) {
 		start[i] >>= jutbits;
-		weight[i] = 1U << (tablebits - i);
+		weight[i] = static_cast<uint16_t>(1U << (tablebits - i));
 	}
-	while (i <= 16) weight[i++] = 1U << (16 - i);
+	while (i <= 16) weight[i++] = static_cast<uint16_t>(1U << (16 - i));
 
 	i = start[tablebits + 1] >> jutbits;
 	if (i != (uint16_t)(1U << 16)) {
-		k = 1U << tablebits;
+		k = static_cast<uint16_t>(1U << tablebits);
 		while (i != k) table[i++] = 0;
 	}
 
 	avail = nchar;
-	mask = 1U << (15 - tablebits);
+	mask = static_cast<uint16_t>(1U << (15 - tablebits));
 	for (ch = 0; ch < nchar; ch++) {
 		if ((len = bitlen[ch]) == 0) continue;
 		nextcode = start[len] + weight[len];
