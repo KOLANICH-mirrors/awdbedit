@@ -536,7 +536,7 @@ void pluginShowAboutBox(uint32_t index, HWND parentWnd)
 //---------------------------------------------------------------------------------------------------------------------
 // plugin accessor functions
 
-EXPORT void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount)
+AWDBEDIT_API void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount)
 {
 	pluginFuncEntry *pe = (pluginFuncEntry *)pluginID;
 	awdbeItemEntry *ie;
@@ -583,37 +583,37 @@ EXPORT void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemC
 	pluginGenerateHash(ie->list, ie->count);
 }
 
-EXPORT void awdbeUpdateSelf(uint64_t pluginID)
+AWDBEDIT_API void awdbeUpdateSelf(uint64_t pluginID)
 {
 	biosUpdateCurrentDialog();
 }
 
-EXPORT void awdbeRefreshSelf(uint64_t pluginID)
+AWDBEDIT_API void awdbeRefreshSelf(uint64_t pluginID)
 {
 	biosRefreshCurrentDialog();
 }
 
-EXPORT void awdbeGetDialogSize(uint64_t pluginID, SIZE *sz)
+AWDBEDIT_API void awdbeGetDialogSize(uint64_t pluginID, SIZE *sz)
 {
 	biosGetDialogSize(sz);
 }
 
-EXPORT void awdbeResizeDialog(uint64_t pluginID, SIZE sz)
+AWDBEDIT_API void awdbeResizeDialog(uint64_t pluginID, SIZE sz)
 {
 	biosResizeDialog(sz);
 }
 
-EXPORT fileEntry *awdbeSearchForID(uint64_t pluginID, uint16_t ID)
+AWDBEDIT_API fileEntry *awdbeSearchForID(uint64_t pluginID, uint16_t ID)
 {
 	return biosScanForID(ID);
 }
 
-EXPORT void awdbeSetModified(uint64_t pluginID)
+AWDBEDIT_API void awdbeSetModified(uint64_t pluginID)
 {
 	biosSetModified(TRUE);
 }
 
-EXPORT int awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp)
+AWDBEDIT_API int awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp)
 {
 	popupDialog *pdlg;
 	popupMenu *pmenu;
@@ -690,7 +690,7 @@ EXPORT int awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp)
 	return retval;
 }
 
-EXPORT awdbeBIOSVersion awdbeGetBIOSVersion(uint64_t pluginID)
+AWDBEDIT_API awdbeBIOSVersion awdbeGetBIOSVersion(uint64_t pluginID)
 {
 	return biosGetVersion();
 }

@@ -11,6 +11,6 @@ Files: .gitignore
 Copyright: 2006 Keith Packard <keithp@keithp.com>
 License: GPL-2.0-or-later
 
-Files: .editorconfig
+Files: .editorconfig .gitmodules cmake/* awdbedit/api.h awdbedit/CMakeLists.txt awdbedit/lzhEngine/CMakeLists.txt awdbe_builtins/CMakeLists.txt awdbe_wavedit/CMakeLists.txt
 Copyright: 2021 KOLANICH
 License: Unlicense

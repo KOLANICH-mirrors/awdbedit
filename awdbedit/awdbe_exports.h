@@ -103,23 +103,17 @@ typedef enum
 	awdbeBIOSVer60
 } awdbeBIOSVersion;
 
-#ifdef AWDBE_EXPORT_FUNCS
-#define EXPORT __declspec(dllexport)
-#else
-#define EXPORT __declspec(dllimport)
-#endif
+AWDBEDIT_API void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount);
+AWDBEDIT_API fileEntry *awdbeSearchForID(uint64_t pluginID, uint16_t ID);
+AWDBEDIT_API void awdbeUpdateSelf(uint64_t pluginID);
+AWDBEDIT_API void awdbeRefreshSelf(uint64_t pluginID);
 
-EXPORT void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount);
-EXPORT fileEntry *awdbeSearchForID(uint64_t pluginID, uint16_t ID);
-EXPORT void awdbeUpdateSelf(uint64_t pluginID);
-EXPORT void awdbeRefreshSelf(uint64_t pluginID);
+AWDBEDIT_API void awdbeGetDialogSize(uint64_t pluginID, SIZE *sz);
+AWDBEDIT_API void awdbeResizeDialog(uint64_t pluginID, SIZE sz);
 
-EXPORT void awdbeGetDialogSize(uint64_t pluginID, SIZE *sz);
-EXPORT void awdbeResizeDialog(uint64_t pluginID, SIZE sz);
+AWDBEDIT_API void awdbeSetModified(uint64_t pluginID);
 
-EXPORT void awdbeSetModified(uint64_t pluginID);
-
-EXPORT int  awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp);
-EXPORT awdbeBIOSVersion awdbeGetBIOSVersion(uint64_t pluginID);
+AWDBEDIT_API int  awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp);
+AWDBEDIT_API awdbeBIOSVersion awdbeGetBIOSVersion(uint64_t pluginID);
 
 #endif

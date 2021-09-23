@@ -27,6 +27,8 @@
 #ifndef PLUGIN_H
 #define PLUGIN_H
 
+#include "api.h"
+
 typedef struct pluginFuncEntry
 {
 	char			*fname;

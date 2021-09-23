@@ -28,7 +28,6 @@
 #include <direct.h>
 #include <windows.h>
 #include <commctrl.h>
-#include <afxres.h>
 #include "types.h"
 #include "resource.h"
 #include "main.h"
