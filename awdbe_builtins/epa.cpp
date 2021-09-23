@@ -23,8 +23,14 @@
 //
 //---------------------------------------------------------------------------------------------------------------------
 
+#include <string>
+
 #include <stdio.h>
 #include <windows.h>
+#if defined(HAVE_LIBGEN_H)
+#include <libgen.h>
+#endif
+
 #include "types.h"
 #include "../awdbedit/awdbe_exports.h"
 #include "builtins.h"
@@ -78,7 +84,8 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, [[maybe_unu
 	HDC dc;
 	PAINTSTRUCT ps;
 	OPENFILENAME ofn;
-	char buf[256], fname[256];
+	char buf[256];
+	std::string fname;
 	FILE *fp;
 	BITMAPFILEHEADER bmfh;
 	BITMAPV4HEADER bh;
@@ -104,8 +111,8 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, [[maybe_unu
 			{
 				case IDC_EPA_EXPORT:
 					GetDlgItemText(hdlg, IDC_FILENAME, buf, 256);
-					_splitpath(buf, nullptr, nullptr, fname, nullptr);
-					strcat(fname, ".bmp");
+					fname = basename(buf);
+					fname += ".bmp";
 
 					// display the save dialog
 					ZeroMemory(&ofn, sizeof(OPENFILENAME));
@@ -116,7 +123,7 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, [[maybe_unu
 					ofn.lpstrCustomFilter	= nullptr;
 					ofn.nMaxCustFilter		= 0;
 					ofn.nFilterIndex		= 1;
-					ofn.lpstrFile			= fname;
+					ofn.lpstrFile			= fname.data();
 					ofn.nMaxFile			= 256;
 					ofn.lpstrFileTitle		= nullptr;
 					ofn.nMaxFileTitle		= 0;
@@ -166,7 +173,7 @@ INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, [[maybe_unu
 					}
 
 					// write out a BMP
-					fp = fopen(fname, "wb");
+					fp = fopen(fname.data(), "wb");
 					fwrite(&bmfh, 1, sizeof(BITMAPFILEHEADER), fp);
 					fwrite(&bh, 1, sizeof(BITMAPV4HEADER), fp);
 					fwrite(tempbuf, static_cast<size_t>(bh.bV4Width * 3), static_cast<size_t>(bh.bV4Height), fp);

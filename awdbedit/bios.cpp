@@ -27,9 +27,24 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <shlobj.h>
+#if defined(HAVE_UNISTD_H)
+#include <unistd.h>
+#endif
+#if defined(HAVE_LIBGEN_H)
+#include <libgen.h>
+#endif
+#if defined(HAVE_SYS_STAT_H)
+#include <sys/stat.h>
+#endif
+#if defined(HAVE_PROCESS_H)
 #include <process.h>
+#endif
+#if defined(HAVE_IO_H)
 #include <io.h>
+#endif
+#if defined(HAVE_DIRECT_H)
 #include <direct.h>
+#endif
 #include "types.h"
 #include "config.h"
 #include "resource.h"
@@ -2222,8 +2237,12 @@ bool biosAddComponent(char *fname, uint16_t id, uint32_t offset)
 		return FALSE;
 
 	// get just the name of this file
+	#if !defined(HAVE_LIBGEN_H)
 	_splitpath(fname, nullptr, nullptr, name, ext);
 	sprintf(fname, "%s%s", name, ext);
+	#else
+	strcpy(fname, basename(fname));
+	#endif
 
 	// get the size too
 	fseek(fp, 0, 2);
@@ -2391,7 +2410,15 @@ INT_PTR APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPara
 					// make sure the file specified exists
 					GetDlgItemText(hdlg, IDC_INSERT_FILENAME, buf, 256);
 					
-					if ((buf[0] == 0) || (_access(buf, 04) != 0))
+					if (
+						(buf[0] == 0)
+						||
+						#if defined(_MSC_VER)
+						(_access(buf, 04) != 0)
+						#else
+						(access(buf, 04) != 0)
+						#endif
+					)
 					{
 						MessageBox(hdlg, "Unable to open the specified file!\n\nPlease check the path and/or filename "
 							"entered and try again.", "Error", MB_OK);
@@ -2445,8 +2472,12 @@ void biosReplaceFile(char *fname)
 		return;
 
 	// get just the name of this file
+	#if !defined(HAVE_SYS_STAT_H)
 	_splitpath(fname, nullptr, nullptr, name, ext);
 	sprintf(fname, "%s%s", name, ext);
+	#else
+	strcpy(fname, basename(fname));
+	#endif
 
 	// get the size too
 	fseek(fp, 0, 2);
@@ -2891,26 +2922,42 @@ void biosHexEdit(void)
 time_t biosGetLastWriteTime(updateEntry *ue)
 {
 	char cwd[256];
+	#if defined(_MSC_VER)
 	struct _finddata_t fd;
 	long hfile;
+	#endif
+	time_t res = 0u;
 
 	// save the current dir
-	_getcwd(cwd, 256);
+	getcwd(cwd, 256);
 
 	// change to the path specified
-	if (_chdir(ue->path) >= 0)
+	if (chdir(ue->path) >= 0)
+	#if defined(_MSC_VER)
 	{
 		// lookup our file
 		hfile = _findfirst(ue->fname, &fd);
 		if (hfile >= 0)
 			_findclose(hfile);
 	}
+	res = fd.time_write;
+	#else
+	{
+		struct stat st;
+		stat(ue->fname, &st);
+		#if defined(TIME_T_HAS_TV_SEC)
+		res = st.st_mtim.tv_sec;
+		#else
+		res = st.st_mtime;
+		#endif
+	}
+	#endif
 
 	// return to saved dir
-	_chdir(cwd);
+	chdir(cwd);
 
 	// return last time value
-	return fd.time_write;
+	return res;
 }
 
 VOID CALLBACK UpdateProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
@@ -2951,11 +2998,17 @@ VOID CALLBACK UpdateProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
 void biosAddToUpdateList(char *fname)
 {
 	updateEntry *ue, *ui;
-	char path[256], name[256], ext[256], fullname[512];
+	char path[256];
+
+	#if !defined(HAVE_LIBGEN_H)
+	char name[256], ext[256], fullname[512];
 
 	// split up our fname into path/name components
 	_splitpath(fname, nullptr, path, name, ext);
 	sprintf(fullname, "%s%s", name, ext);
+	#else
+	char *fullname = basename(fname);
+	#endif
 
 	// make sure this entry is not already in the update list
 	ue = updateList;
