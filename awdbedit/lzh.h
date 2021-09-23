@@ -31,7 +31,11 @@
 
 #pragma warning(disable: 4200)			// zero-sized array warning
 
+#if defined(__WINE__)
+#include <pshpack1.h>
+#else
 #pragma pack(push, 1)
+#endif
 typedef struct
 {
 	uint8_t	headerSize;
@@ -55,7 +59,11 @@ typedef struct
 	uint16_t	extendedHeaderSize;
 	uint8_t	extendedHeader[0];
 } lzhHeaderAfterFilename;
+#if defined(__WINE__)
+#include <poppack.h>
+#else
 #pragma pack(pop)
+#endif
 
 typedef enum
 {
