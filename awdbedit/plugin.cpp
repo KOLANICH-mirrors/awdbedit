@@ -24,8 +24,33 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
+#if defined(HAVE_UNISTD_H)
+#include <unistd.h>
+#endif
+#if defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
+#include <dirent.h>
+#endif
+#if defined(HAVE_PROCESS_H)
+#include <process.h>
+#endif
+#if defined(HAVE_IO_H)
 #include <io.h>
+#endif
+#if defined(HAVE_DIRECT_H)
 #include <direct.h>
+#if !defined(DIRECT_H_DEFINES_CHDIR_NO_UNDERSCORE)
+	#define chdir _chdir
+#endif
+#if !defined(DIRECT_H_DEFINES_GETCWD_NO_UNDERSCORE)
+	#define getcwd _getcwd
+#endif
+#if !defined(DIRECT_H_DEFINES_MKDIR_NO_UNDERSCORE)
+	#define mkdir _mkdir
+#endif
+#if !defined(DIRECT_H_DEFINES_RMDIR_NO_UNDERSCORE)
+	#define rmdir _rmdir
+#endif
+#endif
 #include <windows.h>
 #include <commctrl.h>
 #include "types.h"
@@ -93,9 +118,14 @@ void pluginInitScan(HWND text, HWND prog)
 uint32_t pluginScan(char *dir, bool doLoad)
 {
 	typedef awdbeFuncTable* (*registerPluginFunc)(void);
-	long hFile;
 	char cwd[256], fname[256], *ptr;
+	#if defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
+	DIR *hFile;
+	struct dirent *fd;
+	#else
+	long hFile;
 	struct _finddata_t fd;
+	#endif
 	HINSTANCE hInst;
 	FARPROC regproc;
 	awdbeFuncTable *ftbl;
@@ -103,38 +133,68 @@ uint32_t pluginScan(char *dir, bool doLoad)
 	uint32_t count = 0;
 
 	// save off the current dir
-	_getcwd(cwd, 256);
+	getcwd(cwd, 256);
 
 	// change into the specified dir
-	_chdir(dir);
+	chdir(dir);
 
 	// look for all DLL files in this directory
+	#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 	hFile = _findfirst("*.*", &fd);
 	if (hFile != -1)
+	#else
+	hFile = opendir(".");
+	fd = readdir(hFile);
+	if (fd)
+	#endif
 	{
 		do
 		{
 			// if this is a directory, make a new path and scan through it
+			#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 			if (fd.attrib == _A_SUBDIR)
+			#else
+			if (fd->d_type == DT_DIR)
+			#endif
 			{
 				// if this directory has a '.' as the first character, don't scan.
+				#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 				if (fd.name[0] != '.')
+				#else
+				if (fd->d_name[0] != '.')
+				#endif
 				{
-					sprintf(fname, "%s%s\\", dir, fd.name);
+					sprintf(fname, "%s%s\\", dir,
+						#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
+						fd.name
+						#else
+						fd->d_name
+						#endif
+					);
 					count += pluginScan(fname, doLoad);
 				}
 			}
 			else
 			{
 				// does this file have a .dll extension?
+				#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 				ptr = fd.name + (strlen(fd.name) - 4);
+				#else
+				ptr = fd->d_name + (strlen(fd->d_name) - 4);
+				#endif
 				if (!memicmp(ptr, ".dll", 4))
 				{
 					// if we're only checking for DLLs, don't bother load it.
 					if (doLoad == TRUE)
 					{
 						// load this DLL
-						sprintf(fname, "%s%s", dir, fd.name);
+						sprintf(fname, "%s%s", dir,
+							#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
+							fd.name
+							#else
+							fd->d_name
+							#endif
+						);
 						if ( (hInst = LoadLibrary(fname)) != nullptr )
 						{
 							// look for our "awdbeRegisterPlugin" function in the DLL
@@ -158,13 +218,19 @@ uint32_t pluginScan(char *dir, bool doLoad)
 					count++;
 				}
 			}
+		#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 		} while (_findnext(hFile, &fd) == 0);
 
 		_findclose(hFile);
+		#else
+		} while ((fd = readdir(hFile)));
+
+		closedir(hFile);
+		#endif
 	}
 
 	// return back to the stored dir
-	_chdir(cwd);
+	chdir(cwd);
 
 	return count;
 }

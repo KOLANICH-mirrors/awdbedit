@@ -24,8 +24,18 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
-#include <io.h>
-#include <direct.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
+#ifdef HAVE_DIRENT_H
+#include <dirent.h>
+#endif
+#ifdef HAVE_GLOB_H
+#include <glob.h>
+#endif
 #include <windows.h>
 #include <commctrl.h>
 #include "types.h"
@@ -638,7 +648,12 @@ int handleMenuPopup(HMENU menu)
 {
 	int count, t;
 	char cwd[256], skindir[262];
+	#if !defined(HAVE_GLOB_H)
 	struct _finddata_t fd;
+	#else
+	glob_t fd;
+	memset(&fd, 0, sizeof(fd));
+	#endif
 	long hFile;
 
 	// figure out which menu this is...
@@ -672,25 +687,41 @@ int handleMenuPopup(HMENU menu)
 			DeleteMenu(menu, 0, MF_BYPOSITION);
 
 		// save off the current dir
-		_getcwd(cwd, 256);
+		getcwd(cwd, 256);
 
 		// change to the "Skins" subdirectory
 		sprintf(skindir, "%sSkins", exePath);
-		_chdir(skindir);
+		chdir(skindir);
 
 		// look for all bmp files and add them to the menu
+		#if !defined(HAVE_GLOB_H)
 		hFile = _findfirst("*.bmp", &fd);
-		if (hFile == -1)
+		#else
+		hFile = glob("*.bmp", GLOB_TILDE, nullptr, &fd);
+		#endif
+
+		if (hFile == -1){
 			AppendMenu(menu, MF_GRAYED, ID_NOTHING, "No skins found");
-		else
+			#if defined(HAVE_GLOB_H)
+			globfree(&fd);
+			#endif
+		}else
 		{
 			t = 0;
 
+			#if !defined(HAVE_GLOB_H)
 			do
 			{
+			#else
+			for(size_t i = 0; i < fd.gl_pathc && i < MAX_SKINS; ++i){
+			#endif
 				// store the skin in the list
 				skinList[t].id = ID_SELECT_SKIN0 + t;
+				#if !defined(HAVE_GLOB_H)
 				strcpy(skinList[t].fname, fd.name);
+				#else
+				strcpy(skinList[t].fname, fd.gl_pathv[i]);
+				#endif
 
 				// add it to the menu
 				if (!stricmp(config.lastSkin, skinList[t].fname))
@@ -700,13 +731,18 @@ int handleMenuPopup(HMENU menu)
 
 				// next...
 				t++;
+			#if !defined(HAVE_GLOB_H)
 			} while ((_findnext(hFile, &fd) == 0) && (t < MAX_SKINS));
 
 			_findclose(hFile);
+			#else
+			}
+			globfree(&fd);
+			#endif
 		}
 
 		// return back to the stored dir
-		_chdir(cwd);
+		chdir(cwd);
 		return 0;
 	}
 	else if (menu == globals.hAboutPluginsMenu)
@@ -802,14 +838,14 @@ bool selectSkin(char *fname)
 
 	// change to the "Skins" subdirectory
 	sprintf(skindir, "%sSkins", exePath);
-	_chdir(skindir);
+	chdir(skindir);
 
 	// load the bitmap
 	if (LoadBitmapFromBMPFile(fname, &hbmp, nullptr) == FALSE)
 		return FALSE;
 
 	// return to the previous dir
-	_chdir(cwd);
+	chdir(cwd);
 
 	// nuke any current skin
 	if (globals.hSkin != nullptr)
@@ -1277,14 +1313,19 @@ bool getExePath(char *cmdline, char *path, int len)
 void cleanTempPath(void)
 {
 	char cwd[295];
-	long hFile;
+	#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 	struct _finddata_t fd;
+	long hFile;
+	#else
+	DIR *hFile;
+	struct dirent *fd;
+	#endif
 
 	// save the current path
-	_getcwd(cwd, 256);
+	getcwd(cwd, 256);
 
 	// change into the temp dir
-	if (_chdir(fullTempPath) < 0)
+	if (chdir(fullTempPath) < 0)
 	{
 		// some error occured changing into our temp dir.  we don't want to destroy any files here!
 		sprintf(cwd, "Unable to clean temporary files dir: [%s]", fullTempPath);
@@ -1293,21 +1334,44 @@ void cleanTempPath(void)
 	}
 
 	// iterate through all files, and delete them
+	#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 	hFile = _findfirst("*.*", &fd);
 	if (hFile != -1)
+	#else
+	hFile = opendir(".");
+	fd = readdir(hFile);
+	if (fd)
+	#endif
 	{
 		do
 		{
 			// ignore directories
-			if (fd.attrib != _A_SUBDIR)
-				unlink(fd.name);
+			#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
+			if (fd.attrib == _A_SUBDIR){
+			#else
+			if (fd->d_type == DT_DIR){
+			#endif
+				unlink(
+					#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
+					fd.name
+					#else
+					fd->d_name
+					#endif
+				);
+			}
+		#if !defined(DIRENT_IS_OK_FOR_OUR_PURPOSES)
 		} while (_findnext(hFile, &fd) == 0);
 
 		_findclose(hFile);
+		#else
+		} while ((fd = readdir(hFile)));
+
+		closedir(hFile);
+		#endif
 	}
 
 	// return back
-	_chdir(cwd);
+	chdir(cwd);
 }
 
 void makeTempPath(void)
@@ -1320,13 +1384,21 @@ void makeTempPath(void)
 		tmp = "C:\\TEMP";
 
 	// make sure it exists (it really should...)
-	_mkdir(tmp);
+	#if !defined(HAVE_IO_H)
+	mkdir(tmp, 0664);
+	#else
+	mkdir(tmp);
+	#endif
 
 	// split off a directory for us
 	sprintf(fullTempPath, "%s\\Award BIOS Editor Temp Files", tmp);
 
 	// make sure this exists too
-	_mkdir(fullTempPath);
+	#if !defined(HAVE_IO_H)
+	mkdir(fullTempPath, 0664);
+	#else
+	mkdir(tmp);
+	#endif
 
 	// now cleanup the temp path...
 	cleanTempPath();

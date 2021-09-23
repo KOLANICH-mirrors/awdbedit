@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <dos.h>
 #include <windows.h>
 #include "types.h"
 #include "console.h"
