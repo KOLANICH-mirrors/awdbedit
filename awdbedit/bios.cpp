@@ -2903,7 +2903,7 @@ time_t biosGetLastWriteTime(updateEntry *ue)
 	return fd.time_write;
 }
 
-void CALLBACK UpdateProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
+VOID CALLBACK UpdateProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
 {
 	updateEntry *ue = updateList;
 	time_t lastwrite;
