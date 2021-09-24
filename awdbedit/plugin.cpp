@@ -208,7 +208,7 @@ void pluginAdd(char *fname, HINSTANCE hInst, awdbeFuncTable *ftbl)
 	fe->next	= NULL;
 
 	// and call this plugin's init function
-	fe->functbl->initFunc((ulong)fe);
+	fe->functbl->initFunc((uint64_t)fe);
 }
 
 ulong pluginMakeBaseHash(ushort typeID, char *name)
@@ -536,7 +536,7 @@ void pluginShowAboutBox(ulong index, HWND parentWnd)
 //---------------------------------------------------------------------------------------------------------------------
 // plugin accessor functions
 
-EXPORT void awdbeAddToItemList(ulong pluginID, awdbeItem *itemList, int itemCount)
+EXPORT void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount)
 {
 	pluginFuncEntry *pe = (pluginFuncEntry *)pluginID;
 	awdbeItemEntry *ie;
@@ -583,32 +583,32 @@ EXPORT void awdbeAddToItemList(ulong pluginID, awdbeItem *itemList, int itemCoun
 	pluginGenerateHash(ie->list, ie->count);
 }
 
-EXPORT void awdbeUpdateSelf(ulong pluginID)
+EXPORT void awdbeUpdateSelf(uint64_t pluginID)
 {
 	biosUpdateCurrentDialog();
 }
 
-EXPORT void awdbeRefreshSelf(ulong pluginID)
+EXPORT void awdbeRefreshSelf(uint64_t pluginID)
 {
 	biosRefreshCurrentDialog();
 }
 
-EXPORT void awdbeGetDialogSize(ulong pluginID, SIZE *sz)
+EXPORT void awdbeGetDialogSize(uint64_t pluginID, SIZE *sz)
 {
 	biosGetDialogSize(sz);
 }
 
-EXPORT void awdbeResizeDialog(ulong pluginID, SIZE sz)
+EXPORT void awdbeResizeDialog(uint64_t pluginID, SIZE sz)
 {
 	biosResizeDialog(sz);
 }
 
-EXPORT fileEntry *awdbeSearchForID(ulong pluginID, ushort ID)
+EXPORT fileEntry *awdbeSearchForID(uint64_t pluginID, ushort ID)
 {
 	return biosScanForID(ID);
 }
 
-EXPORT void awdbeSetModified(ulong pluginID)
+EXPORT void awdbeSetModified(uint64_t pluginID)
 {
 	biosSetModified(TRUE);
 }
@@ -690,7 +690,7 @@ EXPORT int awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp)
 	return retval;
 }
 
-EXPORT awdbeBIOSVersion awdbeGetBIOSVersion(ulong pluginID)
+EXPORT awdbeBIOSVersion awdbeGetBIOSVersion(uint64_t pluginID)
 {
 	return biosGetVersion();
 }

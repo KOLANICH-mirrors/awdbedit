@@ -27,14 +27,14 @@
 #ifndef BUILTINS_H
 #define BUILTINS_H
 
-extern ulong myID;
+extern uint64_t myID;
 extern HINSTANCE hinst;
 
 
 char *builtinsDescription(void);
 void builtinsAboutBox(HWND parentWnd);
 
-void builtinsInit(ulong pluginID);
+void builtinsInit(uint64_t pluginID);
 void builtinsOnLoad(fileEntry *fe, int count);
 bool builtinsDetect(fileEntry *fe);
 

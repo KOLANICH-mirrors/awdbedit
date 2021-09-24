@@ -77,7 +77,7 @@ typedef struct
 	char *	(*descriptionFunc)(void);
 	void	(*aboutBoxFunc)(HWND parentWnd);
 
-	void	(*initFunc)(ulong pluginID);
+	void	(*initFunc)(uint64_t pluginID);
 
 	void	(*onLoadFunc)(fileEntry *fe, int count);
 	bool	(*detectFunc)(fileEntry *fe);
@@ -105,17 +105,17 @@ typedef enum
 #define EXPORT __declspec(dllimport)
 #endif
 
-EXPORT void awdbeAddToItemList(ulong pluginID, awdbeItem *itemList, int itemCount);
-EXPORT fileEntry *awdbeSearchForID(ulong pluginID, ushort ID);
-EXPORT void awdbeUpdateSelf(ulong pluginID);
-EXPORT void awdbeRefreshSelf(ulong pluginID);
+EXPORT void awdbeAddToItemList(uint64_t pluginID, awdbeItem *itemList, int itemCount);
+EXPORT fileEntry *awdbeSearchForID(uint64_t pluginID, uint16_t ID);
+EXPORT void awdbeUpdateSelf(uint64_t pluginID);
+EXPORT void awdbeRefreshSelf(uint64_t pluginID);
 
-EXPORT void awdbeGetDialogSize(ulong pluginID, SIZE *sz);
-EXPORT void awdbeResizeDialog(ulong pluginID, SIZE sz);
+EXPORT void awdbeGetDialogSize(uint64_t pluginID, SIZE *sz);
+EXPORT void awdbeResizeDialog(uint64_t pluginID, SIZE sz);
 
-EXPORT void awdbeSetModified(ulong pluginID);
+EXPORT void awdbeSetModified(uint64_t pluginID);
 
 EXPORT int  awdbeDoPopup(HINSTANCE hinst, LPSTR resid, int xp, int yp);
-EXPORT awdbeBIOSVersion awdbeGetBIOSVersion(ulong pluginID);
+EXPORT awdbeBIOSVersion awdbeGetBIOSVersion(uint64_t pluginID);
 
 #endif
