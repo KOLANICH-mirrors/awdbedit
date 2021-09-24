@@ -373,7 +373,8 @@ void updateControls(HWND hdlg, fileEntry *fe)
 {
 	uchar *dptr = (uchar *)fe->data;
 	char buf[256];
-	ulong fmtSize, wavSize;
+	ulong fmtSize;
+	size_t wavSize;
 	void *wavData;
 	HDC dc;
 
@@ -387,7 +388,7 @@ void updateControls(HWND hdlg, fileEntry *fe)
 
 	// make sure wavSize isn't too big
 	if (((uchar *)wavData + wavSize) > ((uchar *)fe->data + fe->size))
-		wavSize = (ulong)((uchar *)fe->data + fe->size) - (ulong)(dptr + 20 + fmtSize + 8);
+		wavSize = ((uchar *)fe->data + fe->size) - (dptr + 20 + fmtSize + 8);
 
 	// store this data in a WAVEHDR, which we'll use to playback the data
 	ZeroMemory(&wh, sizeof(WAVEHDR));

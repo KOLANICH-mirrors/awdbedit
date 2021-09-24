@@ -2849,7 +2849,7 @@ void biosHexEdit(void)
 {
 	char fname[258];
 	FILE *fp;
-	int res;
+	HINSTANCE res;
 
 	// do nothing if we're not pointing at anything
 	if (curFileEntry == NULL)
@@ -2870,8 +2870,8 @@ void biosHexEdit(void)
 	biosAddToUpdateList(fname);
 
 	// spawn the hexeditor
-	res = (int)ShellExecute(hwnd, NULL, config.hexEditor, fname, NULL, SW_SHOWNORMAL);
-	if (res <= 32)
+	res = ShellExecute(hwnd, NULL, config.hexEditor, fname, NULL, SW_SHOWNORMAL);
+	if (res <= reinterpret_cast<HINSTANCE>(32))
 	{
 		MessageBox(hwnd, "Unable to launch the configured hex editor!\n\nPlease check the path and/or filename under the "
 			"Options->Configuration menu.", "Error", MB_OK);

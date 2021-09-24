@@ -27,10 +27,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-typedef unsigned char		uchar;
-typedef unsigned short		ushort;
-typedef unsigned int		uint;
-typedef unsigned long		ulong;
+#include <stdint.h>
 
 #define OFFSETOF(a, b)		( (ulong) &( ((a *)0)->b) )
 
