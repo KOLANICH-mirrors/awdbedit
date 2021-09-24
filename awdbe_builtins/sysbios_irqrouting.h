@@ -27,6 +27,8 @@
 #ifndef SYSBIOS_IRQROUTING_H
 #define SYSBIOS_IRQROUTING_H
 
+#include <windows.h>
+
 #pragma pack(push, 1)
 typedef struct
 {
@@ -37,7 +39,7 @@ typedef struct
 } sysbiosPCIRoutingEntry;
 #pragma pack(pop)
 
-BOOL CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 void sysbiosRefreshIRQRouting(uchar *ptr);
 

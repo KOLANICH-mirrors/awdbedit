@@ -139,7 +139,7 @@ void sysbiosRecalcChecksum(bool showErr)
 	}
 }
 
-BOOL CALLBACK sysbiosTabCtrlFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosTabCtrlFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	int curtab;

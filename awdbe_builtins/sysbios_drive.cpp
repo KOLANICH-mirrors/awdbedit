@@ -36,7 +36,7 @@
 static int modifyDriveType;
 static sysbiosDrvTblEntry *modifyDrivePtr;
 
-BOOL CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	char buf[256];
 
@@ -104,7 +104,8 @@ BOOL CALLBACK ModifyDriveFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPa
 }
 
 
-BOOL CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+
+INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	LPNMLISTVIEW lpnmlv;

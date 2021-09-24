@@ -41,7 +41,7 @@ typedef struct
 } sysbiosChipRegEntry;
 #pragma pack(pop)
 
-BOOL CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 void sysbiosRefreshChipsetRegs(uchar *ptr);
 

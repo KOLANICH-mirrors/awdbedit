@@ -48,8 +48,8 @@ static RECT area;
 static SIZE areasz;
 
 
-BOOL CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
-BOOL CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 void updateControls(HWND hdlg, fileEntry *fe);
 
 void allocateGDIObjects(HWND hdlg);
@@ -267,7 +267,7 @@ void CALLBACK timerFunc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
 	ReleaseDC(hwnd, dc);
 }
 
-BOOL CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HICON hicon;
 	HDC dc;
@@ -638,7 +638,7 @@ void freeGDIObjects(void)
 	}
 }
 
-BOOL CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	char buf[256];
 

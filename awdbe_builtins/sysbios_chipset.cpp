@@ -65,7 +65,7 @@ void sysbiosChipsetBuildMap(char *buf, uchar mask, uchar value)
 	*ptr = 0;
 }
 
-BOOL CALLBACK ModifyChipsetFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ModifyChipsetFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	char buf[256];
 	HWND hwnd;
@@ -159,7 +159,8 @@ BOOL CALLBACK ModifyChipsetFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 }
 
 
-BOOL CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+
+INT_PTR CALLBACK sysbiosChipsetRegsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	LPNMLISTVIEW lpnmlv;

@@ -34,7 +34,7 @@
 #include "resource.h"
 
 
-BOOL CALLBACK sysbiosBIOSTimingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosBIOSTimingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	return FALSE;
 }

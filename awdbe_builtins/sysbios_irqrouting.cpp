@@ -37,7 +37,7 @@ static uchar pciSlotID;
 static uchar *modifyPCIIRQPtr;
 static sysbiosPCIRoutingEntry *modifyPCIRoutePtr;
 
-BOOL CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	char buf[256];
 	int val;
@@ -108,7 +108,7 @@ BOOL CALLBACK ModifyRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM l
 	return FALSE;
 }
 
-BOOL CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosIRQRoutingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	HWND hlist;

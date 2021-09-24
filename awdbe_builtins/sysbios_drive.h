@@ -42,7 +42,7 @@ typedef struct
 } sysbiosDrvTblEntry;
 #pragma pack(pop)
 
-BOOL CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK sysbiosDriveTableFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 void sysbiosRefreshDriveTable(uchar *ptr);
 

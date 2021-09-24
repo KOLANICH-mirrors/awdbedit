@@ -27,7 +27,9 @@
 #ifndef SYSBIOS_MAIN_H
 #define SYSBIOS_MAIN_H
 
-BOOL CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+#include <windows.h>
+
+INT_PTR CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 void sysbiosRefreshMain(uchar *ptr);
 bool sysbiosUpdateMain(uchar *ptr, bool *modified, awdbeBIOSVersion *vers);

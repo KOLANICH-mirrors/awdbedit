@@ -27,7 +27,9 @@
 #ifndef SYSBIOS_OPTIONS_H
 #define SYSBIOS_OPTIONS_H
 
-BOOL CALLBACK sysbiosBIOSOptionsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+#include <windows.h>
+
+INT_PTR CALLBACK sysbiosBIOSOptionsFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 void sysbiosRefreshBIOSOptions(uchar *ptr);
 void sysbiosUpdateBIOSOptions(uchar *ptr, bool *modified, awdbeBIOSVersion vers);
