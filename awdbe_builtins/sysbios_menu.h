@@ -27,6 +27,8 @@
 #ifndef SYSBIOS_MENU_H
 #define SYSBIOS_MENU_H
 
+#include <windows.h>
+
 #define TYPE_MENUITEM		0
 #define TYPE_MENUENTRY		1
 #define TYPE_MENUHEADER		2
@@ -124,7 +126,7 @@ typedef struct
 } colorTableStruct;
 
 
-BOOL CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 void sysbiosRefreshMenu(uchar *ptr);
 void sysbiosDestroyMenu(void);

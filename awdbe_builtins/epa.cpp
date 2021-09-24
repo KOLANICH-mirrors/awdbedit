@@ -73,7 +73,7 @@ bool isEPALogo(uchar *data, ulong size)
 	return FALSE;
 }
 
-BOOL CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK epaLogoFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HDC dc;
 	PAINTSTRUCT ps;

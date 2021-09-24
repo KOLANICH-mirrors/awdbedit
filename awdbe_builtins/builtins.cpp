@@ -36,7 +36,7 @@ ulong myID;
 HINSTANCE hinst;
 
 
-BOOL CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 awdbeFuncTable builtinsTable = {
@@ -182,7 +182,7 @@ void builtinsAboutBox(HWND parentWnd)
 	DialogBox(hinst, MAKEINTRESOURCE(IDD_ABOUT), parentWnd, aboutBoxProc);
 }
 
-void builtinsInit(ulong pluginID)
+void builtinsInit(uint64_t pluginID)
 {
 	myID = pluginID;
 
@@ -207,7 +207,7 @@ bool builtinsDetect(fileEntry *fe)
 	return TRUE;
 }
 
-BOOL CALLBACK unknownFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK unknownFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -342,7 +342,7 @@ void builtinsOnResizeDialog(awdbeItem *item, HWND dialogWnd, RECT *rc)
 	}
 }
 
-BOOL CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK aboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	char buf[256];
 

@@ -58,7 +58,7 @@ static char *mainChangedText = "This BIOS image has been changed.  Do you want t
 #define SPLITTER_WINDOW_SIZE		3
 
 
-BOOL APIENTRY ConfigBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR APIENTRY ConfigBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	OPENFILENAME ofn;
 	char fname[256];
@@ -125,7 +125,7 @@ BOOL APIENTRY ConfigBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 	return FALSE;
 }
 
-BOOL APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LPDRAWITEMSTRUCT lpdis;
 	COLORREF oldcol;

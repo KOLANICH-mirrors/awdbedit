@@ -34,7 +34,7 @@
 #include "resource.h"
 
 
-BOOL CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HWND hwnd;
 	int len, maxlen;
@@ -83,7 +83,7 @@ BOOL CALLBACK sysbiosMainFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lPa
 	return FALSE;
 }
 
-BOOL CALLBACK VerDiffProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK VerDiffProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	char buf[256];
 

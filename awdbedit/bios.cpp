@@ -1423,7 +1423,7 @@ bool biosSaveAs(void)
 	return ret;
 }
 
-BOOL APIENTRY LayoutProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR APIENTRY LayoutProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	biosLayout oldLayout;
 
@@ -1469,7 +1469,7 @@ BOOL APIENTRY LayoutProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 	return FALSE;
 }
 
-BOOL APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR APIENTRY PropertiesProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	RECT rc, rc2;
 	char buf[256];
@@ -1869,7 +1869,7 @@ static bool isUnderRoot(HTREEITEM rootItem, HTREEITEM hitem)
 	return FALSE;
 }
 
-BOOL CALLBACK BiosInternalDialogFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK BiosInternalDialogFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	awdbeItem *item;
 
@@ -2278,7 +2278,7 @@ bool biosAddComponent(char *fname, ushort id, ulong offset)
 	return TRUE;
 }
 
-BOOL APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR APIENTRY InsertProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	char buf[256];
 	OPENFILENAME ofn;
@@ -2716,7 +2716,7 @@ void biosExtractAll(void)
 	}
 }
 
-BOOL APIENTRY RemoveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR APIENTRY RemoveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -2744,7 +2744,7 @@ BOOL APIENTRY RemoveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 	return FALSE;
 }
 
-BOOL APIENTRY RemoveBDProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR APIENTRY RemoveBDProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{

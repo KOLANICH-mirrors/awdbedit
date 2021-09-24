@@ -925,7 +925,7 @@ DWORD WINAPI runSetupMenu(LPVOID unused)
 	return 0;
 }
 
-BOOL CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK sysbiosConfigMenuFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LPNMHDR	lpNM = (LPNMHDR)lParam;
 	LPNMTREEVIEW lpnmtv;

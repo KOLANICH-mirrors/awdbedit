@@ -27,6 +27,8 @@
 #ifndef SYSBIOS_TIMING_H
 #define SYSBIOS_TIMING_H
 
+#include <windows.h>
+
 #pragma pack(push, 1)
 typedef struct
 {
@@ -46,7 +48,7 @@ typedef struct
 } sysbiosTimingStruct;
 #pragma pack(pop)
 
-BOOL CALLBACK sysbiosBIOSTimingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK sysbiosBIOSTimingFunc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 void sysbiosRefreshBIOSTiming(uchar *ptr);
 void sysbiosUpdateBIOSTiming(uchar *ptr, bool *modified, awdbeBIOSVersion vers);
