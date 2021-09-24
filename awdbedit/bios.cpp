@@ -112,7 +112,7 @@ BOOL CALLBACK LoadSaveProc(HWND hdlg, UINT message, WPARAM wParam, LPARAM lParam
 
 void biosTitleUpdate(void)
 {
-	char buf[256];
+	char buf[260];
 	int t;
 	ulong size;
 	fileEntry *fe;
@@ -2654,7 +2654,7 @@ int CALLBACK BrowseCallbackProc(HWND hwnd, UINT uMsg, LPARAM lp, LPARAM pData)
 
 void biosExtractAll(void)
 {
-	char fname[256], fullpath[256];
+	char fname[257], fullpath[256];
 	fileEntry *fe;
 	FILE *fp;
 	int t;
@@ -2847,7 +2847,7 @@ void biosRemove(void)
 
 void biosHexEdit(void)
 {
-	char fname[256];
+	char fname[258];
 	FILE *fp;
 	int res;
 
@@ -2941,7 +2941,7 @@ void CALLBACK UpdateProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
 void biosAddToUpdateList(char *fname)
 {
 	updateEntry *ue, *ui;
-	char path[256], name[256], ext[256], fullname[256];
+	char path[256], name[256], ext[256], fullname[512];
 
 	// split up our fname into path/name components
 	_splitpath(fname, NULL, path, name, ext);

@@ -129,7 +129,7 @@ BOOL APIENTRY AboutBoxProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam
 {
 	LPDRAWITEMSTRUCT lpdis;
 	COLORREF oldcol;
-	char buf[256], buf2[256];
+	char buf[256], buf2[264];
 	POINT pt[2];
 	HPEN hpen, oldpen;
 
@@ -630,7 +630,7 @@ void createStatusBar(HWND hwnd)
 int handleMenuPopup(HMENU menu)
 {
 	int count, t;
-	char cwd[256], skindir[256];
+	char cwd[256], skindir[262];
 	struct _finddata_t fd;
 	long hFile;
 
@@ -787,7 +787,7 @@ BOOL LoadBitmapFromBMPFile(LPTSTR szFileName, HBITMAP *phBitmap, HPALETTE *phPal
 
 bool selectSkin(char *fname)
 {
-	char cwd[256], skindir[256];
+	char cwd[256], skindir[262];
 	HBITMAP hbmp;
 
 	// save off the current dir
@@ -1269,7 +1269,7 @@ bool getExePath(char *cmdline, char *path, int len)
 
 void cleanTempPath(void)
 {
-	char cwd[256];
+	char cwd[295];
 	long hFile;
 	struct _finddata_t fd;
 
