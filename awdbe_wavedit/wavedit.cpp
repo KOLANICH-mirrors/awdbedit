@@ -123,7 +123,7 @@ void waveditAboutBox(HWND parentWnd)
 	DialogBox(hinst, MAKEINTRESOURCE(IDD_ABOUT), parentWnd, aboutBoxProc);
 }
 
-void waveditInit(ulong pluginID)
+void waveditInit(uint64_t pluginID)
 {
 	// store our plugin ID
 	myID = pluginID;

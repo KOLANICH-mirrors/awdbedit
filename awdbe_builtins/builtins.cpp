@@ -32,7 +32,7 @@
 #include "epa.h"
 #include "sysbios.h"
 
-ulong myID;
+uint64_t myID;
 HINSTANCE hinst;
 
 
