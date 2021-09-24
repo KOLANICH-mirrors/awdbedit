@@ -54,7 +54,7 @@ void init_console(bool useExistConsole, int mode, PHANDLER_ROUTINE ctrlHandler)
 	else
 		hCon = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	if ((int)hCon == -1)
+	if (hCon == reinterpret_cast<HANDLE>(-1))
 	{
 		// no console, so allocate one...
 		AllocConsole();
