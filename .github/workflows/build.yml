@@ -1,0 +1,20 @@
+name: Build with MinGW-W64 + Clang
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        arch: ["i686", "x86_64"]
+        llvm_version: [16]
+
+    steps:
+      - uses: KOLANICH-GHActions/typical-MinGW-w64-cross-build@master
+        with:
+          llvm_version: ${{matrix.llvm_version}}
+          arch: ${{matrix.arch}}
