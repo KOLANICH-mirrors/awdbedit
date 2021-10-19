@@ -249,7 +249,7 @@ void waveditOnResizeDialog(awdbeItem *item, HWND dialogWnd, RECT *rc)
 
 //-----------------------------------------------------------------------
 
-void CALLBACK timerFunc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
+void CALLBACK timerFunc(UINT uID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2)
 {
 	HDC dc;
 	HWND hwnd = (HWND)dwUser;
@@ -308,7 +308,7 @@ INT_PTR CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 					awdbeUpdateSelf(myID);
 
 					// open the default audio device
-					if (waveOutOpen(&hWaveOut, WAVE_MAPPER, wfex, (DWORD)hdlg, 0, CALLBACK_WINDOW) != MMSYSERR_NOERROR)
+					if (waveOutOpen(&hWaveOut, WAVE_MAPPER, wfex, reinterpret_cast<DWORD_PTR>(hdlg), 0, CALLBACK_WINDOW) != MMSYSERR_NOERROR)
 					{
 						MessageBox(hdlg, "Unable to open output device!", "Error", MB_OK);
 						return FALSE;
@@ -329,7 +329,7 @@ INT_PTR CALLBACK waveditDialogProc(HWND hdlg, UINT message, WPARAM wParam, LPARA
 					}
 
 					// setup a timer to show graphically what's playing (update every 15ms)
-					timerID = timeSetEvent(15, 0, timerFunc, (DWORD)hdlg, TIME_PERIODIC);
+					timerID = timeSetEvent(15u, 0u, timerFunc, reinterpret_cast<DWORD_PTR>(hdlg), TIME_PERIODIC);
 
 					// all okay, disable the play button and enable the stop button
 					EnableWindow(GetDlgItem(hdlg, IDC_WAVE_PLAY), FALSE);
